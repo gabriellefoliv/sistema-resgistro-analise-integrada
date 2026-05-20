@@ -99,7 +99,7 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     onClose={() => setShowStoolAnalysisDrawer(false)}
                 />
             )}
-            {/* ==== Cabeçalho de Expansão ==== */}
+            {/* CABEÇALHO */}
             <div className="sticky top-0 z-10 bg-form-bg pb-2">
                 <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
                     <h3 className="font-bold text-text-main uppercase">Detalhes da Visita</h3>
@@ -134,11 +134,19 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                 <hr className="border-gray-200" />
 
             </div>
-            {/* ==== Corpo da Expansão ==== */}
+            {/* CORPO DA EXPANSÃO */}
             <div className="gap-2 w-full text-sm grid grid-cols-3 mb-1">
                 <div className="flex flex-col w-full col-span-3">
                     <label htmlFor="email" className="ml-1 font-bold">Foto do Animal</label>
-                    <input type="text" disabled value={item.animalPicture || 'Nenhum link de foto informado'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    <div className="mb-2 border border-border rounded px-2 py-1 text-text-input">
+                        {item.animalPicture ? (
+                            <a href={item.animalPicture} target="_blank" rel="noopener noreferrer" className="text-standard-blue hover:underline">
+                                {item.animalPicture}
+                            </a>
+                        ) : (
+                            <span className="text-text-input text-sm">Nenhuma link de foto informado</span>
+                        )}
+                    </div>
                 </div>
                 <div className="flex flex-col w-full col-span-3">
                     <label htmlFor="email" className="ml-1 font-bold">Observações</label>
@@ -161,6 +169,8 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     </div>
                 </>
             )}
+
+            {/* REGISTROS ASSOCIADOS */}
             {(item.hasSample || item.hasPhysicalExam || item.hasVaccine || item.hasExamResult || item.hasSorologyAnalysis || item.hasEctoparasiteAnalysis || item.hasStoolAnalysis) && (
                 <>
                     <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">

@@ -97,7 +97,7 @@ export function GpsTrackingExpansion({ item, close, refresh }: { item: GetAllGps
                                 {item.rawSpreadsheetLink}
                             </a>
                         ) : (
-                            <span className="text-text-input text-sm">-</span>
+                            <span className="text-text-input text-sm">Nenhum link de planilha bruta informado</span>
                         )}
                     </div>
                     {/* <label className="ml-1 text-xs text-text-input">
@@ -112,7 +112,7 @@ export function GpsTrackingExpansion({ item, close, refresh }: { item: GetAllGps
                                 {item.editedSpreadsheetLink}
                             </a>
                         ) : (
-                            <span className="text-text-input text-sm">-</span>
+                            <span className="text-text-input text-sm">Nenhum link de planilha editada informado</span>
                         )}
                     </div>
                     {/* <label className="ml-1 text-xs text-text-input">
