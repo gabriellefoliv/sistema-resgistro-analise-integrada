@@ -14,6 +14,7 @@ import { ectoparasiteAnalysisRoutes } from "./ectoparasiteAnalysisRoutes";
 import { stoolAnalysisRoutes } from "./stoolAnalysisRoutes";
 import { eggCystAnalysisRoutes } from "./eggCystAnalysisRoutes";
 import { molecularAnalysisRoutes } from "./molecularAnalysisRoutes";
+import { gpsTrackingRoutes } from "./gpsTrackingRoutes";
 
 export const router = Router();
 
@@ -32,3 +33,5 @@ router.use(ectoparasiteAnalysisRoutes);
 router.use(stoolAnalysisRoutes);
 router.use(eggCystAnalysisRoutes);
 router.use(molecularAnalysisRoutes);
+router.use(gpsTrackingRoutes);
+

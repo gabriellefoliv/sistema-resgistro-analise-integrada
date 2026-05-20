@@ -8,3 +8,4 @@ export * from "./ectoparasiteAnalysis";
 export * from "./stoolAnalysis";
 export * from "./eggCystAnalysis";
 export * from "./molecularAnalysis";
+export * from "./gpsTracking";

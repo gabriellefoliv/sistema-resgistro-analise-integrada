@@ -58,6 +58,7 @@ import { fetchEctoparasiteAnalysisData, EctoparasiteAnalysisContent } from "./li
 import { fetchStoolAnalysisData, StoolAnalysisContent } from "./liveanimals/stoolAnalysis/index";
 import { fetchEggCystAnalysisData, EggCystAnalysisContent } from "./liveanimals/eggCystAnalysis/index";
 import { fetchMolecularAnalysisData, MolecularAnalysisContent } from "./liveanimals/molecularAnalysis/index";
+import { fetchGpsTrackingData, GpsTrackingContent } from "./liveanimals/gpsTracking/index";
 
 export function initRegistry() {
     registerContent('admin', 'permissoes', 'Permissões', {
@@ -150,6 +151,13 @@ export function initRegistry() {
         label: MolecularAnalysisContent.label,
         loader: fetchMolecularAnalysisData,
         component: MolecularAnalysisContent
+    });
+
+    registerContent('animaisvivos', 'rastreiodegps', 'Rastreio GPS', {
+        id: GpsTrackingContent.id,
+        label: GpsTrackingContent.label,
+        loader: fetchGpsTrackingData,
+        component: GpsTrackingContent
     });
 }
 

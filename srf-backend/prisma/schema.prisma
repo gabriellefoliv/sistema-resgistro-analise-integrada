@@ -212,7 +212,9 @@ model gpsTracking {
   monitoringMethodId    Int              @map("id_metodo_monitoramento")
   monitoringMethod      monitoringMethod @relation(fields: [monitoringMethodId], references: [id])
   rawSpreadsheetLink    String?          @map("link_planilha_bruta")
-  editedSpreadsheetLink String?          @map("link_planilha_editada")
+  rawSpreadsheetUpdateDate     DateTime?        @map("data_atualizacao_planilha_bruta")
+  editedSpreadsheetLink        String?          @map("link_planilha_editada")
+  editedSpreadsheetUpdateDate  DateTime?        @map("data_atualizacao_planilha_editada")
 
   @@map("rastreio_gps")
 }
