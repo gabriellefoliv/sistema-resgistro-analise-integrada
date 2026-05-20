@@ -140,7 +140,7 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     <label htmlFor="email" className="ml-1 font-bold">Foto do Animal</label>
                     <div className="mb-2 border border-border rounded px-2 py-1 text-text-input">
                         {item.animalPicture ? (
-                            <a href={item.animalPicture} target="_blank" rel="noopener noreferrer" className="text-standard-blue hover:underline">
+                            <a href={item.animalPicture} target="_blank" rel="noopener noreferrer" className="text-standard-blue underline text-sm flex items-center gap-1">
                                 {item.animalPicture}
                             </a>
                         ) : (
