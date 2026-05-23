@@ -9,3 +9,5 @@ export * from "./stoolAnalysis";
 export * from "./eggCystAnalysis";
 export * from "./molecularAnalysis";
 export * from "./gpsTracking";
+export * from "./interview";
+export * from "./animalInterview";

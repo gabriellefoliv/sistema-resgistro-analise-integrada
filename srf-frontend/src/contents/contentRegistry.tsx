@@ -13,7 +13,7 @@ export interface ContentConfig {
     component: ContentProps<any>;
 }
 
-// Registry storage
+// Armazenamento do registro de conteúdo
 const registry: Record<string, Record<string, PageConfig>> = {};
 
 export function registerContent(
@@ -59,8 +59,24 @@ import { fetchStoolAnalysisData, StoolAnalysisContent } from "./liveanimals/stoo
 import { fetchEggCystAnalysisData, EggCystAnalysisContent } from "./liveanimals/eggCystAnalysis/index";
 import { fetchMolecularAnalysisData, MolecularAnalysisContent } from "./liveanimals/molecularAnalysis/index";
 import { fetchGpsTrackingData, GpsTrackingContent } from "./liveanimals/gpsTracking/index";
+import { fetchInterviewData, InterviewContent } from "./liveanimals/interview/index";
+import { fetchAnimalInterviewData, AnimalInterviewContent } from "./liveanimals/animalInterview/index";
 
 export function initRegistry() {
+    // Exemplo de como registrar um novo conteúdo
+    // registerContent('<category_id>', '<subcategory_id>', '<page_title>', {
+    //     id: '<form_id>', // declarado no arquivo index.ts do conteúdo
+    //     label: '<form_label>', // declarado no arquivo index.ts do conteúdo
+    //     loader: fetchUsersData,
+    //     component: UsersPermissionsContent
+    // }, true);
+    // id é o id do form
+    // label é o título do form
+    // loader é a função que vai carregar os dados
+    // component é o componente que vai renderizar os dados
+    // adminOnly é true se o conteúdo for exclusivo para administradores
+    // adminOnly é false ou não declarar se o conteúdo for para todos
+
     registerContent('admin', 'permissoes', 'Permissões', {
         id: UsersPermissionsContent.id,
         label: UsersPermissionsContent.label,
@@ -158,6 +174,20 @@ export function initRegistry() {
         label: GpsTrackingContent.label,
         loader: fetchGpsTrackingData,
         component: GpsTrackingContent
+    });
+
+    registerContent('animaisvivos', 'entrevistas', 'Entrevistas', {
+        id: InterviewContent.id,
+        label: InterviewContent.label,
+        loader: fetchInterviewData,
+        component: InterviewContent
+    });
+
+    registerContent('animaisvivos', 'entrevistas', 'Entrevistas', {
+        id: AnimalInterviewContent.id,
+        label: AnimalInterviewContent.label,
+        loader: fetchAnimalInterviewData,
+        component: AnimalInterviewContent
     });
 }
 

@@ -241,9 +241,11 @@ model trackingDevice {
 
 // ==x== Interviews and Tutor ==x==
 model animalInterview {
-  id           Int        @id @default(autoincrement())
-  liveAnimalId Int        @unique @map("id_animal_vivo")
-  liveAnimal   liveAnimal @relation(fields: [liveAnimalId], references: [id])
+  id                Int              @id @default(autoincrement())
+  liveAnimalId      Int              @unique @map("id_animal_vivo")
+  liveAnimal        liveAnimal       @relation(fields: [liveAnimalId], references: [id])
+  tutorInterviewId  Int?             @map("id_entrevista_tutor")
+  tutorInterview    tutorInterview?  @relation(fields: [tutorInterviewId], references: [id])
 
   animalAnswer animalAnswer[]
 
@@ -291,7 +293,8 @@ model tutorInterview {
   tutor   tutor    @relation(fields: [tutorId], references: [id])
   date    DateTime @map("data")
 
-  tutorAnswer tutorAnswer[]
+  tutorAnswer      tutorAnswer[]
+  animalInterview  animalInterview[]
 
   @@map("entrevista_tutor")
 }

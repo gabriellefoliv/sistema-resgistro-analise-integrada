@@ -15,6 +15,8 @@ import { stoolAnalysisRoutes } from "./stoolAnalysisRoutes";
 import { eggCystAnalysisRoutes } from "./eggCystAnalysisRoutes";
 import { molecularAnalysisRoutes } from "./molecularAnalysisRoutes";
 import { gpsTrackingRoutes } from "./gpsTrackingRoutes";
+import { interviewRoutes } from "./interviewRoutes";
+import { animalInterviewRoutes } from "./animalInterviewRoutes";
 
 export const router = Router();
 
@@ -34,4 +36,6 @@ router.use(stoolAnalysisRoutes);
 router.use(eggCystAnalysisRoutes);
 router.use(molecularAnalysisRoutes);
 router.use(gpsTrackingRoutes);
+router.use(interviewRoutes);
+router.use(animalInterviewRoutes);
 
