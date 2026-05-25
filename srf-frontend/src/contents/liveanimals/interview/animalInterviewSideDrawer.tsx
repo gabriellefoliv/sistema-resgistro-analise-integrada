@@ -4,16 +4,15 @@ import { SideDrawer } from "../../../components/sideDrawer";
 
 interface AnimalInterviewSideDrawerProps {
     animalInterviews: AnimalInterviewOutput[];
-    tutorName: string;
     onClose: () => void;
 }
 
-export function AnimalInterviewSideDrawer({ animalInterviews, tutorName, onClose }: AnimalInterviewSideDrawerProps) {
+export function AnimalInterviewSideDrawer({ animalInterviews, onClose }: AnimalInterviewSideDrawerProps) {
     const [expandedId, setExpandedId] = useState<number | null>(null);
 
     return (
         <SideDrawer
-            title={`Entrevistas de Animais — ${tutorName}`}
+            title={`Entrevistas de Animais`}
             onClose={onClose}
         >
             {animalInterviews.length === 0 && (

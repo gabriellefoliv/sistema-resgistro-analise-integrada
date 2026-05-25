@@ -268,7 +268,7 @@ model animalAnswer {
 
 model animalQuestion {
   id   Int    @id @default(autoincrement())
-  text String @map("pergunta")
+  text String @unique @map("pergunta")
 
   animalAnswerOption animalAnswerOption[]
   animalAnswer       animalAnswer[]
@@ -348,7 +348,7 @@ model tutorAnswerOption {
 
 model tutorQuestion {
   id   Int    @id @default(autoincrement())
-  text String @map("pergunta")
+  text String @unique @map("pergunta")
 
   tutorAnswerOption tutorAnswerOption[]
   tutorAnswer       tutorAnswer[]

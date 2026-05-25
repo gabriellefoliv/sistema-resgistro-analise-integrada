@@ -24,7 +24,7 @@ export function GpsTrackingExpansion({ item, close, refresh }: { item: GetAllGps
                         <button onClick={close} className="text-standard-blue uppercase cursor-pointer">Recolher</button>
                     </div>
                 </div>
-                <div className="gap-2 w-full text-sm grid grid-cols-2">
+                <div className="gap-2 w-full text-sm flex">
                     <div className="flex flex-col w-5/12">
                         <label className="ml-1 font-bold">Animal</label>
                         <input type="text" disabled value={item.liveAnimalName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />

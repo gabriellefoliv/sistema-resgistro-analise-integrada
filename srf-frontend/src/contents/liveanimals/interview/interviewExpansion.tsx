@@ -28,7 +28,6 @@ export function InterviewExpansion({ item, close, refresh }: { item: GetAllInter
             {showAnimalDrawer && (
                 <AnimalInterviewSideDrawer
                     animalInterviews={item.animalInterviews || []}
-                    tutorName={item.tutorName}
                     onClose={() => setShowAnimalDrawer(false)}
                 />
             )}
@@ -92,7 +91,7 @@ export function InterviewExpansion({ item, close, refresh }: { item: GetAllInter
                             onClick={() => setShowAnimalDrawer(true)}
                             className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
                         >
-                            Respostas sobre o Animail
+                            Respostas sobre o Animal
                         </button>
                     </div>
                 </>
