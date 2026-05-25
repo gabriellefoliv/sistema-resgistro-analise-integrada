@@ -24,7 +24,7 @@ async function loadFilterOptions() {
 
 export const SorologyResultContentDefinition = {
     id: 'resultadosorologico',
-    label: 'Sorologia',
+    label: 'Sorologias',
     columns: [
         { key: 'veterinarianVisitDateFormatted', label: 'Data da Visita', width: 'w-2/12' },
         { key: 'liveAnimalName', label: 'Animal', width: 'w-3/12' },

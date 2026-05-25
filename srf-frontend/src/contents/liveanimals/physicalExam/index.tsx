@@ -25,7 +25,7 @@ async function loadFilterOptions() {
 
 export const PhysicalExamContentDefinition = {
     id: 'examefisico',
-    label: 'Exame Físico',
+    label: 'Exames Físicos',
     columns: [
         { key: 'veterinarianVisitDateFormatted', label: 'Data da Visita', width: 'w-2/12' },
         { key: 'liveAnimalName', label: 'Animal', width: 'w-2/12' },

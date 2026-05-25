@@ -67,7 +67,7 @@ export function InterviewExpansion({ item, close, refresh }: { item: GetAllInter
             {(item.tutorAnswers?.length ?? 0) > 0 && (
                 <>
                     <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
-                        <h3 className="font-bold text-text-main uppercase">Resposta sobre o Tutor</h3>
+                        <h3 className="font-bold text-text-main uppercase">Respostas sobre o Tutor</h3>
                     </div>
                     <div className="gap-2 w-full text-sm grid grid-cols-2 mb-2">
                         {item.tutorAnswers.map(a => (
@@ -91,7 +91,7 @@ export function InterviewExpansion({ item, close, refresh }: { item: GetAllInter
                             onClick={() => setShowAnimalDrawer(true)}
                             className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
                         >
-                            Respostas sobre o Animal
+                            Respostas sobre os Animais
                         </button>
                     </div>
                 </>

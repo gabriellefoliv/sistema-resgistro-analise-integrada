@@ -12,7 +12,7 @@ export function AnimalInterviewSideDrawer({ animalInterviews, onClose }: AnimalI
 
     return (
         <SideDrawer
-            title={`Entrevistas de Animais`}
+            title={`Respostas sobre os Animais`}
             onClose={onClose}
         >
             {animalInterviews.length === 0 && (

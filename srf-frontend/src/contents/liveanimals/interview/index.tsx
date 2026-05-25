@@ -6,7 +6,7 @@ import { InterviewExpansion } from "./interviewExpansion";
 
 export const InterviewContentDefinition = {
     id: 'entrevista',
-    label: 'Entrevista',
+    label: 'Entrevistas',
     columns: [
         { key: 'tutorName', label: 'Tutor', width: 'w-5/12' },
         { key: 'dateFormatted', label: 'Data da Realização', width: 'w-6/12' },

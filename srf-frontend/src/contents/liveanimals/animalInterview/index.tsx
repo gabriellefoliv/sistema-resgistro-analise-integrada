@@ -6,7 +6,7 @@ import { AnimalInterviewExpansion } from "./animalInterviewExpansion";
 
 export const AnimalInterviewContentDefinition = {
     id: 'entrevistaanimal',
-    label: 'Respostas sobre o Animal',
+    label: 'Respostas sobre os Animais',
     columns: [
         { key: 'liveAnimalName', label: 'Animal', width: 'w-5/12' },
         { key: 'tutorName', label: 'Tutor', width: 'w-6/12' },

@@ -25,7 +25,7 @@ async function loadFilterOptions() {
 
 export const VeterinarianSampleContentDefinition = {
     id: 'amostras-av',
-    label: 'Amostra',
+    label: 'Amostras',
     columns: [
         { key: 'veterinarianVisitDateFormatted', label: 'Data da Visita', width: 'w-2/12' },
         { key: 'liveAnimalName', label: 'Animal', width: 'w-2/12' },

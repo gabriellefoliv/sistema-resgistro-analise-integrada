@@ -8,7 +8,7 @@ import { VisitToolBar } from "./visitToolBar";
 
 export const VeterinarianVisitContentDefinition = {
     id: 'visitaveterinaria',
-    label: 'Visita Veterinária',
+    label: 'Visitas Veterinárias',
     columns: [
         { key: 'dateFormatted', label: 'Data da Realização', width: 'w-2/12' },
         { key: 'liveAnimalName', label: 'Animal', width: 'w-4/12' },

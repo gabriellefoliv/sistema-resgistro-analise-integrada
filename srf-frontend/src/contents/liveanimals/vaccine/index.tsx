@@ -25,7 +25,7 @@ async function loadFilterOptions() {
 
 export const VaccineContentDefinition = {
     id: 'vacinas-av',
-    label: 'Vacina',
+    label: 'Vacinas',
     columns: [
         { key: 'vaccineName', label: 'Vacina', width: 'w-3/12' },
         { key: 'liveAnimalName', label: 'Animal', width: 'w-3/12' },

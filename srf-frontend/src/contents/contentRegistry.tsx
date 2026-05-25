@@ -169,7 +169,7 @@ export function initRegistry() {
         component: MolecularAnalysisContent
     });
 
-    registerContent('animaisvivos', 'rastreiodegps', 'Rastreio GPS', {
+    registerContent('animaisvivos', 'rastreiodegps', 'Rastreio de GPS', {
         id: GpsTrackingContent.id,
         label: GpsTrackingContent.label,
         loader: fetchGpsTrackingData,

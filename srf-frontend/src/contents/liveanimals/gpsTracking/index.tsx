@@ -20,7 +20,7 @@ async function loadFilterOptions() {
 
 export const GpsTrackingContentDefinition = {
     id: 'rastreiogps',
-    label: 'Registro',
+    label: 'Registros',
     columns: [
         { key: 'liveAnimalName', label: 'Animal', width: 'w-5/12' },
         { key: 'trackingDeviceBrandSerialNumber', label: 'Dispositivo de Rastreamento', width: 'w-6/12' },
