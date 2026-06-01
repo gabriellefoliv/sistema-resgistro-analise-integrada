@@ -112,7 +112,6 @@ export class InterviewService {
                     date: i.date.toISOString(),
                     hasAnimalInterview: animalInterviews.length > 0,
                     tutorAnswers,
-                    animalInterviews,
                     liveAnimalNames,
                 };
             })

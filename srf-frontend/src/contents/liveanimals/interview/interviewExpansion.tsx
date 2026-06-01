@@ -2,12 +2,12 @@ import { useState } from "react";
 import { type GetAllInterviewOutput } from "srf-shared-types";
 import { InterviewFormModal } from "./formInterviewModal";
 import { DeleteInterviewModal } from "./deleteInterviewModal";
-import { AnimalInterviewSideDrawer } from "./animalInterviewSideDrawer";
+import { AnimalInterviewSideDrawer } from "../animalInterview/animalInterviewSideDrawer";
 
 export function InterviewExpansion({ item, close, refresh }: { item: GetAllInterviewOutput; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [showAnimalDrawer, setShowAnimalDrawer] = useState(false);
+    const [showAnimalInterviewDrawer, setShowAnimalInterviewDrawer] = useState(false);
 
     return (
         <>
@@ -25,10 +25,10 @@ export function InterviewExpansion({ item, close, refresh }: { item: GetAllInter
                     refresh={refresh}
                 />
             )}
-            {showAnimalDrawer && (
+            {showAnimalInterviewDrawer && (
                 <AnimalInterviewSideDrawer
-                    animalInterviews={item.animalInterviews || []}
-                    onClose={() => setShowAnimalDrawer(false)}
+                    filters={{ liveAnimalId: item.id }}
+                    onClose={() => setShowAnimalInterviewDrawer(false)}
                 />
             )}
 
@@ -88,7 +88,7 @@ export function InterviewExpansion({ item, close, refresh }: { item: GetAllInter
                     </div>
                     <div className="gap-2 w-full text-sm flex flex-wrap mb-1">
                         <button
-                            onClick={() => setShowAnimalDrawer(true)}
+                            onClick={() => setShowAnimalInterviewDrawer(true)}
                             className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
                         >
                             Respostas sobre os Animais

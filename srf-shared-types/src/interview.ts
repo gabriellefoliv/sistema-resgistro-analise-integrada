@@ -14,13 +14,6 @@ export const animalAnswerOutputSchema = z.object({
     answerText: z.string(),
 });
 
-export const animalInterviewOutputSchema = z.object({
-    id: z.number().int(),
-    liveAnimalId: z.number().int(),
-    liveAnimalName: z.string(),
-    answers: z.array(animalAnswerOutputSchema),
-});
-
 export const getAllInterviewOutputSchema = z.object({
     id: z.number().int(),
     canEdit: z.boolean(),
@@ -31,7 +24,6 @@ export const getAllInterviewOutputSchema = z.object({
     dateFormatted: z.string().optional(),
     hasAnimalInterview: z.boolean(),
     tutorAnswers: z.array(tutorAnswerOutputSchema),
-    animalInterviews: z.array(animalInterviewOutputSchema),
     // Campo auxiliar para filtragem por nome do animal
     liveAnimalNames: z.string().optional(),
 });
@@ -77,7 +69,6 @@ export const updateInterviewInputSchema = createInterviewInputSchema;
 
 export type TutorAnswerOutput = z.infer<typeof tutorAnswerOutputSchema>;
 export type AnimalAnswerOutput = z.infer<typeof animalAnswerOutputSchema>;
-export type AnimalInterviewOutput = z.infer<typeof animalInterviewOutputSchema>;
 export type GetAllInterviewOutput = z.infer<typeof getAllInterviewOutputSchema>;
 export type TutorQuestionForm = z.infer<typeof tutorQuestionFormSchema>;
 export type GetFormOptionsInterviewOutput = z.infer<typeof getFormOptionsInterviewOutputSchema>;
