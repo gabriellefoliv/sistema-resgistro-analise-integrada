@@ -8,7 +8,7 @@ import {
     getEctoparasiteAnalysisFormOptions,
     createEctoparasiteAnalysis,
     updateEctoparasiteAnalysis
-} from "../../../services/ectoparasiteAnalysisService";
+} from "../../../services/liveanimals/ectoparasiteAnalysisService";
 
 interface EctoparasiteAnalysisFormModalProps {
     ectoparasiteAnalysis?: GetAllEctoparasiteAnalysisOutput;

@@ -1,6 +1,6 @@
 import { type ContentProps } from "../../../components/content";
 import { type GetAllSorologyResultOutput } from "srf-shared-types";
-import { getSorologyResults, getSorologyResultFormOptions } from "../../../services/sorologyResultService";
+import { getSorologyResults, getSorologyResultFormOptions } from "../../../services/liveanimals/sorologyResultService";
 import { SorologyResultToolBar } from "./sorologyResultToolBar";
 import { SorologyResultExpansion } from "./sorologyResultExpansion";
 

@@ -7,7 +7,7 @@ import {
     getVeterinarianVisitOptions,
     createVeterinarianVisit,
     updateVeterinarianVisit
-} from "../../../services/veterinarianVisitService";
+} from "../../../services/liveanimals/veterinarianVisitService";
 
 interface VeterinarianVisitFormModalProps {
     visit?: VeterinarianVisitData;

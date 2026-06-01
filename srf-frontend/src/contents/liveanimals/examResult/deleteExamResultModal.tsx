@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ModalPortal } from "../../../components/modalPortal";
 import { type GetAllExamResultOutput } from "srf-shared-types";
-import { deleteExamResult } from "../../../services/examResultService";
+import { deleteExamResult } from "../../../services/liveanimals/examResultService";
 
 interface DeleteExamResultModalProps {
     examResult: GetAllExamResultOutput;

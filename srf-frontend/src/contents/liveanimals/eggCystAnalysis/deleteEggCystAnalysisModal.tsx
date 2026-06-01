@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ModalPortal } from "../../../components/modalPortal";
 import { type GetAllEggCystAnalysisOutput } from "srf-shared-types";
-import { deleteEggCystAnalysis } from "../../../services/eggCystAnalysisService";
+import { deleteEggCystAnalysis } from "../../../services/liveanimals/eggCystAnalysisService";
 
 interface DeleteEggCystAnalysisModalProps {
     eggCystAnalysis: GetAllEggCystAnalysisOutput;

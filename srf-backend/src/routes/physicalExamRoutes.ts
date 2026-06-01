@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/authMiddleware";
-import { PhysicalExamController } from "../controllers/physicalExamController";
+import { PhysicalExamController } from "../controllers/liveanimals/physicalExamController";
 
 export const physicalExamRoutes = Router();
 

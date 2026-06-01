@@ -8,7 +8,7 @@ import {
     getExamResultFormOptions,
     createExamResult,
     updateExamResult
-} from "../../../services/examResultService";
+} from "../../../services/liveanimals/examResultService";
 import grayQuestionMark from '../../../assets/grayQuestionMark.svg';
 
 interface ExamResultFormModalProps {

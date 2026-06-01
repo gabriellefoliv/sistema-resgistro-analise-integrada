@@ -2,7 +2,7 @@ import { type ContentProps } from "../../../components/content";
 import {
     getVeterinarianVisits,
     type VeterinarianVisitData,
-} from "../../../services/veterinarianVisitService";
+} from "../../../services/liveanimals/veterinarianVisitService";
 import { VisitExpansion } from "./visitExpansion";
 import { VisitToolBar } from "./visitToolBar";
 

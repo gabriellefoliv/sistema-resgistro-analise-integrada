@@ -8,7 +8,7 @@ import {
     getAnimalInterviewFormOptions,
     createAnimalInterview,
     updateAnimalInterview
-} from "../../../services/animalInterviewService";
+} from "../../../services/liveanimals/animalInterviewService";
 
 interface AnimalInterviewFormModalProps {
     animalInterview?: GetAllAnimalInterviewOutput;

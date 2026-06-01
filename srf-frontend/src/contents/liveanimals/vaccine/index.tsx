@@ -3,7 +3,7 @@ import { type GetAllVaccineOutput } from "srf-shared-types";
 import {
     getVaccines,
     getVaccineFormOptions
-} from "../../../services/vaccineService";
+} from "../../../services/liveanimals/vaccineService";
 import { VaccineToolBar } from "./vaccineToolBar";
 import { VaccineExpansion } from "./vaccineExpansion";
 

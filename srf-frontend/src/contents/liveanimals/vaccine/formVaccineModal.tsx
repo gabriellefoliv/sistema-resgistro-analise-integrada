@@ -8,7 +8,7 @@ import {
     getVaccineFormOptions,
     createVaccine,
     updateVaccine
-} from "../../../services/vaccineService";
+} from "../../../services/liveanimals/vaccineService";
 
 interface VaccineFormModalProps {
     vaccine?: GetAllVaccineOutput;

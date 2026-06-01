@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/authMiddleware";
-import { EctoparasiteAnalysisController } from "../controllers/ectoparasiteAnalysisController";
+import { EctoparasiteAnalysisController } from "../controllers/liveanimals/ectoparasiteAnalysisController";
 
 export const ectoparasiteAnalysisRoutes = Router();
 

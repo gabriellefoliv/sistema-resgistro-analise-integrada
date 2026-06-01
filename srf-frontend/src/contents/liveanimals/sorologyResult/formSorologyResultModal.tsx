@@ -8,7 +8,7 @@ import {
     getSorologyResultFormOptions,
     createSorologyResult,
     updateSorologyResult
-} from "../../../services/sorologyResultService";
+} from "../../../services/liveanimals/sorologyResultService";
 
 interface SorologyResultFormModalProps {
     sorologyResult?: GetAllSorologyResultOutput;

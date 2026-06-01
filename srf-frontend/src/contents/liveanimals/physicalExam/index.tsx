@@ -1,7 +1,7 @@
 import { type ContentProps } from "../../../components/content";
 import { type GetAllPhysicalExamOutput } from "srf-shared-types";
-import { getPhysicalExams } from "../../../services/physicalExamService";
-import { getPhysicalExamFormOptions } from "../../../services/physicalExamService";
+import { getPhysicalExams } from "../../../services/liveanimals/physicalExamService";
+import { getPhysicalExamFormOptions } from "../../../services/liveanimals/physicalExamService";
 import { PhysicalExamToolBar } from "./physicalExamToolBar";
 import { PhysicalExamExpansion } from "./physicalExamExpansion";
 

@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { type VeterinarianVisitData } from "../../../services/veterinarianVisitService";
+import { type VeterinarianVisitData } from "../../../services/liveanimals/veterinarianVisitService";
 import { VeterinarianVisitFormModal } from "./formVisitModal";
 import { DeleteVisitModal } from "./deleteVisitModal";
-import { SamplesSideDrawer } from "./samplesSideDrawer";
-import { PhysicalExamSideDrawer } from "./physicalExamSideDrawer";
-import { VaccineSideDrawer } from "./vaccineSideDrawer";
-import { ExamResultSideDrawer } from "./examResultSideDrawer";
-import { SorologyResultSideDrawer } from "./sorologyResultSideDrawer";
-import { EctoparasiteAnalysisSideDrawer } from "./ectoparasiteAnalysisSideDrawer";
-import { StoolAnalysisSideDrawer } from "./stoolAnalysisSideDrawer";
+import { SamplesSideDrawer } from "../veterinarianSample/samplesSideDrawer";
+import { PhysicalExamSideDrawer } from "../physicalExam/physicalExamSideDrawer";
+import { VaccineSideDrawer } from "../vaccine/vaccineSideDrawer";
+import { ExamResultSideDrawer } from "../examResult/examResultSideDrawer";
+import { SorologyResultSideDrawer } from "../sorologyResult/sorologyResultSideDrawer";
+import { EctoparasiteAnalysisSideDrawer } from "../ectoparasiteAnalysis/ectoparasiteAnalysisSideDrawer";
+import { StoolAnalysisSideDrawer } from "../stoolAnalysis/stoolAnalysisSideDrawer";
 
 export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVisitData; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
@@ -39,63 +39,43 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
             )}
             {showSamplesDrawer && (
                 <SamplesSideDrawer
-                    veterinarianVisitId={item.id}
-                    veterinarianVisitDate={item.date.split('T')[0]}
-                    liveAnimalName={item.liveAnimalName}
-                    veterinarianName={item.veterinarianName}
+                    filters={{ veterinarianVisitId: item.id }}
                     onClose={() => setShowSamplesDrawer(false)}
                 />
             )}
             {showPhysicalExamDrawer && (
                 <PhysicalExamSideDrawer
-                    veterinarianVisitId={item.id}
-                    veterinarianVisitDate={item.date.split('T')[0]}
-                    liveAnimalName={item.liveAnimalName}
-                    veterinarianName={item.veterinarianName}
+                    filters={{ veterinarianVisitId: item.id }}
                     onClose={() => setShowPhysicalExamDrawer(false)}
                 />
             )}
             {showVaccineDrawer && (
                 <VaccineSideDrawer
-                    veterinarianVisitId={item.id}
-                    veterinarianVisitDate={item.date.split('T')[0]}
-                    liveAnimalName={item.liveAnimalName}
+                    filters={{ veterinarianVisitId: item.id }}
                     onClose={() => setShowVaccineDrawer(false)}
                 />
             )}
             {showExamResultDrawer && (
                 <ExamResultSideDrawer
-                    veterinarianVisitId={item.id}
-                    veterinarianVisitDate={item.date.split('T')[0]}
-                    liveAnimalName={item.liveAnimalName}
-                    veterinarianName={item.veterinarianName}
+                    filters={{ veterinarianVisitId: item.id }}
                     onClose={() => setShowExamResultDrawer(false)}
                 />
             )}
             {showSorologyResultDrawer && (
                 <SorologyResultSideDrawer
-                    veterinarianVisitId={item.id}
-                    veterinarianVisitDate={item.date.split('T')[0]}
-                    liveAnimalName={item.liveAnimalName}
-                    veterinarianName={item.veterinarianName}
+                    filters={{ veterinarianVisitId: item.id }}
                     onClose={() => setShowSorologyResultDrawer(false)}
                 />
             )}
             {showEctoparasiteAnalysisDrawer && (
                 <EctoparasiteAnalysisSideDrawer
-                    veterinarianVisitId={item.id}
-                    veterinarianVisitDate={item.date.split('T')[0]}
-                    liveAnimalName={item.liveAnimalName}
-                    veterinarianName={item.veterinarianName}
+                    filters={{ veterinarianVisitId: item.id }}
                     onClose={() => setShowEctoparasiteAnalysisDrawer(false)}
                 />
             )}
             {showStoolAnalysisDrawer && (
                 <StoolAnalysisSideDrawer
-                    veterinarianVisitId={item.id}
-                    veterinarianVisitDate={item.date.split('T')[0]}
-                    liveAnimalName={item.liveAnimalName}
-                    veterinarianName={item.veterinarianName}
+                    filters={{ veterinarianVisitId: item.id }}
                     onClose={() => setShowStoolAnalysisDrawer(false)}
                 />
             )}

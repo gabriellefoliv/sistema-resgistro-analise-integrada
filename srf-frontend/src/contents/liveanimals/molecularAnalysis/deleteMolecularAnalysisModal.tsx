@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ModalPortal } from "../../../components/modalPortal";
 import { type GetAllMolecularAnalysisOutput } from "srf-shared-types";
-import { deleteMolecularAnalysis } from "../../../services/molecularAnalysisService";
+import { deleteMolecularAnalysis } from "../../../services/liveanimals/molecularAnalysisService";
 
 interface DeleteMolecularAnalysisModalProps {
     molecularAnalysis: GetAllMolecularAnalysisOutput;

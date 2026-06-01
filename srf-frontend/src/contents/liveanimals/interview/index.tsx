@@ -1,6 +1,6 @@
 import { type ContentProps } from "../../../components/content";
 import { type GetAllInterviewOutput } from "srf-shared-types";
-import { getInterviews } from "../../../services/interviewService";
+import { getInterviews } from "../../../services/liveanimals/interviewService";
 import { InterviewToolBar } from "./interviewToolBar";
 import { InterviewExpansion } from "./interviewExpansion";
 

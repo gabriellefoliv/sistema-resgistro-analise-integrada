@@ -11,3 +11,4 @@ export * from "./molecularAnalysis";
 export * from "./gpsTracking";
 export * from "./interview";
 export * from "./animalInterview";
+export * from "./liveAnimal";

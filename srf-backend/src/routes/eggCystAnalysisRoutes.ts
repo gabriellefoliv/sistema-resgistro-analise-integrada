@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/authMiddleware";
-import { EggCystAnalysisController } from "../controllers/eggCystAnalysisController";
+import { EggCystAnalysisController } from "../controllers/liveanimals/eggCystAnalysisController";
 
 export const eggCystAnalysisRoutes = Router();
 

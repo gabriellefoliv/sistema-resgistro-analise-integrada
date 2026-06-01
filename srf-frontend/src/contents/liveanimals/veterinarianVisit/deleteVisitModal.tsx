@@ -2,7 +2,7 @@ import { useState } from "react";
 import {
     type VeterinarianVisitData,
     deleteVeterinarianVisit
-} from "../../../services/veterinarianVisitService";
+} from "../../../services/liveanimals/veterinarianVisitService";
 import { ModalPortal } from "../../../components/modalPortal";
 
 interface DeleteVisitModalProps {

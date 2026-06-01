@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ModalPortal } from "../../../components/modalPortal";
 import { type GetAllEctoparasiteAnalysisOutput } from "srf-shared-types";
-import { deleteEctoparasiteAnalysis } from "../../../services/ectoparasiteAnalysisService";
+import { deleteEctoparasiteAnalysis } from "../../../services/liveanimals/ectoparasiteAnalysisService";
 
 interface DeleteEctoparasiteAnalysisModalProps {
     ectoparasiteAnalysis: GetAllEctoparasiteAnalysisOutput;

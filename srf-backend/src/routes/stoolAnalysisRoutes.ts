@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/authMiddleware";
-import { StoolAnalysisController } from "../controllers/stoolAnalysisController";
+import { StoolAnalysisController } from "../controllers/liveanimals/stoolAnalysisController";
 
 export const stoolAnalysisRoutes = Router();
 

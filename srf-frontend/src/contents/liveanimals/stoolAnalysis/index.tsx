@@ -1,6 +1,6 @@
 import { type ContentProps } from "../../../components/content";
 import { type GetAllStoolAnalysisOutput } from "srf-shared-types";
-import { getStoolAnalyses, getStoolAnalysisFormOptions } from "../../../services/stoolAnalysisService";
+import { getStoolAnalyses, getStoolAnalysisFormOptions } from "../../../services/liveanimals/stoolAnalysisService";
 import { StoolAnalysisToolBar } from "./stoolAnalysisToolBar";
 import { StoolAnalysisExpansion } from "./stoolAnalysisExpansion";
 

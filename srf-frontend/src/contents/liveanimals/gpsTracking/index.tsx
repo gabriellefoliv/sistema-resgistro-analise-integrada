@@ -1,6 +1,6 @@
 import { type ContentProps } from "../../../components/content";
 import { type GetAllGpsTrackingOutput } from "srf-shared-types";
-import { getGpsTrackings, getGpsTrackingFormOptions } from "../../../services/gpsTrackingService";
+import { getGpsTrackings, getGpsTrackingFormOptions } from "../../../services/liveanimals/gpsTrackingService";
 import { GpsTrackingToolBar } from "./gpsTrackingToolBar";
 import { GpsTrackingExpansion } from "./gpsTrackingExpansion";
 
@@ -20,7 +20,7 @@ async function loadFilterOptions() {
 
 export const GpsTrackingContentDefinition = {
     id: 'rastreiogps',
-    label: 'Registros',
+    label: 'Rastreio de GPS',
     columns: [
         { key: 'liveAnimalName', label: 'Animal', width: 'w-5/12' },
         { key: 'trackingDeviceBrandSerialNumber', label: 'Dispositivo de Rastreamento', width: 'w-6/12' },

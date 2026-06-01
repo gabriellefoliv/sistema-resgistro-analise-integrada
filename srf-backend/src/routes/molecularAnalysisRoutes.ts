@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/authMiddleware";
-import { MolecularAnalysisController } from "../controllers/molecularAnalysisController";
+import { MolecularAnalysisController } from "../controllers/liveanimals/molecularAnalysisController";
 
 export const molecularAnalysisRoutes = Router();
 

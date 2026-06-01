@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ModalPortal } from "../../../components/modalPortal";
 import { type GetAllGpsTrackingOutput } from "srf-shared-types";
-import { deleteGpsTracking } from "../../../services/gpsTrackingService";
+import { deleteGpsTracking } from "../../../services/liveanimals/gpsTrackingService";
 
 interface DeleteGpsTrackingModalProps {
     gpsTracking: GetAllGpsTrackingOutput;

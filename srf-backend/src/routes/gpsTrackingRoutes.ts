@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/authMiddleware";
-import { GpsTrackingController } from "../controllers/gpsTrackingController";
+import { GpsTrackingController } from "../controllers/liveanimals/gpsTrackingController";
 
 export const gpsTrackingRoutes = Router();
 

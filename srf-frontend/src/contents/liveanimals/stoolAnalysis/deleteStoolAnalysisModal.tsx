@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ModalPortal } from "../../../components/modalPortal";
 import { type GetAllStoolAnalysisOutput } from "srf-shared-types";
-import { deleteStoolAnalysis } from "../../../services/stoolAnalysisService";
+import { deleteStoolAnalysis } from "../../../services/liveanimals/stoolAnalysisService";
 
 interface DeleteStoolAnalysisModalProps {
     stoolAnalysis: GetAllStoolAnalysisOutput;

@@ -1,6 +1,6 @@
 import { type ContentProps } from "../../../components/content";
 import { type GetAllEggCystAnalysisOutput } from "srf-shared-types";
-import { getEggCystAnalyses, getEggCystAnalysisFormOptions } from "../../../services/eggCystAnalysisService";
+import { getEggCystAnalyses, getEggCystAnalysisFormOptions } from "../../../services/liveanimals/eggCystAnalysisService";
 import { EggCystAnalysisToolBar } from "./eggCystAnalysisToolBar";
 import { EggCystAnalysisExpansion } from "./eggCystAnalysisExpansion";
 

@@ -9,7 +9,7 @@ import {
     getVeterinarianSampleFormOptions,
     createVeterinarianSample,
     updateVeterinarianSample
-} from "../../../services/veterinarianSampleService";
+} from "../../../services/liveanimals/veterinarianSampleService";
 
 interface VeterinarianSampleFormModalProps {
     sample?: GetAllVeterinarianSampleOutput;

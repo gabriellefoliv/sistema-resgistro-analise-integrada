@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ModalPortal } from "../../../components/modalPortal";
 import { type GetAllSorologyResultOutput } from "srf-shared-types";
-import { deleteSorologyResult } from "../../../services/sorologyResultService";
+import { deleteSorologyResult } from "../../../services/liveanimals/sorologyResultService";
 
 interface DeleteSorologyResultModalProps {
     sorologyResult: GetAllSorologyResultOutput;

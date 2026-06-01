@@ -17,6 +17,7 @@ import { molecularAnalysisRoutes } from "./molecularAnalysisRoutes";
 import { gpsTrackingRoutes } from "./gpsTrackingRoutes";
 import { interviewRoutes } from "./interviewRoutes";
 import { animalInterviewRoutes } from "./animalInterviewRoutes";
+import { liveAnimalRoutes } from "./liveAnimalRoutes";
 
 export const router = Router();
 
@@ -38,4 +39,5 @@ router.use(molecularAnalysisRoutes);
 router.use(gpsTrackingRoutes);
 router.use(interviewRoutes);
 router.use(animalInterviewRoutes);
+router.use(liveAnimalRoutes);
 

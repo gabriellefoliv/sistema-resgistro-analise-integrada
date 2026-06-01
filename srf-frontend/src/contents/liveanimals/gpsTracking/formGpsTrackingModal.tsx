@@ -8,7 +8,7 @@ import {
     getGpsTrackingFormOptions,
     createGpsTracking,
     updateGpsTracking
-} from "../../../services/gpsTrackingService";
+} from "../../../services/liveanimals/gpsTrackingService";
 
 interface GpsTrackingFormModalProps {
     gpsTracking?: GetAllGpsTrackingOutput;

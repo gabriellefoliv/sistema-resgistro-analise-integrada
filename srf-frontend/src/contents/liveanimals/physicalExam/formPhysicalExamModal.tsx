@@ -8,7 +8,7 @@ import {
     getPhysicalExamFormOptions,
     createPhysicalExam,
     updatePhysicalExam
-} from "../../../services/physicalExamService";
+} from "../../../services/liveanimals/physicalExamService";
 import grayQuestionMark from '../../../assets/grayQuestionMark.svg';
 
 interface PhysicalExamFormModalProps {

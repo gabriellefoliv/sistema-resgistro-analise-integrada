@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ModalPortal } from "../../../components/modalPortal";
 import { type GetAllVaccineOutput } from "srf-shared-types";
-import { deleteVaccine } from "../../../services/vaccineService";
+import { deleteVaccine } from "../../../services/liveanimals/vaccineService";
 
 interface DeleteVaccineModalProps {
     vaccine: GetAllVaccineOutput;

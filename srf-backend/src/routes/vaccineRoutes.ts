@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/authMiddleware";
-import { VaccineController } from "../controllers/vaccineController";
+import { VaccineController } from "../controllers/liveanimals/vaccineController";
 
 export const vaccineRoutes = Router();
 

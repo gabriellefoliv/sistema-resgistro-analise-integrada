@@ -1,6 +1,6 @@
 import { type ContentProps } from "../../../components/content";
 import { type GetAllEctoparasiteAnalysisOutput } from "srf-shared-types";
-import { getEctoparasiteAnalyses, getEctoparasiteAnalysisFormOptions } from "../../../services/ectoparasiteAnalysisService";
+import { getEctoparasiteAnalyses, getEctoparasiteAnalysisFormOptions } from "../../../services/liveanimals/ectoparasiteAnalysisService";
 import { EctoparasiteAnalysisToolBar } from "./ectoparasiteAnalysisToolBar";
 import { EctoparasiteAnalysisExpansion } from "./ectoparasiteAnalysisExpansion";
 

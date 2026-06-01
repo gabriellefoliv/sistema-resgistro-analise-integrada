@@ -1,6 +1,6 @@
 import { type ContentProps } from "../../../components/content";
 import { type GetAllMolecularAnalysisOutput } from "srf-shared-types";
-import { getMolecularAnalyses, getMolecularAnalysisFormOptions } from "../../../services/molecularAnalysisService";
+import { getMolecularAnalyses, getMolecularAnalysisFormOptions } from "../../../services/liveanimals/molecularAnalysisService";
 import { MolecularAnalysisToolBar } from "./molecularAnalysisToolBar";
 import { MolecularAnalysisExpansion } from "./molecularAnalysisExpansion";
 

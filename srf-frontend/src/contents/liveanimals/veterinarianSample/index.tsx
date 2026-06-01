@@ -1,7 +1,7 @@
 import { type ContentProps } from "../../../components/content";
 import { type GetAllVeterinarianSampleOutput } from "srf-shared-types";
-import { getVeterinarianSamples } from "../../../services/veterinarianSampleService";
-import { getVeterinarianSampleFormOptions } from "../../../services/veterinarianSampleService";
+import { getVeterinarianSamples } from "../../../services/liveanimals/veterinarianSampleService";
+import { getVeterinarianSampleFormOptions } from "../../../services/liveanimals/veterinarianSampleService";
 import { SampleToolBar } from "./sampleToolBar";
 import { SampleExpansion } from "./sampleExpansion";
 

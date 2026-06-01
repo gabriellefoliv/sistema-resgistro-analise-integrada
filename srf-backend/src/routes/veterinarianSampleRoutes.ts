@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/authMiddleware";
-import { VeterinarianSampleController } from "../controllers/veterinarianSampleController";
+import { VeterinarianSampleController } from "../controllers/liveanimals/veterinarianSampleController";
 
 export const veterinarianSampleRoutes = Router();
 

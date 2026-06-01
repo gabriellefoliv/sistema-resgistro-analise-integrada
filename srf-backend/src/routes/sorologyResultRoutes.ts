@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/authMiddleware";
-import { SorologyResultController } from "../controllers/sorologyResultController";
+import { SorologyResultController } from "../controllers/liveanimals/sorologyResultController";
 
 export const sorologyResultRoutes = Router();
 

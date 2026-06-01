@@ -8,7 +8,7 @@ import {
     getInterviewFormOptions,
     createInterview,
     updateInterview
-} from "../../../services/interviewService";
+} from "../../../services/liveanimals/interviewService";
 
 interface InterviewFormModalProps {
     interview?: GetAllInterviewOutput;

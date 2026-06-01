@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ModalPortal } from "../../../components/modalPortal";
 import { type GetAllAnimalInterviewOutput } from "srf-shared-types";
-import { deleteAnimalInterview } from "../../../services/animalInterviewService";
+import { deleteAnimalInterview } from "../../../services/liveanimals/animalInterviewService";
 
 interface DeleteAnimalInterviewModalProps {
     animalInterview: GetAllAnimalInterviewOutput;

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ModalPortal } from "../../../components/modalPortal";
 import { type GetAllPhysicalExamOutput } from "srf-shared-types";
-import { deletePhysicalExam } from "../../../services/physicalExamService";
+import { deletePhysicalExam } from "../../../services/liveanimals/physicalExamService";
 
 interface DeletePhysicalExamModalProps {
     exam: GetAllPhysicalExamOutput;

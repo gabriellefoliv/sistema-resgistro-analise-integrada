@@ -8,7 +8,7 @@ import {
     getStoolAnalysisFormOptions,
     createStoolAnalysis,
     updateStoolAnalysis
-} from "../../../services/stoolAnalysisService";
+} from "../../../services/liveanimals/stoolAnalysisService";
 
 interface StoolAnalysisFormModalProps {
     stoolAnalysis?: GetAllStoolAnalysisOutput;

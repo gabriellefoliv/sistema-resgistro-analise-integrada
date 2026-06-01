@@ -2,8 +2,8 @@ import { useState } from "react";
 import { type GetAllStoolAnalysisOutput } from "srf-shared-types";
 import { StoolAnalysisFormModal } from "./formStoolAnalysisModal";
 import { DeleteStoolAnalysisModal } from "./deleteStoolAnalysisModal";
-import { EggCystAnalysisSideDrawer } from "./eggCystAnalysisSideDrawer";
-import { MolecularAnalysisSideDrawer } from "./molecularAnalysisSideDrawer";
+import { EggCystAnalysisSideDrawer } from "../eggCystAnalysis/eggCystAnalysisSideDrawer";
+import { MolecularAnalysisSideDrawer } from "../molecularAnalysis/molecularAnalysisSideDrawer";
 
 export function StoolAnalysisExpansion({ item, close, refresh }: { item: GetAllStoolAnalysisOutput; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
@@ -21,19 +21,13 @@ export function StoolAnalysisExpansion({ item, close, refresh }: { item: GetAllS
             )}
             {showEggCystDrawer && (
                 <EggCystAnalysisSideDrawer
-                    stoolAnalysisId={item.id}
-                    veterinarianVisitDate={item.veterinarianVisitDate.split('T')[0]}
-                    liveAnimalName={item.liveAnimalName}
-                    veterinarianName={item.veterinarianName}
+                    filters={{ stoolAnalysisId: item.id }}
                     onClose={() => setShowEggCystDrawer(false)}
                 />
             )}
             {showMolecularDrawer && (
                 <MolecularAnalysisSideDrawer
-                    stoolAnalysisId={item.id}
-                    veterinarianVisitDate={item.veterinarianVisitDate.split('T')[0]}
-                    liveAnimalName={item.liveAnimalName}
-                    veterinarianName={item.veterinarianName}
+                    filters={{ stoolAnalysisId: item.id }}
                     onClose={() => setShowMolecularDrawer(false)}
                 />
             )}

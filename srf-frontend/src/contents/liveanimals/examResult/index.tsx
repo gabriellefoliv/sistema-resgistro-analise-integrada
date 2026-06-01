@@ -1,6 +1,6 @@
 import { type ContentProps } from "../../../components/content";
 import { type GetAllExamResultOutput } from "srf-shared-types";
-import { getExamResults } from "../../../services/examResultService";
+import { getExamResults } from "../../../services/liveanimals/examResultService";
 import { ExamResultToolBar } from "./examResultToolBar";
 import { ExamResultExpansion } from "./examResultExpansion";
 

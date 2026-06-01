@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ModalPortal } from "../../../components/modalPortal";
 import { type GetAllVeterinarianSampleOutput } from "srf-shared-types";
-import { deleteVeterinarianSample } from "../../../services/veterinarianSampleService";
+import { deleteVeterinarianSample } from "../../../services/liveanimals/veterinarianSampleService";
 
 interface DeleteSampleModalProps {
     sample: GetAllVeterinarianSampleOutput;

@@ -8,7 +8,7 @@ import {
     getMolecularAnalysisFormOptions,
     createMolecularAnalysis,
     updateMolecularAnalysis
-} from "../../../services/molecularAnalysisService";
+} from "../../../services/liveanimals/molecularAnalysisService";
 
 interface MolecularAnalysisFormModalProps {
     molecularAnalysis?: GetAllMolecularAnalysisOutput;

@@ -8,7 +8,7 @@ import {
     getEggCystAnalysisFormOptions,
     createEggCystAnalysis,
     updateEggCystAnalysis
-} from "../../../services/eggCystAnalysisService";
+} from "../../../services/liveanimals/eggCystAnalysisService";
 
 interface EggCystAnalysisFormModalProps {
     eggCystAnalysis?: GetAllEggCystAnalysisOutput;
