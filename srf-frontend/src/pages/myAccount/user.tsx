@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import userImg from "../../assets/loginUser.svg";
-import lightGrayPen from "../../assets/lightGrayPen.svg";
 import grayLock from "../../assets/grayLock.svg";
 import grayExit from "../../assets/grayExit.svg";
 import grayProfile from "../../assets/grayProfile.svg";
 import { ChangeDetailModal } from "./changeDetailModal";
-import { ChangePictureModal } from "./changePictureModal";
 import { ChangePasswordModal } from "./changePasswordModal";
 
 export function User() {
