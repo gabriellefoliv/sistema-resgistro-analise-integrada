@@ -2,11 +2,10 @@ import { Request, Response } from "express";
 import { UserService } from "../services/userService";
 import { ZodError } from "zod";
 import {
-    CreateUserInput,
-    UpdateUserDetailsInput,
-    UpdateUserPicInput,
-    UpdateUserPasswordInput,
-    UpdateUserAccessInput,
+    UserCreateInput,
+    UserUpdateDetailsInput,
+    UserUpdatePasswordInput,
+    UserUpdateAccessInput,
     UserLoginInput
 } from "srf-shared-types";
 
@@ -15,7 +14,7 @@ class UserController {
 
     create = async (req: Request, res: Response) => {
         try {
-            const { name, email, password } = req.body as CreateUserInput;
+            const { name, email, password } = req.body as UserCreateInput;
             const user = await this.userService.create(
                 { name, email, password }
             );
@@ -48,7 +47,7 @@ class UserController {
 
     updateDetails = async (req: Request, res: Response) => {
         try {
-            const { id, name, email, roleName } = req.body as UpdateUserDetailsInput;
+            const { id, name, email, roleName } = req.body as UserUpdateDetailsInput;
             const requesterId = req.userId as string;
             const updatedUser = await this.userService.updateDetails(
                 { id, name, email, roleName }, requesterId
@@ -67,27 +66,9 @@ class UserController {
         }
     }
 
-    updatePic = async (req: Request, res: Response) => {
-        try {
-            const { id, userPic } = req.body as UpdateUserPicInput;
-            const requesterId = req.userId as string;
-            const updatedUser = await this.userService.updatePic(
-                { id, userPic }, requesterId
-            );
-            return res.status(200).json(updatedUser);
-        } catch (error: any) {
-            if (error instanceof ZodError) {
-                return res.status(400).json({ message: error.flatten().fieldErrors });
-            }
-            if (error.message === 'Usuário não encontrado') return res.status(404).json({ message: error.message });
-            if (error.message === 'Outros usuários não podem alterar um usuário superadmin') return res.status(403).json({ message: error.message });
-            return res.status(500).json({ error: "Erro interno" });
-        }
-    }
-
     updatePassword = async (req: Request, res: Response) => {
         try {
-            const { id, password } = req.body as UpdateUserPasswordInput;
+            const { id, password } = req.body as UserUpdatePasswordInput;
             const requesterId = req.userId as string;
             const updatedUser = await this.userService.updatePassword(
                 { id, password }, requesterId
@@ -105,7 +86,7 @@ class UserController {
 
     updateUserAccess = async (req: Request, res: Response) => {
         try {
-            const { userId, userAccess } = req.body as UpdateUserAccessInput;
+            const { userId, userAccess } = req.body as UserUpdateAccessInput;
             const requesterId = req.userId as string;
             await this.userService.updateUserAccess(
                 { userId, userAccess }, requesterId

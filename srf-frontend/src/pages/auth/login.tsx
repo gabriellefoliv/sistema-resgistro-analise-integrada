@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import { forgotPassword } from "../../services/userService";
-import { ModalPortal } from "../../components/modalPortal";
 
 import loginEmailImg from '../../assets/loginEmail.svg';
 import loginUserImg from '../../assets/loginUser.svg';

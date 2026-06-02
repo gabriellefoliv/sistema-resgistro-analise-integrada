@@ -70,7 +70,6 @@ export function Sidebar() {
             {/* User info */}
             <Link to="/minha-conta" onClick={() => setSelected('minha-conta')}>
                 <div className="py-5 px-3.5 flex items-center gap-3.75 border-b border-border">
-                    <img src={user?.userPic || userImg} alt="User picture" className="w-8 h-8 bg-[#444141] rounded-sm flex justify-center items-center" />
                     <span className="text-text-main text-[16px] font-bold overflow-hidden whitespace-nowrap text-ellipsis">{user?.name}</span>
                 </div>
             </Link>

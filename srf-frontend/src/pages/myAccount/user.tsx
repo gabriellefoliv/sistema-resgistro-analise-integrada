@@ -13,7 +13,6 @@ export function User() {
     const { user, signOut } = useAuth();
 
     const [showChangeDetailModal, setShowChangeDetailModal] = useState(false);
-    const [showChangePictureModal, setShowChangePictureModal] = useState(false);
     const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
 
     return (
@@ -21,12 +20,6 @@ export function User() {
             {showChangeDetailModal && (
                 <ChangeDetailModal
                     close={() => setShowChangeDetailModal(false)}
-                    refresh={() => { }}
-                />
-            )}
-            {showChangePictureModal && (
-                <ChangePictureModal
-                    close={() => setShowChangePictureModal(false)}
                     refresh={() => { }}
                 />
             )}
@@ -41,22 +34,6 @@ export function User() {
 
                     <h2 className="text-lg font-bold mb-8 text-standard-red text-center">Minha Conta</h2>
                     <div className="flex flex-col">
-                        {/* Foto de perfil */}
-                        <div className="relative mx-auto size-40 rounded-full mb-10">
-                            <div className="absolute bottom-0 right-0 size-full rounded-full cursor-pointer hover:opacity-100 opacity-0 transition-opacity duration-200 hover:bg-black/20">
-                                <img
-                                    src={lightGrayPen}
-                                    alt="Editar foto de perfil"
-                                    className="size-full p-10"
-                                    onClick={() => setShowChangePictureModal(true)}
-                                />
-                            </div>
-                            <img
-                                src={user?.userPic || userImg}
-                                alt="Foto de perfil"
-                                className={`size-full bg-[#444141] rounded-full ${user?.userPic ? '' : 'p-2'} mx-auto`}
-                            />
-                        </div>
                         {/* Dados do usuário */}
                         <div className="flex flex-col px-8 py-4 mb-4 gap-8">
                             <div className="flex justify-between font-semibold">

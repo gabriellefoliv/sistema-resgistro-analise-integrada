@@ -3,17 +3,16 @@ import { prisma } from "..";
 import { sign } from "jsonwebtoken";
 import { sendEmail } from "../libs/mailtrap";
 import {
-    CreateUserInput,
-    UpdateUserDetailsInput,
-    UpdateUserPicInput,
-    UpdateUserPasswordInput,
-    UpdateUserAccessInput,
+    UserCreateInput,
+    UserUpdateDetailsInput,
+    UserUpdatePasswordInput,
+    UserUpdateAccessInput,
     UserLoginInput
 } from "srf-shared-types";
 
 export class UserService {
 
-    async create(data: CreateUserInput) {
+    async create(data: UserCreateInput) {
         const { name, email, password } = data;
 
         // Verificações
@@ -63,7 +62,7 @@ export class UserService {
         return await prisma.user.delete({ where: { id: targetId } });
     }
 
-    async updateDetails(data: UpdateUserDetailsInput, requesterId: string) {
+    async updateDetails(data: UserUpdateDetailsInput, requesterId: string) {
         const { id, name, email, roleName } = data;
 
         // Verificações
@@ -106,23 +105,7 @@ export class UserService {
         });
     }
 
-    async updatePic(data: UpdateUserPicInput, requesterId: string) {
-        const { id, userPic } = data;
-
-        // Verificações
-        const targetUser = await prisma.user.findUnique({ where: { id: id }, include: { role: true } });
-        if (!targetUser) throw new Error('Usuário não encontrado');
-        if (targetUser.role?.name === 'owner' && id !== requesterId) throw new Error('Outros usuários não podem alterar um usuário superadmin');
-
-        // Alteração da foto
-        return await prisma.user.update({
-            where: { id: id },
-            data: { userPic: userPic || null },
-            select: { id: true, userPic: true }
-        });
-    }
-
-    async updatePassword(data: UpdateUserPasswordInput, requesterId: string) {
+    async updatePassword(data: UserUpdatePasswordInput, requesterId: string) {
         const { id, password } = data;
 
         // Verificações
@@ -139,7 +122,7 @@ export class UserService {
         });
     }
 
-    async updateUserAccess(data: UpdateUserAccessInput, requesterId: string) {
+    async updateUserAccess(data: UserUpdateAccessInput, requesterId: string) {
         const { userId, userAccess } = data;
 
         // Verificações
