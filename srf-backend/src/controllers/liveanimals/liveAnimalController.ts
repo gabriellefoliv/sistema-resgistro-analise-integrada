@@ -103,6 +103,7 @@ export class LiveAnimalController {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
             if (error.message === 'Animal não encontrado.') return res.status(404).json({ error: error.message });
+            if (error.message === 'Este animal possui registros associados e não pode ser deletado. Remova os registros associados antes de deletar o animal.') return res.status(409).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }
