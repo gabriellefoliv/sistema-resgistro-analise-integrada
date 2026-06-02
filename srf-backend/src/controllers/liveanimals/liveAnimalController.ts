@@ -11,6 +11,7 @@ export class LiveAnimalController {
     private auditService = new AuditService();
     private liveAnimalService = new LiveAnimalService();
     private formId = 'animal-av' as const;
+    private tableName = 'liveAnimal';
 
     getAll = async (req: Request, res: Response) => {
         try {
@@ -65,7 +66,7 @@ export class LiveAnimalController {
         try {
             const recordId = req.params.recordId as string;
             const requesterId = req.userId as string;
-            const permissionCheck = await this.auditService.canUserEditRecord(requesterId, "liveAnimal", recordId, this.formId);
+            const permissionCheck = await this.auditService.canUserEditRecord(requesterId, this.tableName, recordId, this.formId);
             if (!permissionCheck.canEdit) {
                 return res.status(403).json({ error: permissionCheck.reason });
             }
@@ -89,7 +90,7 @@ export class LiveAnimalController {
         try {
             const recordId = req.params.recordId as string;
             const requesterId = req.userId as string;
-            const permissionCheck = await this.auditService.canUserEditRecord(requesterId, "liveAnimal", recordId, this.formId);
+            const permissionCheck = await this.auditService.canUserEditRecord(requesterId, this.tableName, recordId, this.formId);
             if (!permissionCheck.canEdit) {
                 return res.status(403).json({ error: permissionCheck.reason });
             }

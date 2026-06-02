@@ -10,6 +10,7 @@ import {
 export class LiveAnimalService {
     private auditService = new AuditService();
     private formId = 'animal-av';
+    private tableName = 'liveAnimal';
 
     async getAll(requesterId: string): Promise<GetAllLiveAnimalOutput[]> {
         const animals = await prisma.liveAnimal.findMany({
@@ -42,7 +43,7 @@ export class LiveAnimalService {
 
         const createLogs = await prisma.changeLog.findMany({
             where: {
-                table: 'liveAnimal',
+                table: this.tableName,
                 recordId: { in: animalsIds.map(String) },
                 action: 'CREATE'
             },
@@ -59,7 +60,7 @@ export class LiveAnimalService {
 
         const animalsWithPermission = await Promise.all(
             animals.map(async (a) => {
-                const permission = await this.auditService.canUserEditRecord(requesterId, 'liveAnimal', String(a.id), this.formId);
+                const permission = await this.auditService.canUserEditRecord(requesterId, this.tableName, String(a.id), this.formId);
 
                 return {
                     id: a.id,
@@ -119,7 +120,7 @@ export class LiveAnimalService {
             // Audit log
             const changes = [
                 {
-                    table: 'liveAnimal',
+                    table: this.tableName,
                     recordId: String(animal.id),
                     action: 'CREATE' as const,
                     newData: animal
@@ -156,7 +157,7 @@ export class LiveAnimalService {
             // Audit log
             const changes = [
                 {
-                    table: 'liveAnimal',
+                    table: this.tableName,
                     recordId: String(updatedAnimal.id),
                     action: 'UPDATE' as const,
                     newData: updatedAnimal,
@@ -177,6 +178,30 @@ export class LiveAnimalService {
             });
             if (!existingAnimal) throw new Error('Animal não encontrado.');
 
+            // Verifica se há registros associados
+            const hasChildRecords =
+                await tx.veterinarianVisit.count({
+                    where: { liveAnimalId: recordId },
+                }) > 0 ||
+                await tx.vaccineApplication.count({
+                    where: { liveAnimalId: recordId },
+                }) > 0 ||
+                await tx.gpsTracking.count({
+                    where: { liveAnimalId: recordId },
+                }) > 0 ||
+                (await tx.animalInterview.count({
+                    where: { liveAnimalId: recordId },
+                })) > 0 ||
+                (await tx.castration.count({
+                    where: { liveAnimalId: recordId },
+                })) > 0;
+
+            if (hasChildRecords) {
+                throw new Error(
+                    'Este animal possui registros associados e não pode ser deletado. Remova os registros associados antes de deletar o animal.'
+                );
+            }
+
             // Deleta o animal
             await tx.liveAnimal.delete({
                 where: { id: recordId }
@@ -185,7 +210,7 @@ export class LiveAnimalService {
             // Audit log
             const changes = [
                 {
-                    table: 'liveAnimal',
+                    table: this.tableName,
                     recordId: String(existingAnimal.id),
                     action: 'DELETE' as const,
                     oldData: existingAnimal
