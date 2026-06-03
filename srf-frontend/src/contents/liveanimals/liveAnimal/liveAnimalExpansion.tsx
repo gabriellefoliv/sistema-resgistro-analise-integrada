@@ -6,6 +6,7 @@ import { AnimalInterviewSideDrawer } from "../animalInterview/animalInterviewSid
 import { GpsTrackingSideDrawer } from "../gpsTracking/gpsTrackingSideDrawer";
 import { VaccineSideDrawer } from "../vaccine/vaccineSideDrawer";
 import { VeterinarianVisitSideDrawer } from "../veterinarianVisit/veterinarianVisitSideDrawer";
+import { CastrationSideDrawer } from "../castration/castrationSideDrawer";
 
 export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLiveAnimalOutput; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
@@ -50,6 +51,12 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
                 <VeterinarianVisitSideDrawer
                     filters={{ liveAnimalId: item.id }}
                     onClose={() => setShowVeterinarianVisitDrawer(false)}
+                />
+            )}
+            {showCastrationDrawer && (
+                <CastrationSideDrawer
+                    filters={{ liveAnimalId: item.id }}
+                    onClose={() => setShowCastrationDrawer(false)}
                 />
             )}
 

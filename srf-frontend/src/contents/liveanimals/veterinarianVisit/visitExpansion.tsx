@@ -9,6 +9,7 @@ import { ExamResultSideDrawer } from "../examResult/examResultSideDrawer";
 import { SorologyResultSideDrawer } from "../sorologyResult/sorologyResultSideDrawer";
 import { EctoparasiteAnalysisSideDrawer } from "../ectoparasiteAnalysis/ectoparasiteAnalysisSideDrawer";
 import { StoolAnalysisSideDrawer } from "../stoolAnalysis/stoolAnalysisSideDrawer";
+import { CastrationSideDrawer } from "../castration/castrationSideDrawer";
 
 export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVisitData; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
@@ -20,6 +21,7 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
     const [showSorologyResultDrawer, setShowSorologyResultDrawer] = useState(false);
     const [showEctoparasiteAnalysisDrawer, setShowEctoparasiteAnalysisDrawer] = useState(false);
     const [showStoolAnalysisDrawer, setShowStoolAnalysisDrawer] = useState(false);
+    const [showCastrationDrawer, setShowCastrationDrawer] = useState(false);
 
     return (
         <>
@@ -77,6 +79,12 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                 <StoolAnalysisSideDrawer
                     filters={{ veterinarianVisitId: item.id }}
                     onClose={() => setShowStoolAnalysisDrawer(false)}
+                />
+            )}
+            {showCastrationDrawer && (
+                <CastrationSideDrawer
+                    filters={{ veterinarianVisitId: item.id }}
+                    onClose={() => setShowCastrationDrawer(false)}
                 />
             )}
             {/* CABEÇALHO */}
@@ -151,7 +159,7 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
             )}
 
             {/* REGISTROS ASSOCIADOS */}
-            {(item.hasSample || item.hasPhysicalExam || item.hasVaccine || item.hasExamResult || item.hasSorologyAnalysis || item.hasEctoparasiteAnalysis || item.hasStoolAnalysis) && (
+            {(item.hasSample || item.hasPhysicalExam || item.hasVaccine || item.hasExamResult || item.hasSorologyAnalysis || item.hasEctoparasiteAnalysis || item.hasStoolAnalysis || item.hasCastration) && (
                 <>
                     <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
                         <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
@@ -211,6 +219,14 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                                 className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
                             >
                                 Fezes
+                            </button>
+                        )}
+                        {item.hasCastration && (
+                            <button
+                                onClick={() => setShowCastrationDrawer(true)}
+                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                            >
+                                Castração
                             </button>
                         )}
                     </div>

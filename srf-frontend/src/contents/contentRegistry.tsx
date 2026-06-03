@@ -62,6 +62,7 @@ import { fetchGpsTrackingData, GpsTrackingContent } from "./liveanimals/gpsTrack
 import { fetchInterviewData, InterviewContent } from "./liveanimals/interview/index";
 import { fetchAnimalInterviewData, AnimalInterviewContent } from "./liveanimals/animalInterview/index";
 import { fetchLiveAnimalsData, LiveAnimalContent } from "./liveanimals/liveAnimal/index";
+import { fetchCastrationData, CastrationContent } from "./liveanimals/castration/index";
 
 export function initRegistry() {
     // Exemplo de como registrar um novo conteúdo
@@ -196,6 +197,20 @@ export function initRegistry() {
         label: LiveAnimalContent.label,
         loader: fetchLiveAnimalsData,
         component: LiveAnimalContent
+    });
+
+    registerContent('animaisvivos', 'animais', 'Animais', {
+        id: CastrationContent.id,
+        label: CastrationContent.label,
+        loader: fetchCastrationData,
+        component: CastrationContent
+    });
+
+    registerContent('animaisvivos', 'veterinario', 'Veterinário', {
+        id: CastrationContent.id,
+        label: CastrationContent.label,
+        loader: fetchCastrationData,
+        component: CastrationContent
     });
 }
 
