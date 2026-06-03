@@ -29,8 +29,10 @@ export function DeleteUserModal({ user, close, refresh }: DeleteUserModalProps) 
 
     return (
         <ModalPortal>
-            <div className="modal-overlay flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100 p-4">
-                <div onClick={(e) => e.stopPropagation()} className="modal relative flex flex-col bg-white w-full max-w-lg justify-center items-center rounded-2xl shadow-xl p-6 md:p-10">
+            <div
+                onMouseDown={close}
+                className="modal-overlay flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100 p-4">
+                <div onMouseDown={(e) => e.stopPropagation()} className="modal relative flex flex-col bg-white w-full max-w-lg justify-center items-center rounded-2xl shadow-xl p-6 md:p-10">
 
                     <button
                         onClick={() => close()}

@@ -70,9 +70,9 @@ export function Login() {
   return (
     <section className="flex flex-col w-full min-h-screen items-center justify-center">
       <div
-        onClick={close}
+        onMouseDown={close}
         className={`modal-overlay ${forgot ? 'flex justify-center items-center' : 'hidden'} absolute w-full h-full bg-black/50 z-99 `}>
-        <div className="modal relative flex flex-col bg-white w-160 h-80 justify-center items-center rounded-2xl shadow-xl p-10">
+        <div onMouseDown={(e) => e.stopPropagation()} className="modal relative flex flex-col bg-white w-160 h-80 justify-center items-center rounded-2xl shadow-xl p-10">
 
           <button onClick={() => setForgot(false)} className="absolute text-text-main hover:text-standard-red font-bold text-xl cursor-pointer leading-none top-3 right-3" title="Fechar">✕</button>
 

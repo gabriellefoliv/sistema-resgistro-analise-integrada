@@ -215,9 +215,9 @@ export function FilterBar<T>({ fields, onFilter, initialFilters }: FilterBarProp
             {isOpen && (
                 <ModalPortal>
                     <div
-                        onClick={handleClose}
+                        onMouseDown={handleClose}
                         className="modal-overlay flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100 p-4">
-                        <div onClick={(e) => e.stopPropagation()} className="modal relative flex flex-col bg-white justify-center items-center rounded-2xl shadow-xl px-10 pt-14 pb-6 gap-4 w-200 max-h-[90vh]">
+                        <div onMouseDown={(e) => e.stopPropagation()} className="modal relative flex flex-col bg-white justify-center items-center rounded-2xl shadow-xl px-10 pt-14 pb-6 gap-4 w-200 max-h-[90vh]">
                             <button
                                 onClick={handleClose}
                                 className="absolute text-text-main hover:text-standard-red font-bold text-xl cursor-pointer leading-none top-3 right-3"
