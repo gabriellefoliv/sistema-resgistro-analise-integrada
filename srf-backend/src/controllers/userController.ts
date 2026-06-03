@@ -4,6 +4,7 @@ import { ZodError } from "zod";
 import {
     UserCreateInput,
     UserUpdateDetailsInput,
+    UserUpdateRoleInput,
     UserUpdatePasswordInput,
     UserUpdateAccessInput,
     UserLoginInput
@@ -47,22 +48,39 @@ class UserController {
 
     updateDetails = async (req: Request, res: Response) => {
         try {
-            const { id, name, email, roleName } = req.body as UserUpdateDetailsInput;
+            const data = req.body as UserUpdateDetailsInput;
             const requesterId = req.userId as string;
-            const updatedUser = await this.userService.updateDetails(
-                { id, name, email, roleName }, requesterId
-            );
+            const updatedUser = await this.userService.updateDetails(data, requesterId);
             return res.status(200).json(updatedUser);
         } catch (error: any) {
             if (error instanceof ZodError) {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
-            if (error.message === 'Usuário não encontrado') return res.status(404).json({ message: error.message });
-            if (error.message === 'Outros usuários não podem alterar um usuário superadmin') return res.status(403).json({ message: error.message });
-            if (error.message === 'Email já cadastrado') return res.status(409).json({ message: error.message });
-            if (error.message === 'Função não existe') return res.status(400).json({ message: error.message });
-            if (error.message === 'Função superadmin não pode ser removida' || error.message === 'Função superadmin não pode ser atribuída') return res.status(403).json({ message: error.message });
-            return res.status(500).json({ error: "Erro interno" });
+            if (error.message === 'Usuário não encontrado.') return res.status(404).json({ message: error.message });
+            if (error.message === 'Outros usuários não podem alterar um usuário superadministrador.') return res.status(403).json({ message: error.message });
+            if (error.message === 'Email já cadastrado.') return res.status(409).json({ message: error.message });
+            return res.status(500).json({ message: "Erro interno" });
+        }
+    }
+
+    updateRole = async (req: Request, res: Response) => {
+        try {
+            const data = req.body as UserUpdateRoleInput;
+            const requesterId = req.userId as string;
+            const updatedUser = await this.userService.updateRole(data, requesterId);
+            return res.status(200).json(updatedUser);
+        } catch (error: any) {
+            if (error instanceof ZodError) {
+                return res.status(400).json({ message: error.flatten().fieldErrors });
+            }
+            if (error.message === 'Usuário solicitante não encontrado.') return res.status(404).json({ message: error.message });
+            if (error.message === 'Apenas administradores podem alterar funções.') return res.status(403).json({ message: error.message });
+            if (error.message === 'Função superadministrador não pode ser atribuída.') return res.status(403).json({ message: error.message });
+            if (error.message === 'Usuário não encontrado.') return res.status(404).json({ message: error.message });
+            if (error.message === 'Função superadministrador não pode ser removida.') return res.status(403).json({ message: error.message });
+            if (error.message === 'Apenas o superadministrador pode alterar a função de um administrador.') return res.status(403).json({ message: error.message });
+            if (error.message === 'Função não existe.') return res.status(404).json({ message: error.message });
+            return res.status(500).json({ message: "Erro interno" });
         }
     }
 

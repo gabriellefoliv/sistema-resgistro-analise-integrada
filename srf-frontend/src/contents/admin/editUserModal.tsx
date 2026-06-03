@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { User } from "./users";
-import { updateUserDetails } from "../../services/userService";
+import { updateUserDetails, updateUserRole } from "../../services/userService";
 import { useAuth } from "../../contexts/AuthContext";
 import userImg from "../../assets/loginUser.svg";
 import { ModalPortal } from "../../components/modalPortal";
@@ -12,7 +12,7 @@ interface EditUserModalProps {
 }
 
 export function EditUserModal({ user, close, refresh }: EditUserModalProps) {
-    const { user: currentUser, signOut } = useAuth();
+    const { user: currentUser, updateUser } = useAuth();
 
     const [loading, setLoading] = useState(false);
     const [editError, setEditError] = useState<{ name?: string, email?: string, role?: string } | null>(null);
@@ -25,10 +25,10 @@ export function EditUserModal({ user, close, refresh }: EditUserModalProps) {
         setLoading(true);
         setEditError(null);
         try {
-            await updateUserDetails(user.id, editName, editEmail, editRole);
+            await updateUserDetails({ id: user.id, name: editName, email: editEmail });
+            if (editRole !== user.role?.name) await updateUserRole({ id: user.id, roleName: editRole });
             if (user.id === currentUser?.id) {
-                alert('Você será deslogado para que as alterações tenham efeito.');
-                signOut();
+                updateUser({ name: editName, email: editEmail, role: editRole });
             }
             refresh();
             close();

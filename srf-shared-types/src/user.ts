@@ -23,7 +23,11 @@ export const userCreateInputSchema = z.object({
 export const userUpdateDetailsInputSchema = z.object({
     id: z.string().nonempty({ error: 'ID do usuário inválido' }),
     name: z.string().nonempty({ error: 'Nome inválido' }),
-    email: z.string().nonempty({ error: 'Email inválido' }),
+    email: z.string().nonempty({ error: 'Email inválido' })
+});
+
+export const userUpdateRoleInputSchema = z.object({
+    id: z.string().nonempty({ error: 'ID do usuário inválido' }),
     roleName: z.string().nonempty({ error: 'Nome da função inválido' })
 });
 
@@ -49,3 +53,4 @@ export type UserUpdateDetailsInput = z.infer<typeof userUpdateDetailsInputSchema
 export type UserUpdatePasswordInput = z.infer<typeof userUpdatePasswordInputSchema>;
 export type UserAccessProps = z.infer<typeof userAccessPropsSchema>;
 export type UserUpdateAccessInput = z.infer<typeof userUpdateAccessInputSchema>;
+export type UserUpdateRoleInput = z.infer<typeof userUpdateRoleInputSchema>;

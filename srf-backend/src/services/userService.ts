@@ -5,6 +5,7 @@ import { sendEmail } from "../libs/mailtrap";
 import {
     UserCreateInput,
     UserUpdateDetailsInput,
+    UserUpdateRoleInput,
     UserUpdatePasswordInput,
     UserUpdateAccessInput,
     UserLoginInput
@@ -19,7 +20,7 @@ export class UserService {
         const userAlreadyExists = await prisma.user.findUnique({
             where: { email: email.toLowerCase() }
         });
-        if (userAlreadyExists) throw new Error('Email já cadastrado');
+        if (userAlreadyExists) throw new Error('Email já cadastrado.');
 
         // Criação do usuário
         const passwordHash = await hash(password, 10);
@@ -41,8 +42,8 @@ export class UserService {
 
     async delete(targetId: string, requesterId: string) {
         // Verificações
-        if (targetId === requesterId) throw new Error('Usuário não pode excluir a si mesmo');
-        if (!targetId) throw new Error('ID do usuário é obrigatório');
+        if (targetId === requesterId) throw new Error('Usuário não pode excluir a si mesmo.');
+        if (!targetId) throw new Error('ID do usuário é obrigatório.');
 
         const user = await prisma.user.findUnique({
             where: { id: targetId },
@@ -51,7 +52,7 @@ export class UserService {
         if (!user) throw new Error('Usuario não encontrado');
 
         const isAdmin = user?.role?.name === 'admin' || user?.role?.name === 'owner';
-        if (isAdmin) throw new Error('Usuarios admins não podem ser excluídos');
+        if (isAdmin) throw new Error('Usuarios admins não podem ser excluídos.');
 
         // Remoção dos acessos específicos do usuário
         const userAccessIds = await prisma.userAccess.findMany({ where: { userId: targetId }, select: { id: true } });
@@ -63,45 +64,65 @@ export class UserService {
     }
 
     async updateDetails(data: UserUpdateDetailsInput, requesterId: string) {
-        const { id, name, email, roleName } = data;
+        // Verifica se o usuário existe
+        const user = await prisma.user.findUnique({
+            where: { id: data.id },
+            include: { role: { select: { name: true } } }
+        });
+        if (!user) throw new Error('Usuário não encontrado.');
 
         // Verificações
-        const targetUser = await prisma.user.findUnique({
-            where: { id: id },
-            include: { role: true }
-        });
-        if (!targetUser) throw new Error('Usuário não encontrado');
-        if (targetUser.role?.name === 'owner' && id !== requesterId) throw new Error('Outros usuários não podem alterar um usuário superadmin');
+        if (user.role?.name === 'owner' && data.id !== requesterId) throw new Error('Outros usuários não podem alterar um usuário superadministrador.');
 
-        if (targetUser.email !== email.toLowerCase()) {
+        if (user.email !== data.email.toLowerCase()) {
             const userAlreadyExists = await prisma.user.findUnique({
-                where: { email: email.toLowerCase() }
+                where: { email: data.email.toLowerCase() }
             });
-            if (userAlreadyExists) throw new Error('Email já cadastrado');
+            if (userAlreadyExists) throw new Error('Email já cadastrado.');
         }
 
         // Alteração dos dados
-        const dataToChange: any = { name, email };
-
-        const role = await prisma.role.findFirst({
-            where: { name: roleName }
-        });
-        if (!role) throw new Error('Função não existe');
-
-        if (targetUser.role?.name === 'owner' && role?.name !== 'owner') throw new Error('Função superadmin não pode ser removida');
-        if (role?.name === 'owner' && targetUser.role?.name !== 'owner') throw new Error('Função superadmin não pode ser atribuída');
-        dataToChange.roleId = role?.id;
-
         return await prisma.user.update({
-            where: { id: id },
-            data: dataToChange,
+            where: { id: data.id },
+            data: {
+                name: data.name,
+                email: data.email.toLowerCase()
+            },
             select: {
                 id: true,
                 name: true,
-                email: true,
-                userPic: true,
-                role: { select: { name: true } }
+                email: true
             }
+        });
+    }
+
+    async updateRole(data: UserUpdateRoleInput, requesterId: string) {
+        // Verificações
+        const requester = await prisma.user.findUnique({
+            where: { id: requesterId },
+            include: { role: { select: { name: true } } }
+        });
+        if (!requester) throw new Error('Usuário solicitante não encontrado.');
+        if (requester.role?.name !== 'owner' && requester.role?.name !== 'admin') throw new Error('Apenas administradores podem alterar funções.');
+
+        if (data.roleName == 'owner') throw new Error('Função superadministrador não pode ser atribuída.');
+
+
+
+        const targetUser = await prisma.user.findUnique({
+            where: { id: data.id },
+            include: { role: { select: { name: true } } }
+        });
+        if (!targetUser) throw new Error('Usuário não encontrado.');
+
+        if (targetUser.role?.name === 'owner') throw new Error('Função superadministrador não pode ser removida.');
+        if (targetUser.role?.name === 'admin' && requesterId !== data.id) throw new Error('Apenas o superadministrador pode alterar a função de um administrador.');
+
+        const roleExists = await prisma.role.findFirst({ where: { name: data.roleName } });
+        if (!roleExists) throw new Error('Função não existe.');
+        return await prisma.user.update({
+            where: { id: data.id },
+            data: { roleId: roleExists.id }
         });
     }
 

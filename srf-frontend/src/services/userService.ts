@@ -1,3 +1,4 @@
+import type { UserUpdateDetailsInput, UserUpdateRoleInput } from "srf-shared-types";
 import type { User } from "../contents/admin/users";
 import { api } from "./api";
 
@@ -31,8 +32,13 @@ export async function deleteUser(id: string) {
     return response.data;
 }
 
-export async function updateUserDetails(userId: string, name: string, email: string, roleName: string) {
-    const response = await api.put('/user/update/details', { userId, name, email, roleName });
+export async function updateUserDetails(data: UserUpdateDetailsInput) {
+    const response = await api.put('/user/update/details', data);
+    return response.data;
+}
+
+export async function updateUserRole(data: UserUpdateRoleInput) {
+    const response = await api.put('/user/update/role', data);
     return response.data;
 }
 

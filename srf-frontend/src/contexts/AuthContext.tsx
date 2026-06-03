@@ -15,6 +15,7 @@ interface AuthContextType {
     user: UserLogin | null;
     signIn: (email: string, password: string) => Promise<void>;
     signOut: () => void;
+    updateUser: (data: Partial<UserLogin>) => void;
     loading: boolean;
 }
 
@@ -57,11 +58,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.removeItem('token');
     }
 
+    function updateUser(data: Partial<UserLogin>) {
+        setUser(prev => {
+            if (!prev) return prev;
+            const updated = { ...prev, ...data };
+            localStorage.setItem('user', JSON.stringify(updated));
+            return updated;
+        });
+    }
+
     const value = {
         signedIn: !!user,
         user,
         signIn,
         signOut,
+        updateUser,
         loading
     };
 
