@@ -127,20 +127,26 @@ export class UserService {
     }
 
     async updatePassword(data: UserUpdatePasswordInput, requesterId: string) {
-        const { id, password } = data;
+        // Verificações do usuário
+        const user = await prisma.user.findUnique({ where: { id: data.id } });
+        if (!user) throw new Error('Usuário não encontrado.');
+        if (user.id !== requesterId) throw new Error('Apenas o próprio usuário pode alterar sua senha.');
 
-        // Verificações
-        const targetUser = await prisma.user.findUnique({ where: { id: id }, include: { role: true } });
-        if (!targetUser) throw new Error('Usuário não encontrado');
-        if (targetUser.role?.name === 'owner' && id !== requesterId) throw new Error('Outros usuários não podem alterar um usuário superadmin');
+        // Verificações de senhas
+        const passwordMatch = await compare(data.password, user.password);
+        if (!passwordMatch) throw new Error('Senha atual incorreta.');
+        if (data.newPassword !== data.confirmPassword) throw new Error('As senhas não coincidem.');
+        if (data.newPassword === data.password) throw new Error('A nova senha deve ser diferente da senha atual.');
 
         // Alteração da senha
-        const passwordHash = await hash(password, 10);
-        return await prisma.user.update({
-            where: { id: id },
-            data: { password: passwordHash },
+        const newPasswordHash = await hash(data.newPassword, 10);
+        await prisma.user.update({
+            where: { id: data.id },
+            data: { password: newPasswordHash },
             select: { id: true }
         });
+
+        return;
     }
 
     async updateUserAccess(data: UserUpdateAccessInput, requesterId: string) {
@@ -239,12 +245,20 @@ export class UserService {
 
     async forgotPassword(email: string) {
         const user = await prisma.user.findUnique({ where: { email: email.toLowerCase() } });
-        if (!user) throw new Error("Email não cadastrado");
+        if (!user) throw new Error("Usuário não encontrado.");
 
         const password = Math.random().toString(36).slice(-8);
-        await this.updatePassword({ id: user.id, password: password }, user.id);
-        await sendEmail(email, 'Recuperação de Senha', 'Sua nova senha: ' + password);
-        return user;
+
+        // Alteração da senha
+        const passwordHash = await hash(password, 10);
+        await prisma.user.update({
+            where: { id: user.id },
+            data: { password: passwordHash }
+        });
+
+        // Envio do email contendo a nova senha
+        await sendEmail(email, 'Recuperação de Senha', 'Sua nova senha é: ' + password);
+        return;
     }
 
     async getUserAccess(userId: string) {

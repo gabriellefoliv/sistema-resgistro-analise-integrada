@@ -33,7 +33,9 @@ export const userUpdateRoleInputSchema = z.object({
 
 export const userUpdatePasswordInputSchema = z.object({
     id: z.string().nonempty({ error: 'ID do usuário inválido' }),
-    password: z.string().nonempty({ error: 'Senha inválida' })
+    password: z.string().nonempty({ error: 'Senha inválida' }),
+    newPassword: z.string().nonempty({ error: 'Nova senha inválida' }),
+    confirmPassword: z.string().nonempty({ error: 'Confirmação de senha inválida' })
 });
 
 export const userAccessPropsSchema = z.object({

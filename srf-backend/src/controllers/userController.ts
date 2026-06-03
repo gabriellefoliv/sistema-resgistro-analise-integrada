@@ -86,18 +86,19 @@ class UserController {
 
     updatePassword = async (req: Request, res: Response) => {
         try {
-            const { id, password } = req.body as UserUpdatePasswordInput;
+            const data = req.body as UserUpdatePasswordInput;
             const requesterId = req.userId as string;
-            const updatedUser = await this.userService.updatePassword(
-                { id, password }, requesterId
-            );
-            return res.status(200).json(updatedUser);
+            await this.userService.updatePassword(data, requesterId);
+            return res.status(200).json({ message: 'Senha atualizada com sucesso.' });
         } catch (error: any) {
             if (error instanceof ZodError) {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
-            if (error.message === 'Usuário não encontrado') return res.status(404).json({ message: error.message });
-            if (error.message === 'Outros usuários não podem alterar um usuário superadmin') return res.status(403).json({ message: error.message });
+            if (error.message === 'Usuário não encontrado.') return res.status(404).json({ error: error.message });
+            if (error.message === 'Apenas o próprio usuário pode alterar sua senha.') return res.status(401).json({ error: error.message });
+            if (error.message === 'Senha atual incorreta.') return res.status(400).json({ error: error.message });
+            if (error.message === 'As senhas não coincidem.') return res.status(400).json({ error: error.message });
+            if (error.message === 'A nova senha deve ser diferente da senha atual.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: "Erro interno" });
         }
     }
@@ -153,13 +154,13 @@ class UserController {
             await this.userService.forgotPassword(
                 email as string
             );
-            return res.status(200).json({ message: 'Se o email informado estiver cadastrado, você receberá um email com a sua nova senha' });
+            return res.status(200).json({ message: 'Se o email informado estiver cadastrado, você receberá um email com a sua nova senha.' });
         } catch (error: any) {
             if (error instanceof ZodError) {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
-            if (error.message === 'Email não cadastrado') return res.status(404).json({ message: 'Se o email informado estiver cadastrado, você receberá um email com a sua nova senha' });
-            return res.status(500).json({ message: 'Erro interno' });
+            if (error.message === 'Usuário não encontrado.') return res.status(404).json({ message: 'Se o email informado estiver cadastrado, você receberá um email com a sua nova senha.' });
+            return res.status(500).json({ message: 'Erro interno.' });
         }
     }
 

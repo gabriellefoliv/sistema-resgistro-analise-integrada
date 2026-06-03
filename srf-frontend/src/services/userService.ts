@@ -1,4 +1,4 @@
-import type { UserUpdateDetailsInput, UserUpdateRoleInput } from "srf-shared-types";
+import type { UserUpdateDetailsInput, UserUpdatePasswordInput, UserUpdateRoleInput } from "srf-shared-types";
 import type { User } from "../contents/admin/users";
 import { api } from "./api";
 
@@ -32,6 +32,12 @@ export async function deleteUser(id: string) {
     return response.data;
 }
 
+
+export async function getUserAccess(userId: string) {
+    const response = await api.get("/user/user-access/" + userId);
+    return response.data;
+}
+
 export async function updateUserDetails(data: UserUpdateDetailsInput) {
     const response = await api.put('/user/update/details', data);
     return response.data;
@@ -47,12 +53,7 @@ export async function updateUserAccess(userId: string, userAccess: any[]) {
     return response.data;
 }
 
-export async function updateUserPassword(userId: string, password: string) {
-    const response = await api.put('/user/update/password', { userId, password });
-    return response.data;
-}
-
-export async function getUserAccess(userId: string) {
-    const response = await api.get("/user/user-access/" + userId);
+export async function updateUserPassword(data: UserUpdatePasswordInput) {
+    const response = await api.put('/user/update/password', data);
     return response.data;
 }
