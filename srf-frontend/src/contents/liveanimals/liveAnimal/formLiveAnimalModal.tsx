@@ -20,7 +20,7 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
     const isEditing = !!liveAnimal;
 
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string>('');
     const [options, setOptions] = useState<GetFormOptionsAnimalOutput | null>(null);
 
     const [name, setName] = useState<string>(liveAnimal?.name ?? '');
@@ -46,7 +46,7 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         setLoading(true);
-        setError(null);
+        setError('');
         try {
             const data = {
                 name: name,
