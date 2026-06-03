@@ -86,6 +86,13 @@ export class VeterinarianVisitService {
         });
         const visitIdsWithStoolAnalysis = new Set(stoolAnalysisCounts.map(sa => sa.veterinarianVisitId));
 
+        // Verifica se a visita possui uma castração associada
+        const castrationCounts = await prisma.castration.findMany({
+            where: { veterinarianVisitId: { in: visitIds } },
+            select: { veterinarianVisitId: true }
+        });
+        const visitIdsWithCastration = new Set(castrationCounts.map(c => c.veterinarianVisitId));
+
         const [user, userAccess, levels] = await Promise.all([
             prisma.user.findUnique({
                 where: { id: userId },
@@ -150,6 +157,7 @@ export class VeterinarianVisitService {
                 hasSorologyAnalysis: visitIdsWithSorologyAnalysis.has(v.id),
                 hasEctoparasiteAnalysis: visitIdsWithEctoparasiteAnalysis.has(v.id),
                 hasStoolAnalysis: visitIdsWithStoolAnalysis.has(v.id),
+                hasCastration: visitIdsWithCastration.has(v.id),
                 liveAnimalId: v.liveAnimal.id,
                 liveAnimalName: v.liveAnimal.name,
                 veterinarianId: v.veterinarian.id,

@@ -359,13 +359,13 @@ model tutorQuestion {
 // Health
 
 model castration {
-  id                  Int               @id @default(autoincrement())
-  liveAnimalId        Int               @unique @map("id_animal_vivo")
-  liveAnimal          liveAnimal        @relation(fields: [liveAnimalId], references: [id])
-  veterinarianVisitId Int               @unique @map("id_visita_veterinaria")
-  veterinarianVisit   veterinarianVisit @relation(fields: [veterinarianVisitId], references: [id])
-  date                DateTime          @map("data")
-  note                String?           @map("observacao")
+  id                  Int                @id @default(autoincrement())
+  liveAnimalId        Int                @unique @map("id_animal_vivo")
+  liveAnimal          liveAnimal         @relation(fields: [liveAnimalId], references: [id])
+  veterinarianVisitId Int?               @unique @map("id_visita_veterinaria")
+  veterinarianVisit   veterinarianVisit? @relation(fields: [veterinarianVisitId], references: [id])
+  date                DateTime           @map("data")
+  note                String?            @map("observacao")
 
   @@map("castracao")
 }
