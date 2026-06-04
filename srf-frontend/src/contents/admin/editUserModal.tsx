@@ -65,10 +65,6 @@ export function EditUserModal({ user, close, refresh }: EditUserModalProps) {
                     </h2>
 
                     <form onSubmit={(e) => handleSubmitEdit(e)} className="w-full h-full flex flex-col items-center justify-between gap-5 mt-5">
-                        <div className="flex justify-center items-center rounded-full overflow-hidden size-24 bg-[#444141]">
-                            <img src={user.userPic || userImg} alt="User picture" />
-                        </div>
-
                         <div className="w-full flex flex-col gap-4">
                             <div className="flex flex-col">
                                 <label htmlFor="name" className="text-sm text-left font-bold mb-1">Nome</label>
