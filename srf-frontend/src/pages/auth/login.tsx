@@ -56,7 +56,7 @@ export function Login() {
     try {
       setIsLoadingForgot(true);
       await forgotPassword(loginData.email);
-      alert('Se o email informado estiver cadastrado, você receberá um email com a sua nova senha.');
+      alert('Se o email informado estiver cadastrado, você receberá um email de confirmação para redefinir sua senha.');
       setLoginData({ email: '', password: '' });
       setForgot(false);
     } catch (error: any) {
@@ -72,13 +72,13 @@ export function Login() {
       <div
         onMouseDown={close}
         className={`modal-overlay ${forgot ? 'flex justify-center items-center' : 'hidden'} absolute w-full h-full bg-black/50 z-99 `}>
-        <div onMouseDown={(e) => e.stopPropagation()} className="modal relative flex flex-col bg-white w-160 h-80 justify-center items-center rounded-2xl shadow-xl p-10">
+        <div onMouseDown={(e) => e.stopPropagation()} className="modal relative flex flex-col bg-white w-160 justify-center items-center rounded-2xl shadow-xl p-10">
 
           <button onClick={() => setForgot(false)} className="absolute text-text-main hover:text-standard-red font-bold text-xl cursor-pointer leading-none top-3 right-3" title="Fechar">✕</button>
 
           <form onSubmit={handleForgotPassword} className="size-full flex flex-col items-center justify-center">
             <h2 className="text-2xl font-bold mb-5">Recuperar Senha</h2>
-            <p className="text-xl text-center">Insira seu email cadastrado para receber sua senha.</p>
+            <p className="text-xl text-center">Insira seu email cadastrado para receber um link de confirmação.</p>
             <div className="flex items-center mt-5 relative w-full">
               <img src={loginEmailImg} alt="Email login image" className="absolute left-2 w-8 h-8" />
               <input type="email" id="email" placeholder="Email" className="w-full h-14 pl-11 border border-border rounded-xl text-2xl pb-1" value={loginData.email} onChange={handleInputChange} />

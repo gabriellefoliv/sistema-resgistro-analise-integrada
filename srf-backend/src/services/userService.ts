@@ -247,17 +247,109 @@ export class UserService {
         const user = await prisma.user.findUnique({ where: { email: email.toLowerCase() } });
         if (!user) throw new Error("Usuário não encontrado.");
 
-        const password = Math.random().toString(36).slice(-8);
-
-        // Alteração da senha
-        const passwordHash = await hash(password, 10);
-        await prisma.user.update({
-            where: { id: user.id },
-            data: { password: passwordHash }
+        // Invalida tokens anteriores não utilizados do mesmo usuário
+        await prisma.passwordResetToken.updateMany({
+            where: { userId: user.id, used: false },
+            data: { used: true }
         });
 
-        // Envio do email contendo a nova senha
-        await sendEmail(email, 'Recuperação de Senha', 'Sua nova senha é: ' + password);
+        // Gera um token único para confirmação
+        const { randomUUID } = require('crypto');
+        const token = randomUUID() as string;
+        const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutos
+
+        await prisma.passwordResetToken.create({
+            data: {
+                userId: user.id,
+                token,
+                expiresAt,
+            }
+        });
+
+        // Monta o link de confirmação apontando para o frontend
+        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+        const confirmLink = `${frontendUrl}/reset-password/confirm/${token}`;
+
+        const htmlBody = `
+            <div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; padding: 32px; background: #f9f9f9; border-radius: 12px;">
+                <h2 style="color: #333; margin-bottom: 16px;">Recuperação de Senha</h2>
+                <p style="color: #555; font-size: 16px; line-height: 1.5;">
+                    Olá, <strong>${user.name}</strong>!
+                </p>
+                <p style="color: #555; font-size: 16px; line-height: 1.5;">
+                    Recebemos uma solicitação para redefinir sua senha. Clique no botão abaixo para confirmar:
+                </p>
+                <div style="text-align: center; margin: 28px 0;">
+                    <a href="${confirmLink}" 
+                       style="display: inline-block; background: #4e95d9; color: #fff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-size: 16px; font-weight: bold;">
+                        Confirmar Redefinição de Senha
+                    </a>
+                </div>
+                <p style="color: #999; font-size: 13px; line-height: 1.4;">
+                    Este link expira em 15 minutos. Se você não solicitou a redefinição de senha, ignore este email.
+                </p>
+                <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 24px 0;" />
+                <p style="color: #bbb; font-size: 12px; text-align: center;">SiRAI — Sistema de Registro e Análise Integrada</p>
+            </div>
+        `;
+
+        const textBody = `Olá ${user.name}, clique no link para redefinir sua senha: ${confirmLink} (expira em 15 minutos).`;
+
+        await sendEmail(email, 'Confirmação de Redefinição de Senha', textBody, htmlBody);
+        return;
+    }
+
+    async confirmPasswordReset(token: string) {
+        // Busca o token no banco
+        const resetToken = await prisma.passwordResetToken.findUnique({
+            where: { token },
+            include: { user: true }
+        });
+
+        if (!resetToken) throw new Error('Token inválido.');
+        if (resetToken.used) throw new Error('Token já utilizado.');
+        if (resetToken.expiresAt < new Date()) throw new Error('Token expirado.');
+
+        // Gera uma nova senha aleatória
+        const newPassword = Math.random().toString(36).slice(-8);
+        const passwordHash = await hash(newPassword, 10);
+
+        // Atualiza a senha do usuário e marca o token como usado
+        await prisma.$transaction(async (tx) => {
+            await tx.user.update({
+                where: { id: resetToken.userId },
+                data: { password: passwordHash }
+            });
+            await tx.passwordResetToken.update({
+                where: { id: resetToken.id },
+                data: { used: true }
+            });
+        });
+
+        // Envia a nova senha por email
+        const htmlBody = `
+            <div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; padding: 32px; background: #f9f9f9; border-radius: 12px;">
+                <h2 style="color: #333; margin-bottom: 16px;">Sua Nova Senha</h2>
+                <p style="color: #555; font-size: 16px; line-height: 1.5;">
+                    Olá, <strong>${resetToken.user.name}</strong>!
+                </p>
+                <p style="color: #555; font-size: 16px; line-height: 1.5;">
+                    Sua senha foi redefinida com sucesso. Sua nova senha é:
+                </p>
+                <div style="text-align: center; margin: 24px 0; padding: 16px; background: #fff; border: 2px dashed #4e95d9; border-radius: 8px;">
+                    <span style="font-size: 24px; font-weight: bold; color: #4e95d9; letter-spacing: 2px;">${newPassword}</span>
+                </div>
+                <p style="color: #555; font-size: 16px; line-height: 1.5;">
+                    Recomendamos que você altere essa senha após o primeiro login.
+                </p>
+                <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 24px 0;" />
+                <p style="color: #bbb; font-size: 12px; text-align: center;">SiRAI — Sistema de Registro e Análise Integrada</p>
+            </div>
+        `;
+
+        const textBody = `Olá ${resetToken.user.name}, sua nova senha é: ${newPassword}. Recomendamos que altere a senha após o primeiro login.`;
+
+        await sendEmail(resetToken.user.email, 'Sua Nova Senha — SiRAI', textBody, htmlBody);
         return;
     }
 

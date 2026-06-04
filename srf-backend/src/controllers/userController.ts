@@ -154,12 +154,26 @@ class UserController {
             await this.userService.forgotPassword(
                 email as string
             );
-            return res.status(200).json({ message: 'Se o email informado estiver cadastrado, você receberá um email com a sua nova senha.' });
+            return res.status(200).json({ message: 'Se o email informado estiver cadastrado, você receberá um email de confirmação.' });
         } catch (error: any) {
             if (error instanceof ZodError) {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
-            if (error.message === 'Usuário não encontrado.') return res.status(404).json({ message: 'Se o email informado estiver cadastrado, você receberá um email com a sua nova senha.' });
+            if (error.message === 'Usuário não encontrado.') return res.status(200).json({ message: 'Se o email informado estiver cadastrado, você receberá um email de confirmação.' });
+            return res.status(500).json({ message: 'Erro interno.' });
+        }
+    }
+
+    confirmPasswordReset = async (req: Request, res: Response) => {
+        try {
+            const token = req.query.token as string;
+            if (!token) return res.status(400).json({ message: 'Token não fornecido.' });
+            await this.userService.confirmPasswordReset(token);
+            return res.status(200).json({ message: 'Senha redefinida com sucesso. Verifique seu email para obter a nova senha.' });
+        } catch (error: any) {
+            if (error.message === 'Token inválido.') return res.status(400).json({ message: error.message });
+            if (error.message === 'Token já utilizado.') return res.status(400).json({ message: error.message });
+            if (error.message === 'Token expirado.') return res.status(400).json({ message: error.message });
             return res.status(500).json({ message: 'Erro interno.' });
         }
     }

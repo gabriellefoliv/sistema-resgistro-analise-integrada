@@ -34,8 +34,9 @@ model user {
   role     role    @relation(fields: [roleId], references: [id])
   userPic  String?
 
-  userAccess userAccess[]
-  auditLogs  auditLog[]
+  userAccess          userAccess[]
+  auditLogs           auditLog[]
+  passwordResetTokens passwordResetToken[]
 
   @@map("usuario")
 }
@@ -152,6 +153,18 @@ model changeLog {
   newData    Json?    @map("dados_novos")
 
   @@map("changelog")
+}
+
+model passwordResetToken {
+  id        String   @id @default(uuid())
+  userId    String   @map("id_usuario")
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime @map("expira_em")
+  used      Boolean  @default(false) @map("utilizado")
+  createdAt DateTime @default(now()) @map("criado_em")
+
+  @@map("token_redefinicao_senha")
 }
 
 // ===== FORMS =====

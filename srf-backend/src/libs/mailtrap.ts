@@ -3,7 +3,7 @@ import { MailtrapClient } from "mailtrap";
 const SENDER_EMAIL = "no-reply@demomailtrap.co";
 const SENDER_NAME = "SiRAI";
 
-export async function sendEmail(to: string, subject: string, body: string) {
+export async function sendEmail(to: string, subject: string, body: string, html?: string) {
     const apiKey = process.env.MAILTRAP_API_KEY as string;
     const isSandbox = process.env.MAILTRAP_USE_SANDBOX === "true";
     const inboxId = Number(process.env.MAILTRAP_INBOX_ID);
@@ -23,6 +23,7 @@ export async function sendEmail(to: string, subject: string, body: string) {
             to: [{ email: to }],
             subject: subject,
             text: body,
+            ...(html ? { html } : {}),
         });
         return true;
     } catch (error) {

@@ -74,3 +74,21 @@ body {
     transform-origin: top;
     animation: fade-in-grow 0.15s ease-out forwards;
 }
+
+@keyframes loading {
+    100% {
+        transform: scale(2);
+    }
+}
+
+.loading-span-0 {
+    animation: loading .6s ease-in-out alternate 0s infinite;
+}
+
+.loading-span-1 {
+    animation: loading .6s ease-in-out alternate .2s infinite;
+}
+
+.loading-span-2 {
+    animation: loading .6s ease-in-out alternate .4s infinite;
+}

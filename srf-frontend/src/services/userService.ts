@@ -22,6 +22,11 @@ export async function forgotPassword(email: string) {
     return response.data;
 }
 
+export async function confirmPasswordReset(token: string) {
+    const response = await api.get(`/reset-password/confirm?token=${token}`);
+    return response.data;
+}
+
 export async function getUsers(): Promise<User[]> {
     const response = await api.get('/user/get-all');
     return response.data;
