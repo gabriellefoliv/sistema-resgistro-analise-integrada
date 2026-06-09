@@ -19,6 +19,7 @@ import { interviewRoutes } from "./interviewRoutes";
 import { animalInterviewRoutes } from "./animalInterviewRoutes";
 import { liveAnimalRoutes } from "./liveAnimalRoutes";
 import { castrationRoutes } from "./castrationRoutes";
+import { tutorRoutes } from "./tutorRoutes";
 
 export const router = Router();
 
@@ -42,4 +43,5 @@ router.use(interviewRoutes);
 router.use(animalInterviewRoutes);
 router.use(liveAnimalRoutes);
 router.use(castrationRoutes);
+router.use(tutorRoutes);
 

@@ -12,4 +12,5 @@ export * from "./gpsTracking";
 export * from "./interview";
 export * from "./animalInterview";
 export * from "./liveAnimal";
+export * from "./tutor";
 export * from "./castration";
