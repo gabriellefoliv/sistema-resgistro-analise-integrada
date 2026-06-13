@@ -180,6 +180,8 @@ model liveAnimal {
   active        Boolean          @map("ativo")
   animalPicture String?          @map("foto_animal")
   cardLink      String?          @map("link_carteirinha")
+  tutorId       Int              @map("id_tutor")
+  tutor         tutor            @relation(fields: [tutorId], references: [id])
 
   gpsTracking        gpsTracking?
   castration         castration?
@@ -211,23 +213,23 @@ model enumAnimalGender {
 
 // ==x== GPS ==x==
 model gpsTracking {
-  id                    Int              @id @default(autoincrement())
-  liveAnimalId          Int              @unique @map("id_animal_vivo")
-  liveAnimal            liveAnimal       @relation(fields: [liveAnimalId], references: [id])
-  trackingDeviceId      Int              @map("id_dispositivo_rastreio")
-  trackingDevice        trackingDevice   @relation(fields: [trackingDeviceId], references: [id])
-  startDate             DateTime         @map("data_inicio")
-  endDate               DateTime?        @map("data_fim")
-  note                  String?          @map("observacao")
-  monitoredDays         Int              @map("dias_monitorados")
-  locationPoints        Int              @map("pontos_localizacao")
-  livingArea            Float            @map("area_vida")
-  monitoringMethodId    Int              @map("id_metodo_monitoramento")
-  monitoringMethod      monitoringMethod @relation(fields: [monitoringMethodId], references: [id])
-  rawSpreadsheetLink    String?          @map("link_planilha_bruta")
-  rawSpreadsheetUpdateDate     DateTime?        @map("data_atualizacao_planilha_bruta")
-  editedSpreadsheetLink        String?          @map("link_planilha_editada")
-  editedSpreadsheetUpdateDate  DateTime?        @map("data_atualizacao_planilha_editada")
+  id                          Int              @id @default(autoincrement())
+  liveAnimalId                Int              @unique @map("id_animal_vivo")
+  liveAnimal                  liveAnimal       @relation(fields: [liveAnimalId], references: [id])
+  trackingDeviceId            Int              @map("id_dispositivo_rastreio")
+  trackingDevice              trackingDevice   @relation(fields: [trackingDeviceId], references: [id])
+  startDate                   DateTime         @map("data_inicio")
+  endDate                     DateTime?        @map("data_fim")
+  note                        String?          @map("observacao")
+  monitoredDays               Int              @map("dias_monitorados")
+  locationPoints              Int              @map("pontos_localizacao")
+  livingArea                  Float            @map("area_vida")
+  monitoringMethodId          Int              @map("id_metodo_monitoramento")
+  monitoringMethod            monitoringMethod @relation(fields: [monitoringMethodId], references: [id])
+  rawSpreadsheetLink          String?          @map("link_planilha_bruta")
+  rawSpreadsheetUpdateDate    DateTime?        @map("data_atualizacao_planilha_bruta")
+  editedSpreadsheetLink       String?          @map("link_planilha_editada")
+  editedSpreadsheetUpdateDate DateTime?        @map("data_atualizacao_planilha_editada")
 
   @@map("rastreio_gps")
 }
@@ -254,11 +256,11 @@ model trackingDevice {
 
 // ==x== Interviews and Tutor ==x==
 model animalInterview {
-  id                Int              @id @default(autoincrement())
-  liveAnimalId      Int              @unique @map("id_animal_vivo")
-  liveAnimal        liveAnimal       @relation(fields: [liveAnimalId], references: [id])
-  tutorInterviewId  Int?             @map("id_entrevista_tutor")
-  tutorInterview    tutorInterview?  @relation(fields: [tutorInterviewId], references: [id])
+  id               Int             @id @default(autoincrement())
+  liveAnimalId     Int             @unique @map("id_animal_vivo")
+  liveAnimal       liveAnimal      @relation(fields: [liveAnimalId], references: [id])
+  tutorInterviewId Int?            @map("id_entrevista_tutor")
+  tutorInterview   tutorInterview? @relation(fields: [tutorInterviewId], references: [id])
 
   animalAnswer animalAnswer[]
 
@@ -306,8 +308,8 @@ model tutorInterview {
   tutor   tutor    @relation(fields: [tutorId], references: [id])
   date    DateTime @map("data")
 
-  tutorAnswer      tutorAnswer[]
-  animalInterview  animalInterview[]
+  tutorAnswer     tutorAnswer[]
+  animalInterview animalInterview[]
 
   @@map("entrevista_tutor")
 }
@@ -321,6 +323,7 @@ model tutor {
 
   tutorInterview tutorInterview?
   necropsy       necropsy[]
+  liveAnimal     liveAnimal[]
 
   @@map("tutor")
 }
