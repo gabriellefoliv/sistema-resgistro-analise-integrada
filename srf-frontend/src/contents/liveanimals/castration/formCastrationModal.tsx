@@ -48,6 +48,7 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
                         const matchingVisit = opts.veterinarianVisits.find(v => v.id === castration.veterinarianVisitId);
                         if (matchingVisit) {
                             setSelectedDate(matchingVisit.date);
+                            setCastrationDate(new Date(matchingVisit.date).toISOString().slice(0, 10));
                             setSelectedVeterinarianId(matchingVisit.veterinarian.id);
                         }
                     }
@@ -120,6 +121,7 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
 
     function handleDateChange(value: string) {
         setSelectedDate(value);
+        setCastrationDate(new Date(value).toISOString().slice(0, 10));
         if (value) {
             const matchingVisits = visitsForAnimal.filter(v => v.date === value);
             if (selectedVeterinarianId && !matchingVisits.some(v => v.veterinarian.id === selectedVeterinarianId)) setSelectedVeterinarianId('');
