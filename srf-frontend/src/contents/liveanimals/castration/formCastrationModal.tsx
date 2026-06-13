@@ -225,23 +225,10 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
                                     ))}
                                 </select>
                             </div>
-                            {/* Data da Castração - oculto quando visita associada */}
-                            {!hasVisitSelected && (
-                                <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Data da Castração</label>
-                                    <input
-                                        type="date"
-                                        value={castrationDate}
-                                        onChange={(e) => setCastrationDate(e.target.value)}
-                                        className="border border-border rounded p-2 bg-white"
-                                        required
-                                    />
-                                </div>
-                            )}
                         </div>
 
                         {/* Seleção da Visita Associada (opcional) */}
-                        <fieldset className={`border border-border rounded p-4 ${!selectedAnimalId ? 'bg-gray-100' : 'bg-white'}`}>
+                        <fieldset className={`col-span-2 border border-border rounded p-4 ${!selectedAnimalId ? 'bg-gray-100' : 'bg-white'}`}>
                             <legend className="text-sm font-bold text-standard-blue px-2 flex items-center gap-2">
                                 Visita Associada (Opcional)
                                 {hasVisitSelected && (
@@ -263,6 +250,7 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
                                         value={selectedDate}
                                         onChange={(e) => handleDateChange(e.target.value)}
                                         className={`border border-border rounded p-2 ${!selectedAnimalId ? 'bg-gray-100' : 'bg-white'}`}
+                                        required={!!selectedVeterinarianId}
                                         disabled={!selectedAnimalId}
                                     >
                                         <option value="">Selecione...</option>
@@ -279,6 +267,7 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
                                         value={selectedVeterinarianId}
                                         onChange={(e) => handleVeterinarianChange(e.target.value ? Number(e.target.value) : '')}
                                         className={`border border-border rounded p-2 ${!selectedAnimalId ? 'bg-gray-100' : 'bg-white'}`}
+                                        required={!!selectedDate}
                                         disabled={!selectedAnimalId}
                                     >
                                         <option value="">Selecione...</option>
@@ -290,6 +279,21 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
                             </div>
                         </fieldset>
 
+                        {/* Data da Castração */}
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Data da Castração</label>
+                                <input
+                                    type="date"
+                                    value={castrationDate}
+                                    onChange={(e) => setCastrationDate(e.target.value)}
+                                    className={`border border-border rounded p-2 ${hasVisitSelected ? 'bg-gray-100' : 'bg-white'
+                                        }`}
+                                    required={!hasVisitSelected}
+                                    disabled={hasVisitSelected}
+                                />
+                            </div>
+                        </div>
                         {/* Observações */}
                         <div className="flex flex-col">
                             <label className="text-sm font-bold mb-1 text-left">Observações</label>
