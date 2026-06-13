@@ -72,13 +72,6 @@ export class CastrationService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsCastrationOutput> {
-        // Busca IDs de visitas que já possuem castração associada
-        const existingCastrations = await prisma.castration.findMany({
-            where: { veterinarianVisitId: { not: null } },
-            select: { veterinarianVisitId: true }
-        });
-        const usedVisitIds = new Set(existingCastrations.map(c => c.veterinarianVisitId!));
-
         const [liveAnimals, veterinarianVisits] = await Promise.all([
             prisma.liveAnimal.findMany({
                 select: { id: true, name: true },
@@ -104,7 +97,6 @@ export class CastrationService {
                 name: a.name
             })),
             veterinarianVisits: veterinarianVisits
-                .filter(v => !usedVisitIds.has(v.id))
                 .map(v => ({
                     id: v.id,
                     date: v.date.toISOString(),
