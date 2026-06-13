@@ -37,6 +37,8 @@ export const getAllLiveAnimalOutputSchema = z.object({
     activeFormatted: z.string().optional(),
     animalPicture: z.string().optional(),
     cardLink: z.string().optional(),
+    tutorId: z.number().int(),
+    tutorName: z.string().nonempty(),
     hasGpsTracking: z.boolean(),
     hasCastration: z.boolean(),
     hasVeterinarianVisit: z.boolean(),
@@ -52,6 +54,10 @@ export const getFormOptionsAnimalOutputSchema = z.object({
     genders: z.array(z.object({
         id: z.number().int(),
         name: z.string().nonempty()
+    })),
+    tutors: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty()
     }))
 });
 
@@ -63,7 +69,8 @@ export const createLiveAnimalInputSchema = z.object({
     birthDate: z.string().nonempty({ error: 'Data de nascimento inválida' }),
     active: z.boolean(),
     animalPicture: z.string().optional(),
-    cardLink: z.string().optional()
+    cardLink: z.string().optional(),
+    tutorId: z.number().int({ error: 'ID do tutor inválido' })
 });
 
 export const updateLiveAnimalInputSchema = createLiveAnimalInputSchema;

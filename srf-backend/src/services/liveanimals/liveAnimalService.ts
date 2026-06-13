@@ -26,6 +26,7 @@ export class LiveAnimalService {
                 active: true,
                 animalPicture: true,
                 cardLink: true,
+                tutor: { select: { id: true, name: true } },
                 // Registros associados
                 gpsTracking: { select: { id: true } },
                 castration: { select: { id: true } },
@@ -75,6 +76,8 @@ export class LiveAnimalService {
                     cardLink: a.cardLink || undefined,
                     canEdit: permission.canEdit,
                     createdByMe: creatorMap.get(String(a.id)) === requesterId,
+                    tutorId: a.tutor.id,
+                    tutorName: a.tutor.name,
                     hasGpsTracking: !!a.gpsTracking,
                     hasCastration: !!a.castration,
                     hasVeterinarianVisit: a.veterinarianVisit.length > 0,
@@ -88,7 +91,7 @@ export class LiveAnimalService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsAnimalOutput> {
-        const [species, genders] = await Promise.all([
+        const [species, genders, tutors] = await Promise.all([
             prisma.specie.findMany({
                 select: { id: true, name: true },
                 orderBy: { name: 'asc' }
@@ -96,10 +99,14 @@ export class LiveAnimalService {
             prisma.enumAnimalGender.findMany({
                 select: { id: true, name: true },
                 orderBy: { name: 'asc' }
+            }),
+            prisma.tutor.findMany({
+                select: { id: true, name: true },
+                orderBy: { name: 'asc' }
             })
         ]);
 
-        return { species, genders };
+        return { species, genders, tutors };
     }
 
     async create(data: CreateLiveAnimalInput, requesterId: string) {
@@ -113,7 +120,8 @@ export class LiveAnimalService {
                     birthDate: new Date(data.birthDate + 'T12:00:00Z'),
                     active: data.active,
                     animalPicture: data.animalPicture || null,
-                    cardLink: data.cardLink || null
+                    cardLink: data.cardLink || null,
+                    tutorId: data.tutorId
                 }
             });
 
