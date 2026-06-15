@@ -18,6 +18,7 @@ import { gpsTrackingRoutes } from "./gpsTrackingRoutes";
 import { interviewRoutes } from "./interviewRoutes";
 import { liveAnimalRoutes } from "./liveAnimalRoutes";
 import { castrationRoutes } from "./castrationRoutes";
+import { tutorRoutes } from "./tutorRoutes";
 
 export const router = Router();
 
@@ -40,4 +41,5 @@ router.use(gpsTrackingRoutes);
 router.use(interviewRoutes);
 router.use(liveAnimalRoutes);
 router.use(castrationRoutes);
+router.use(tutorRoutes);
 

@@ -11,4 +11,5 @@ export * from "./molecularAnalysis";
 export * from "./gpsTracking";
 export * from "./interview";
 export * from "./liveAnimal";
+export * from "./tutor";
 export * from "./castration";
