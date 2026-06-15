@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { type GetAllStoolAnalysisOutput } from "srf-shared-types";
 import { getStoolAnalyses } from "../../../services/liveanimals/stoolAnalysisService";
 import { SideDrawer } from "../../../components/sideDrawer";
-import { EggCystAnalysisSideDrawer } from "../eggCystAnalysis/eggCystAnalysisSideDrawer";
-import { MolecularAnalysisSideDrawer } from "../molecularAnalysis/molecularAnalysisSideDrawer";
 
 interface StoolAnalysisSideDrawerFilters {
     veterinarianVisitId?: number;
@@ -19,9 +17,7 @@ interface StoolAnalysisSideDrawerProps {
 export function StoolAnalysisSideDrawer({ filters, onClose }: StoolAnalysisSideDrawerProps) {
     const [results, setResults] = useState<GetAllStoolAnalysisOutput[]>([]);
     const [loading, setLoading] = useState(true);
-    const [showEggCystDrawer, setShowEggCystDrawer] = useState(false);
-    const [showMolecularDrawer, setShowMolecularDrawer] = useState(false);
-    const [activeStoolAnalysisId, setActiveStoolAnalysisId] = useState<number | null>(null);
+    const [expandedId, setExpandedId] = useState<number | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -59,18 +55,6 @@ export function StoolAnalysisSideDrawer({ filters, onClose }: StoolAnalysisSideD
 
     return (
         <>
-            {showEggCystDrawer && activeStoolAnalysisId && (
-                <EggCystAnalysisSideDrawer
-                    filters={{ stoolAnalysisId: activeStoolAnalysisId }}
-                    onClose={() => setShowEggCystDrawer(false)}
-                />
-            )}
-            {showMolecularDrawer && activeStoolAnalysisId && (
-                <MolecularAnalysisSideDrawer
-                    filters={{ stoolAnalysisId: activeStoolAnalysisId }}
-                    onClose={() => setShowMolecularDrawer(false)}
-                />
-            )}
             <SideDrawer
                 title="Análise de Fezes"
                 onClose={onClose}
@@ -98,51 +82,54 @@ export function StoolAnalysisSideDrawer({ filters, onClose }: StoolAnalysisSideD
 
                 {!loading && results.length > 0 && (
                     <div className="flex flex-col gap-3">
-                        {results.map(result => (
-                            <div
-                                key={result.id}
-                                className="border border-border rounded bg-form-bg"
-                            >
-                                <div className="px-4 pb-4 bg-form-bg">
-                                    <h4 className="font-bold text-text-main text-xs uppercase my-2 border-b border-gray-600 pb-1">
-                                        Detalhes da Análise de Fezes
-                                    </h4>
-                                    <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
-                                        <Field label="Data da Visita" value={result.veterinarianVisitDateFormatted || ''} />
-                                        <Field label="Animal" value={result.liveAnimalName} />
-                                        <Field label="Veterinário" value={result.veterinarianName} />
-                                        <Field label="Peso (Kg)" value={String(result.weight)} />
-                                        <Field label="Tecnologia de Processamento" value={result.processingTechnologyName} />
-                                        <Field label="Observações" value={result.note || 'Nenhuma observação informada'} fullWidth />
-                                    </div>
-                                    {(result.hasEggCystAnalysis || result.hasMolecularAnalysis) && (
-                                        <>
-                                            <div className="flex justify-between items-center pb-1 my-2 border-b border-gray-600">
-                                                <h4 className="font-bold text-text-main text-xs uppercase">Registros Associados</h4>
+                        {results.map(result => {
+                            const isExpanded = expandedId === result.id;
+                            return (
+                                <div
+                                    key={result.id}
+                                    className="border border-border rounded bg-white"
+                                >
+                                    {/* Cabeçalho do Registro */}
+                                    <button
+                                        onClick={() => setExpandedId(isExpanded ? null : result.id)}
+                                        className="w-full flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-hover-bg transition-colors"
+                                    >
+                                        <div className="flex flex-col items-start gap-0.5">
+                                            <span className="text-sm font-bold text-text-main">{result.liveAnimalName}</span>
+                                            <span className="text-xs text-text-light-gray">
+                                                {result.veterinarianVisitDateFormatted || 'Data Indisponível'} · {result.veterinarianName}
+                                            </span>
+                                        </div>
+                                        <span className="text-standard-blue text-xs font-bold uppercase">
+                                            {isExpanded ? 'Recolher' : 'Expandir'}
+                                        </span>
+                                    </button>
+
+
+                                    {/* Detalhes Expandidos */}
+                                    {isExpanded && (
+                                        <div className="px-4 pb-4 border-t border-border bg-form-bg">
+                                            <h4 className="font-bold text-text-main text-xs uppercase my-2 border-b border-gray-600 pb-1">
+                                                Detalhes da Análise de Fezes
+                                            </h4>
+                                            <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
+                                                <Field label="Data da Visita" value={result.veterinarianVisitDateFormatted || ''} />
+                                                <Field label="Animal" value={result.liveAnimalName} />
+                                                <Field label="Veterinário" value={result.veterinarianName} />
+                                                <Field label="Peso (Kg)" value={String(result.weight)} />
+                                                <Field label="Tecnologia de Processamento" value={result.processingTechnologyName} />
+                                                <Field label="Observações" value={result.note || 'Nenhuma observação informada.'} fullWidth />
                                             </div>
-                                            <div className="gap-2 w-full text-sm flex flex-wrap mb-1">
-                                                {result.hasEggCystAnalysis && (
-                                                    <button
-                                                        onClick={() => { setActiveStoolAnalysisId(result.id); setShowEggCystDrawer(true); }}
-                                                        className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                                                    >
-                                                        Ovos/Cistos
-                                                    </button>
-                                                )}
-                                                {result.hasMolecularAnalysis && (
-                                                    <button
-                                                        onClick={() => { setActiveStoolAnalysisId(result.id); setShowMolecularDrawer(true); }}
-                                                        className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                                                    >
-                                                        Molecular
-                                                    </button>
-                                                )}
-                                            </div>
-                                        </>
+                                            {(result.hasEggCystAnalysis || result.hasMolecularAnalysis) && (
+                                                <>
+                                                    <p className="font-medium italic text-text-input text-xs mt-2">* Este registro possui um ou mais registros associados</p>
+                                                </>
+                                            )}
+                                        </div>
                                     )}
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 )}
             </SideDrawer>
