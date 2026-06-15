@@ -12,8 +12,9 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-    const [showCastrationDrawer, setShowCastrationDrawer] = useState(false);
+    const [showTutorDrawer, setShowTutorDrawer] = useState(false);
     const [showAnimalInterviewDrawer, setShowAnimalInterviewDrawer] = useState(false);
+    const [showCastrationDrawer, setShowCastrationDrawer] = useState(false);
     const [showGpsTrackingDrawer, setShowGpsTrackingDrawer] = useState(false);
     const [showVaccineApplicationDrawer, setShowVaccineApplicationDrawer] = useState(false);
     const [showVeterinarianVisitDrawer, setShowVeterinarianVisitDrawer] = useState(false);
@@ -29,6 +30,12 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
             )}
 
             {/* Side Drawers */}
+            {/* {showTutorDrawer && (
+                <TutorSideDrawer
+                    tutor={item.tutor}
+                    close={() => setShowTutorDrawer(false)}
+                />
+            )} */}
             {showAnimalInterviewDrawer && (
                 <AnimalInterviewSideDrawer
                     filters={{ liveAnimalId: item.id }}
@@ -124,55 +131,57 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
             </div>
 
             {/* Registros Associados */}
-            {(item.hasAnimalInterview || item.hasGpsTracking || item.hasVaccineApplication || item.hasVeterinarianVisit) && (
-                <>
-                    <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
-                        <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
-                    </div>
-                    <div className="gap-2 w-full text-sm flex flex-wrap mb-1">
-                        {item.hasAnimalInterview && (
-                            <button
-                                onClick={() => setShowAnimalInterviewDrawer(true)}
-                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                            >
-                                Entrevista
-                            </button>
-                        )}
-                        {item.hasCastration && (
-                            <button
-                                onClick={() => setShowCastrationDrawer(true)}
-                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                            >
-                                Castração
-                            </button>
-                        )}
-                        {item.hasGpsTracking && (
-                            <button
-                                onClick={() => setShowGpsTrackingDrawer(true)}
-                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                            >
-                                Rastreio de GPS
-                            </button>
-                        )}
-                        {item.hasVaccineApplication && (
-                            <button
-                                onClick={() => setShowVaccineApplicationDrawer(true)}
-                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                            >
-                                Vacinas
-                            </button>
-                        )}
-                        {item.hasVeterinarianVisit && (
-                            <button
-                                onClick={() => setShowVeterinarianVisitDrawer(true)}
-                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                            >
-                                Visitas Veterinárias
-                            </button>
-                        )}
-                    </div>
-                </>
-            )}
+            <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
+                <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
+            </div>
+            <div className="gap-2 w-full text-sm flex flex-wrap mb-1">
+                <button
+                    onClick={() => setShowTutorDrawer(true)}
+                    className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                >
+                    Tutor
+                </button>
+                {item.hasAnimalInterview && (
+                    <button
+                        onClick={() => setShowAnimalInterviewDrawer(true)}
+                        className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                    >
+                        Entrevista
+                    </button>
+                )}
+                {item.hasCastration && (
+                    <button
+                        onClick={() => setShowCastrationDrawer(true)}
+                        className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                    >
+                        Castração
+                    </button>
+                )}
+                {item.hasGpsTracking && (
+                    <button
+                        onClick={() => setShowGpsTrackingDrawer(true)}
+                        className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                    >
+                        Rastreio de GPS
+                    </button>
+                )}
+                {item.hasVaccineApplication && (
+                    <button
+                        onClick={() => setShowVaccineApplicationDrawer(true)}
+                        className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                    >
+                        Vacinas
+                    </button>
+                )}
+                {item.hasVeterinarianVisit && (
+                    <button
+                        onClick={() => setShowVeterinarianVisitDrawer(true)}
+                        className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                    >
+                        Visitas Veterinárias
+                    </button>
+                )}
+            </div>
         </>
     )
 }

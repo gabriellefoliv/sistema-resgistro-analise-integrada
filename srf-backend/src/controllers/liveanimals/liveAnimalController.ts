@@ -57,7 +57,7 @@ export class LiveAnimalController {
             if (error instanceof ZodError) {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
-            // Tratamento de erros específicos (para o formulário atual não há erros específicos)            
+            if (error.message === 'Este tutor já possui um animal com este nome.') return res.status(409).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }
@@ -80,8 +80,8 @@ export class LiveAnimalController {
             if (error instanceof ZodError) {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
-            // Tratamento de erros específicos (apenas o de animal não encontrado)
             if (error.message === 'Animal não encontrado.') return res.status(404).json({ error: error.message });
+            if (error.message === 'Este tutor já possui um animal com este nome.') return res.status(409).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }

@@ -25,7 +25,7 @@ export const LiveAnimalContentDefinition = {
     label: 'Animais',
     columns: [
         { key: 'name', label: 'Nome', width: 'w-4/12' },
-        { key: 'specieName', label: 'Espécie', width: 'w-4/12' },
+        { key: 'tutorName', label: 'Tutor', width: 'w-4/12' },
         { key: 'activeFormatted', label: 'Ativo?', width: 'w-3/12', }
         // deixar w-1/12 sobrando para ações
     ],
@@ -33,6 +33,7 @@ export const LiveAnimalContentDefinition = {
         return [
             { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'liveAnimalName', label: 'Animal', type: 'text' },
+            { key: 'tutorName', label: 'Tutor', type: 'text' },
             { key: 'specieName', label: 'Espécie', type: 'enum', options: speciesOptions },
             { key: 'genderName', label: 'Gênero', type: 'enum', options: gendersOptions },
             { key: 'birthDate', label: 'Data de Nascimento', type: 'date' },

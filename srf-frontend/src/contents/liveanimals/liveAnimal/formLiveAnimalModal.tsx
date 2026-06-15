@@ -24,6 +24,7 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
     const [options, setOptions] = useState<GetFormOptionsAnimalOutput | null>(null);
 
     const [name, setName] = useState<string>(liveAnimal?.name ?? '');
+    const [tutorId, setTutorId] = useState<number | ''>(liveAnimal?.tutorId ?? '');
     const [specieId, setSpecieId] = useState<number | ''>(liveAnimal?.specieId ?? '');
     const [genderId, setGenderId] = useState<number | ''>(liveAnimal?.genderId ?? '');
     const [birthDate, setBirthDate] = useState(liveAnimal?.birthDate ? liveAnimal.birthDate.split('T')[0] : '');
@@ -50,6 +51,7 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
         try {
             const data = {
                 name: name,
+                tutorId: Number(tutorId),
                 specieId: Number(specieId),
                 genderId: Number(genderId),
                 birthDate: birthDate,
@@ -99,10 +101,10 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
                                     className="border border-border rounded p-2 bg-white h-10" placeholder="Digite o nome do animal..." required />
                             </div>
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Espécie</label>
-                                <select value={specieId} onChange={(e) => setSpecieId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
+                                <label className="text-sm font-bold mb-1 text-left">Tutor</label>
+                                <select value={tutorId} onChange={(e) => setTutorId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
                                     <option value="">Selecione...</option>
-                                    {options.species.map(s => (<option key={s.id} value={s.id}>{s.name}</option>))}
+                                    {options.tutors.map(t => (<option key={t.id} value={t.id}>{t.name}</option>))}
                                 </select>
                             </div>
                             <div className="flex flex-col">
@@ -113,11 +115,18 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
                                 </select>
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-3 gap-4">
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Data de Nascimento</label>
                                 <input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)}
                                     className="border border-border rounded p-2 bg-white h-10" required />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Espécie</label>
+                                <select value={specieId} onChange={(e) => setSpecieId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
+                                    <option value="">Selecione...</option>
+                                    {options.species.map(s => (<option key={s.id} value={s.id}>{s.name}</option>))}
+                                </select>
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Gênero</label>
@@ -126,12 +135,12 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
                                     {options.genders.map(g => (<option key={g.id} value={g.id}>{g.name}</option>))}
                                 </select>
                             </div>
-                            <div className="flex flex-col col-span-2">
+                            <div className="flex flex-col col-span-3">
                                 <label className="text-sm font-bold mb-1 text-left">Foto</label>
                                 <input type="text" value={animalPicture} onChange={(e) => setAnimalPicture(e.target.value)}
                                     className="border border-border rounded p-2 bg-white h-10" placeholder="Digite o link da foto do animal..." />
                             </div>
-                            <div className="flex flex-col col-span-2">
+                            <div className="flex flex-col col-span-3">
                                 <label className="text-sm font-bold mb-1 text-left">Carteirinha</label>
                                 <input type="text" value={cardLink} onChange={(e) => setCardLink(e.target.value)}
                                     className="border border-border rounded p-2 bg-white h-10" placeholder="Digite o link da carteirinha..." />

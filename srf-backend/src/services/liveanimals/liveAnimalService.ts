@@ -110,6 +110,16 @@ export class LiveAnimalService {
     }
 
     async create(data: CreateLiveAnimalInput, requesterId: string) {
+        // Verifica se o tutor já possui um animal com esse nome
+        const existingAnimal = await prisma.liveAnimal.findFirst({
+            where: {
+                tutorId: data.tutorId,
+                name: data.name
+            }
+        });
+        if (existingAnimal) throw new Error('Este tutor já possui um animal com este nome.');
+
+
         return prisma.$transaction(async (tx) => {
             // Cria o animal
             const animal = await tx.liveAnimal.create({
@@ -141,6 +151,16 @@ export class LiveAnimalService {
     }
 
     async update(recordId: number, data: UpdateLiveAnimalInput, requesterId: string) {
+        // Verifica se o tutor já possui um animal com esse nome
+        const existingAnimal = await prisma.liveAnimal.findFirst({
+            where: {
+                tutorId: data.tutorId,
+                name: data.name,
+                id: { not: recordId }
+            }
+        });
+        if (existingAnimal) throw new Error('Este tutor já possui um animal com este nome.');
+
         return prisma.$transaction(async (tx) => {
             // Verifica se existe
             const existingAnimal = await tx.liveAnimal.findUnique({
