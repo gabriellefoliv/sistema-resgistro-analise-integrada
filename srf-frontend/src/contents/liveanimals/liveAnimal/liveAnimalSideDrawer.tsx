@@ -42,7 +42,10 @@ export function LiveAnimalSideDrawer({ filters, onClose }: LiveAnimalSideDrawerP
     const pageFilters: any[] = [];
     if (filters.liveAnimalId) {
         const firstAnimal = animals[0];
-        if (firstAnimal) pageFilters.push({ field: 'liveAnimalName', value: { type: 'text' as const, term: firstAnimal.name } });
+        if (firstAnimal) {
+            pageFilters.push({ field: 'liveAnimalName', value: { type: 'text' as const, term: firstAnimal.name } });
+            pageFilters.push({ field: 'tutorName', value: { type: 'text' as const, term: firstAnimal.tutorName } });
+        }
     }
     const pageUrl = `/animaisvivos/animais/animal-av?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
 
@@ -105,10 +108,11 @@ export function LiveAnimalSideDrawer({ filters, onClose }: LiveAnimalSideDrawerP
                                         </h4>
                                         <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
                                             <Field label="Nome" value={animal.name} />
+                                            <Field label="Tutor" value={animal.tutorName} />
                                             <Field label="Espécie" value={animal.specieName} />
                                             <Field label="Gênero" value={animal.genderName} />
                                             <Field label="Data de Nascimento" value={animal.birthDateFormatted || ''} />
-                                            <Field label="Ativo" value={animal.active ? 'Sim' : 'Não'} />
+                                            <Field label="Ativo?" value={animal.active ? 'Sim' : 'Não'} />
                                         </div>
                                     </div>
                                 )}
