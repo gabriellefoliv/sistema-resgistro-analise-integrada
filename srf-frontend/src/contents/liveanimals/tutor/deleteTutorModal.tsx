@@ -34,14 +34,14 @@ export function TutorDeleteModal({ tutor, close, refresh }: TutorDeleteModalProp
                     <h2 className="absolute top-2 text-2xl text-standard-red font-bold">Atenção!</h2>
 
                     <p className="text-center font-bold text-lg">
-                        Tem certeza que deseja deletar o tutor <span className="text-standard-blue">{tutor.name}</span>?
+                        Tem certeza que deseja EXCLUIR o tutor <span className="text-standard-blue">{tutor.name}</span>?
                     </p>
 
                     {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
-                    <div className="flex justify-center items-center gap-5 mt-4">
+                    <div className="flex justify-center items-center gap-5">
                         <button onClick={handleDelete} className="bg-standard-red text-white text-xl font-bold py-2 px-5 rounded-xl cursor-pointer" disabled={loading}>
-                            {loading ? 'Deletando...' : 'Deletar'}
+                            {loading ? 'Excluindo...' : 'Excluir'}
                         </button>
                         <button onClick={() => close()} className="bg-standard-blue text-white text-xl font-bold py-2 px-5 rounded-xl cursor-pointer">
                             Cancelar
