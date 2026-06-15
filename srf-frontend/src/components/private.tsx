@@ -5,9 +5,7 @@ import type { ReactNode } from "react";
 export function Private({ children }: { children: ReactNode }) {
     const { signedIn, loading } = useAuth();
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    if (loading) return <div>Carregando...</div>;
 
     if (!signedIn) return <Navigate to='/login' />;
 

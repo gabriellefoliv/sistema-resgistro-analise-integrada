@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { login } from '../services/userService';
+import { api, setupResponseInterceptor } from '../services/api';
 
 interface UserLogin {
     id: string;
@@ -25,6 +26,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<UserLogin | null>(null);
     const [loading, setLoading] = useState(true);
 
+    // Carregamento inicial dos dados do usuário
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         const storedToken = localStorage.getItem('token');
@@ -35,6 +37,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setLoading(false);
     }, []);
 
+    // Interceptor para desconectar automaticamente quando o token expira
+    useEffect(() => {
+        const interceptorId = setupResponseInterceptor(signOut);
+
+        return () => {
+            api.interceptors.response.eject(interceptorId);
+        };
+    }, [signOut]);
+
+    // Tentativa de login
     async function signIn(email: string, password: string) {
         try {
             const response = await login(email, password);
@@ -52,12 +64,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     }
 
+    // Logout
     function signOut() {
         setUser(null);
         localStorage.removeItem('user');
         localStorage.removeItem('token');
     }
 
+    // Atualização dos dados do usuário
     function updateUser(data: Partial<UserLogin>) {
         setUser(prev => {
             if (!prev) return prev;
@@ -67,6 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         });
     }
 
+    // Valores do contexto
     const value = {
         signedIn: !!user,
         user,
@@ -76,6 +91,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loading
     };
 
+    // Renderização do provider
     return (
         <AuthContext.Provider value={value}>
             {!loading && children}
@@ -83,6 +99,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
 }
 
+// Hook para uso do contexto
 export function useAuth() {
     const context = useContext(AuthContext);
     if (context === undefined) {
@@ -90,3 +107,4 @@ export function useAuth() {
     }
     return context;
 }
+

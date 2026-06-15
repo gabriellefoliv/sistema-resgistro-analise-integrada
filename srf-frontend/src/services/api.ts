@@ -17,3 +17,17 @@ api.interceptors.request.use(
         return Promise.reject(error);
     }
 );
+
+// Verificação de token expirado
+export function setupResponseInterceptor(onUnauthorized: () => void) {
+    const interceptorId = api.interceptors.response.use(
+        (response) => response,
+        (error) => {
+            if (error.response?.status === 401) {
+                onUnauthorized();
+            }
+            return Promise.reject(error);
+        }
+    );
+    return interceptorId;
+}
