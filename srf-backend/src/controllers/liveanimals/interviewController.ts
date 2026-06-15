@@ -57,6 +57,7 @@ export class InterviewController {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
             if (error.message === 'Já existe uma entrevista para este tutor.') return res.status(409).json({ error: error.message });
+            if (error.message === 'Um ou mais animais não estão associados ao tutor.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }

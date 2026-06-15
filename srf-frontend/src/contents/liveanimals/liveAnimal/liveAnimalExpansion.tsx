@@ -2,7 +2,6 @@ import { useState } from "react";
 import { type GetAllLiveAnimalOutput } from "srf-shared-types";
 import { LiveAnimalFormModal } from "./formLiveAnimalModal";
 import { DeleteLiveAnimalModal } from "./deleteLiveAnimalModal";
-import { AnimalInterviewSideDrawer } from "../animalInterview/animalInterviewSideDrawer";
 import { GpsTrackingSideDrawer } from "../gpsTracking/gpsTrackingSideDrawer";
 import { VaccineSideDrawer } from "../vaccine/vaccineSideDrawer";
 import { VeterinarianVisitSideDrawer } from "../veterinarianVisit/veterinarianVisitSideDrawer";
@@ -13,7 +12,6 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const [showTutorDrawer, setShowTutorDrawer] = useState(false);
-    const [showAnimalInterviewDrawer, setShowAnimalInterviewDrawer] = useState(false);
     const [showCastrationDrawer, setShowCastrationDrawer] = useState(false);
     const [showGpsTrackingDrawer, setShowGpsTrackingDrawer] = useState(false);
     const [showVaccineApplicationDrawer, setShowVaccineApplicationDrawer] = useState(false);
@@ -36,12 +34,6 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
                     close={() => setShowTutorDrawer(false)}
                 />
             )} */}
-            {showAnimalInterviewDrawer && (
-                <AnimalInterviewSideDrawer
-                    filters={{ liveAnimalId: item.id }}
-                    onClose={() => setShowAnimalInterviewDrawer(false)}
-                />
-            )}
             {showGpsTrackingDrawer && (
                 <GpsTrackingSideDrawer
                     filters={{ liveAnimalId: item.id }}
@@ -141,14 +133,6 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
                 >
                     Tutor
                 </button>
-                {item.hasAnimalInterview && (
-                    <button
-                        onClick={() => setShowAnimalInterviewDrawer(true)}
-                        className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                    >
-                        Entrevista
-                    </button>
-                )}
                 {item.hasCastration && (
                     <button
                         onClick={() => setShowCastrationDrawer(true)}

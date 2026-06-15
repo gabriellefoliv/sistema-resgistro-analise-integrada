@@ -1,17 +1,17 @@
 import z from 'zod';
 
 // Outputs
-
-export const tutorAnswerOutputSchema = z.object({
+export const answerOutputSchema = z.object({
     questionId: z.number().int(),
     questionText: z.string(),
-    answerText: z.string(),
+    answerText: z.string()
 });
 
-export const animalAnswerOutputSchema = z.object({
-    questionId: z.number().int(),
-    questionText: z.string(),
-    answerText: z.string(),
+export const animalInterviewOutputSchema = z.object({
+    id: z.number().int(),
+    liveAnimalId: z.number().int(),
+    liveAnimalName: z.string(),
+    answers: z.array(answerOutputSchema)
 });
 
 export const getAllInterviewOutputSchema = z.object({
@@ -22,23 +22,22 @@ export const getAllInterviewOutputSchema = z.object({
     tutorName: z.string(),
     date: z.string(),
     dateFormatted: z.string().optional(),
-    hasAnimalInterview: z.boolean(),
-    tutorAnswers: z.array(tutorAnswerOutputSchema),
+    tutorAnswers: z.array(answerOutputSchema),
+    animalInterviews: z.array(animalInterviewOutputSchema),
     // Campo auxiliar para filtragem por nome do animal
-    liveAnimalNames: z.string().optional(),
+    liveAnimalNames: z.string().optional()
 });
 
 // Form Options
-
-export const tutorQuestionOptionSchema = z.object({
+export const questionOptionSchema = z.object({
     id: z.number().int(),
-    text: z.string(),
+    text: z.string()
 });
 
-export const tutorQuestionFormSchema = z.object({
+export const questionFormSchema = z.object({
     id: z.number().int(),
     text: z.string(),
-    options: z.array(tutorQuestionOptionSchema),
+    options: z.array(questionOptionSchema)
 });
 
 export const getFormOptionsInterviewOutputSchema = z.object({
@@ -46,32 +45,47 @@ export const getFormOptionsInterviewOutputSchema = z.object({
         id: z.number().int(),
         name: z.string(),
     })),
-    tutorQuestions: z.array(tutorQuestionFormSchema),
+    tutorQuestions: z.array(questionFormSchema),
+    liveAnimals: z.array(z.object({
+        id: z.number().int(),
+        name: z.string(),
+        tutorId: z.number().int(),
+    })),
+    animalQuestions: z.array(questionFormSchema)
 });
 
 // Inputs
-
 export const interviewAnswerInputSchema = z.object({
     questionId: z.number().int({ error: 'ID da pergunta inválido' }),
     text: z.string().optional().nullable(),
     answerOptionId: z.number().int().optional().nullable(),
 });
 
+export const animalInterviewInputSchema = z.object({
+    liveAnimalId: z.number().int({ error: 'ID do animal inválido' }),
+    answers: z.array(interviewAnswerInputSchema)
+});
+
 export const createInterviewInputSchema = z.object({
     tutorId: z.number().int({ error: 'ID do tutor inválido' }),
     date: z.string({ error: 'Data inválida' }),
     answers: z.array(interviewAnswerInputSchema),
+    animalInterviews: z.array(animalInterviewInputSchema)
 });
 
-export const updateInterviewInputSchema = createInterviewInputSchema;
+export const updateInterviewInputSchema = z.object({
+    tutorId: z.number().int({ error: 'ID do tutor inválido' }),
+    date: z.string({ error: 'Data inválida' }),
+    answers: z.array(interviewAnswerInputSchema),
+    animalInterviews: z.array(animalInterviewInputSchema)
+});
 
 // Types
-
-export type TutorAnswerOutput = z.infer<typeof tutorAnswerOutputSchema>;
-export type AnimalAnswerOutput = z.infer<typeof animalAnswerOutputSchema>;
+export type AnswerOutput = z.infer<typeof answerOutputSchema>;
+export type AnimalInterviewOutput = z.infer<typeof animalInterviewOutputSchema>;
 export type GetAllInterviewOutput = z.infer<typeof getAllInterviewOutputSchema>;
-export type TutorQuestionForm = z.infer<typeof tutorQuestionFormSchema>;
 export type GetFormOptionsInterviewOutput = z.infer<typeof getFormOptionsInterviewOutputSchema>;
 export type InterviewAnswerInput = z.infer<typeof interviewAnswerInputSchema>;
+export type AnimalInterviewInput = z.infer<typeof animalInterviewInputSchema>;
 export type CreateInterviewInput = z.infer<typeof createInterviewInputSchema>;
 export type UpdateInterviewInput = z.infer<typeof updateInterviewInputSchema>;

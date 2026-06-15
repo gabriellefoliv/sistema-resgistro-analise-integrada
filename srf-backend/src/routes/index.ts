@@ -16,7 +16,6 @@ import { eggCystAnalysisRoutes } from "./eggCystAnalysisRoutes";
 import { molecularAnalysisRoutes } from "./molecularAnalysisRoutes";
 import { gpsTrackingRoutes } from "./gpsTrackingRoutes";
 import { interviewRoutes } from "./interviewRoutes";
-import { animalInterviewRoutes } from "./animalInterviewRoutes";
 import { liveAnimalRoutes } from "./liveAnimalRoutes";
 import { castrationRoutes } from "./castrationRoutes";
 
@@ -39,7 +38,6 @@ router.use(eggCystAnalysisRoutes);
 router.use(molecularAnalysisRoutes);
 router.use(gpsTrackingRoutes);
 router.use(interviewRoutes);
-router.use(animalInterviewRoutes);
 router.use(liveAnimalRoutes);
 router.use(castrationRoutes);
 

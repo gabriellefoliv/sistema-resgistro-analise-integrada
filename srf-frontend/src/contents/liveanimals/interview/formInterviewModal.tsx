@@ -22,6 +22,11 @@ interface AnswerState {
     answerOptionId: number | null;
 }
 
+interface AnimalInterviewState {
+    liveAnimalId: number;
+    answers: AnswerState[];
+}
+
 export function InterviewFormModal({ interview, close, refresh }: InterviewFormModalProps) {
     const isEditing = !!interview;
 
@@ -34,6 +39,7 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
         interview?.date ? interview.date.split('T')[0] : ''
     );
     const [answers, setAnswers] = useState<AnswerState[]>([]);
+    const [animalInterviews, setAnimalInterviews] = useState<AnimalInterviewState[]>([]);
 
     useEffect(() => {
         async function loadOptions() {
@@ -41,13 +47,12 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
                 const opts = await getInterviewFormOptions();
                 setOptions(opts);
 
-                // Inicializa as respostas com base nas perguntas
+                // Inicializa as respostas do tutor
                 if (interview) {
                     // Modo edição: preencher com respostas existentes
                     const initialAnswers = opts.tutorQuestions.map(q => {
                         const existingAnswer = interview.tutorAnswers.find(a => a.questionId === q.id);
                         if (existingAnswer && q.options.length > 0) {
-                            // Encontra a opção que corresponde ao texto da resposta
                             const matchingOption = q.options.find(o => o.text === existingAnswer.answerText);
                             return {
                                 questionId: q.id,
@@ -62,6 +67,28 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
                         };
                     });
                     setAnswers(initialAnswers);
+
+                    // Inicializa as entrevistas dos animais existentes
+                    const initialAnimalInterviews = interview.animalInterviews.map(ai => ({
+                        liveAnimalId: ai.liveAnimalId,
+                        answers: opts.animalQuestions.map(q => {
+                            const existingAnswer = ai.answers.find(a => a.questionId === q.id);
+                            if (existingAnswer && q.options.length > 0) {
+                                const matchingOption = q.options.find(o => o.text === existingAnswer.answerText);
+                                return {
+                                    questionId: q.id,
+                                    text: '',
+                                    answerOptionId: matchingOption?.id ?? null,
+                                };
+                            }
+                            return {
+                                questionId: q.id,
+                                text: existingAnswer?.answerText ?? '',
+                                answerOptionId: null,
+                            };
+                        }),
+                    }));
+                    setAnimalInterviews(initialAnimalInterviews);
                 } else {
                     // Modo criação: inicializa vazio
                     const initialAnswers = opts.tutorQuestions.map(q => ({
@@ -78,7 +105,7 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
         loadOptions();
     }, []);
 
-    function updateAnswer(questionId: number, field: 'text' | 'answerOptionId', value: string | number | null) {
+    function updateTutorAnswer(questionId: number, field: 'text' | 'answerOptionId', value: string | number | null) {
         setAnswers(prev => prev.map(a => {
             if (a.questionId !== questionId) return a;
             if (field === 'text') {
@@ -86,6 +113,40 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
             }
             return { ...a, answerOptionId: value as number | null, text: '' };
         }));
+    }
+
+    function updateAnimalAnswer(animalIndex: number, questionId: number, field: 'text' | 'answerOptionId', value: string | number | null) {
+        setAnimalInterviews(prev => prev.map((ai, idx) => {
+            if (idx !== animalIndex) return ai;
+            return {
+                ...ai,
+                answers: ai.answers.map(a => {
+                    if (a.questionId !== questionId) return a;
+                    if (field === 'text') {
+                        return { ...a, text: value as string, answerOptionId: null };
+                    }
+                    return { ...a, answerOptionId: value as number | null, text: '' };
+                }),
+            };
+        }));
+    }
+
+
+    function getAnimalName(animalId: number): string {
+        return options?.liveAnimals.find(a => a.id === animalId)?.name ?? `Animal #${animalId}`;
+    }
+
+    // Animais disponíveis para adicionar (modo edição: todos; modo criação: só do tutor)
+    function getAvailableAnimals() {
+        if (!options) return [];
+        const usedIds = new Set(animalInterviews.map(ai => ai.liveAnimalId));
+        if (isEditing) {
+            // Na edição, pode adicionar qualquer animal
+            return options.liveAnimals.filter(a => !usedIds.has(a.id));
+        } else {
+            // Na criação, apenas animais do tutor selecionado
+            return options.liveAnimals.filter(a => a.tutorId === selectedTutorId && !usedIds.has(a.id));
+        }
     }
 
     async function handleSubmit(e: React.FormEvent) {
@@ -110,6 +171,14 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
                     text: a.answerOptionId ? null : (a.text || null),
                     answerOptionId: a.answerOptionId || null,
                 })),
+                animalInterviews: animalInterviews.map(ai => ({
+                    liveAnimalId: ai.liveAnimalId,
+                    answers: ai.answers.map(a => ({
+                        questionId: a.questionId,
+                        text: a.answerOptionId ? null : (a.text || null),
+                        answerOptionId: a.answerOptionId || null,
+                    })),
+                })),
             };
             if (isEditing && interview) {
                 await updateInterview(interview.id, data);
@@ -125,6 +194,69 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
         }
     }
 
+    // Ao mudar o tutor no modo criação, auto-popular com os animais do tutor
+    function handleTutorChange(newTutorId: number | '') {
+        setSelectedTutorId(newTutorId);
+
+        if (!isEditing && options && newTutorId) {
+            const tutorAnimals = options.liveAnimals.filter(a => a.tutorId === newTutorId);
+            const newAnimalInterviews = tutorAnimals.map(animal => ({
+                liveAnimalId: animal.id,
+                answers: options.animalQuestions.map(q => ({
+                    questionId: q.id,
+                    text: '',
+                    answerOptionId: null,
+                })),
+            }));
+            setAnimalInterviews(newAnimalInterviews);
+        } else if (!isEditing) {
+            setAnimalInterviews([]);
+        }
+    }
+
+    function handleClearTutorAnswers() {
+        setAnswers(prev => prev.map(a => ({
+            ...a,
+            text: '',
+            answerOptionId: null,
+        })));
+    }
+
+
+    function handleAddAnimal(animalId: number) {
+        if (!options) return;
+        // Não adicionar se já existe
+        if (animalInterviews.some(ai => ai.liveAnimalId === animalId)) return;
+
+        const newAnimalInterview: AnimalInterviewState = {
+            liveAnimalId: animalId,
+            answers: options.animalQuestions.map(q => ({
+                questionId: q.id,
+                text: '',
+                answerOptionId: null,
+            })),
+        };
+        setAnimalInterviews(prev => [...prev, newAnimalInterview]);
+    }
+
+    function handleRemoveAnimal(animalIndex: number) {
+        setAnimalInterviews(prev => prev.filter((_, idx) => idx !== animalIndex));
+    }
+
+    function handleClearAnimalAnswers(animalIndex: number) {
+        setAnimalInterviews(prev => prev.map((ai, idx) => {
+            if (idx !== animalIndex) return ai;
+            return {
+                ...ai,
+                answers: ai.answers.map(a => ({
+                    ...a,
+                    text: '',
+                    answerOptionId: null,
+                })),
+            };
+        }));
+    }
+
     if (!options) {
         return (
             <ModalPortal>
@@ -134,6 +266,8 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
             </ModalPortal>
         );
     }
+
+    const availableAnimals = getAvailableAnimals();
 
     return (
         <ModalPortal>
@@ -153,7 +287,7 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
                                     <label className="text-sm font-bold mb-1 text-left">Tutor</label>
                                     <select
                                         value={selectedTutorId}
-                                        onChange={(e) => setSelectedTutorId(e.target.value ? Number(e.target.value) : '')}
+                                        onChange={(e) => handleTutorChange(e.target.value ? Number(e.target.value) : '')}
                                         className="border border-border rounded p-2 bg-white h-10"
                                         required
                                     >
@@ -176,9 +310,19 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
                             </div>
                         </fieldset>
 
-                        {/* Perguntas */}
-                        <fieldset className="border border-border rounded p-4">
+                        {/* Perguntas do Tutor */}
+                        <fieldset className="relative border border-border rounded p-4">
                             <legend className="text-sm font-bold text-standard-blue px-2">Respostas sobre o Tutor</legend>
+                            <div className="absolute top-[-24px] right-2 bg-white px-2 rounded">
+                                <button
+                                    type="button"
+                                    onClick={() => handleClearTutorAnswers()}
+                                    className="text-standard-blue font-bold text-xs cursor-pointer"
+                                    title="Limpar respostas do tutor"
+                                >
+                                    ⭯ Limpar
+                                </button>
+                            </div>
                             <div className="grid grid-cols-2 gap-4">
                                 {options.tutorQuestions.map(question => {
                                     const answer = answers.find(a => a.questionId === question.id);
@@ -190,7 +334,7 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
                                             {hasOptions ? (
                                                 <select
                                                     value={answer?.answerOptionId ?? ''}
-                                                    onChange={(e) => updateAnswer(question.id, 'answerOptionId', e.target.value ? Number(e.target.value) : null)}
+                                                    onChange={(e) => updateTutorAnswer(question.id, 'answerOptionId', e.target.value ? Number(e.target.value) : null)}
                                                     className="border border-border rounded p-2 bg-white h-10"
                                                 >
                                                     <option value="">Selecione...</option>
@@ -202,7 +346,7 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
                                                 <input
                                                     type="text"
                                                     value={answer?.text ?? ''}
-                                                    onChange={(e) => updateAnswer(question.id, 'text', e.target.value)}
+                                                    onChange={(e) => updateTutorAnswer(question.id, 'text', e.target.value)}
                                                     className="border border-border rounded p-2 bg-white h-10"
                                                     placeholder="Digite a resposta..."
                                                 />
@@ -212,6 +356,96 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
                                 })}
                             </div>
                         </fieldset>
+
+                        {/* Entrevistas dos Animais */}
+                        {selectedTutorId && (
+                            <>
+                                {animalInterviews.map((ai, animalIndex) => (
+                                    <fieldset key={ai.liveAnimalId} className="border border-border rounded p-4 relative">
+                                        <legend className="text-sm font-bold text-standard-blue px-2 flex items-center gap-2">
+                                            Respostas sobre {getAnimalName(ai.liveAnimalId)}
+                                        </legend>
+                                        <div className="absolute top-[-24px] right-2 bg-white px-2 rounded">
+                                            <button
+                                                type="button"
+                                                onClick={() => handleClearAnimalAnswers(animalIndex)}
+                                                className="text-standard-blue font-bold text-xs cursor-pointer"
+                                                title="Limpar respostas do animal"
+                                            >
+                                                ⭯ Limpar
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => handleRemoveAnimal(animalIndex)}
+                                                className="text-standard-red font-bold text-xs cursor-pointer ml-2"
+                                                title="Remover animal"
+                                            >
+                                                ✕ Remover
+                                            </button>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            {options.animalQuestions.map(question => {
+                                                const answer = ai.answers.find(a => a.questionId === question.id);
+                                                const hasOptions = question.options.length > 0;
+
+                                                return (
+                                                    <div key={question.id} className="flex flex-col">
+                                                        <label className="text-sm font-bold mb-1 text-left">{question.text}</label>
+                                                        {hasOptions ? (
+                                                            <select
+                                                                value={answer?.answerOptionId ?? ''}
+                                                                onChange={(e) => updateAnimalAnswer(animalIndex, question.id, 'answerOptionId', e.target.value ? Number(e.target.value) : null)}
+                                                                className="border border-border rounded p-2 bg-white h-10"
+                                                            >
+                                                                <option value="">Selecione...</option>
+                                                                {question.options.map(opt => (
+                                                                    <option key={opt.id} value={opt.id}>{opt.text}</option>
+                                                                ))}
+                                                            </select>
+                                                        ) : (
+                                                            <input
+                                                                type="text"
+                                                                value={answer?.text ?? ''}
+                                                                onChange={(e) => updateAnimalAnswer(animalIndex, question.id, 'text', e.target.value)}
+                                                                className="border border-border rounded p-2 bg-white h-10"
+                                                                placeholder="Digite a resposta..."
+                                                            />
+                                                        )}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </fieldset>
+                                ))}
+
+                                {/* Adicionar Animal */}
+                                {availableAnimals.length > 0 && (
+                                    <div className="flex items-center gap-3 border border-dashed border-border rounded p-3">
+                                        <label className="text-sm font-bold text-text-main whitespace-nowrap">Adicionar Animal:</label>
+                                        <select
+                                            value=""
+                                            onChange={(e) => {
+                                                if (e.target.value) handleAddAnimal(Number(e.target.value));
+                                            }}
+                                            className="border border-border rounded p-2 bg-white h-10 flex-1"
+                                        >
+                                            <option value="">Selecione um animal para adicionar...</option>
+                                            {availableAnimals.map(a => (
+                                                <option key={a.id} value={a.id}>{a.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                )}
+
+                                {animalInterviews.length === 0 && availableAnimals.length === 0 && (
+                                    <p className="text-sm text-text-light-gray italic text-center">
+                                        {isEditing
+                                            ? 'Nenhum animal disponível para adicionar.'
+                                            : 'Este tutor não possui animais associados.'}
+                                    </p>
+                                )}
+                            </>
+                        )}
 
                         {error && <p className="text-red-500 text-sm">{error}</p>}
 

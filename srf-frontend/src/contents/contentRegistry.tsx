@@ -60,7 +60,6 @@ import { fetchEggCystAnalysisData, EggCystAnalysisContent } from "./liveanimals/
 import { fetchMolecularAnalysisData, MolecularAnalysisContent } from "./liveanimals/molecularAnalysis/index";
 import { fetchGpsTrackingData, GpsTrackingContent } from "./liveanimals/gpsTracking/index";
 import { fetchInterviewData, InterviewContent } from "./liveanimals/interview/index";
-import { fetchAnimalInterviewData, AnimalInterviewContent } from "./liveanimals/animalInterview/index";
 import { fetchLiveAnimalsData, LiveAnimalContent } from "./liveanimals/liveAnimal/index";
 import { fetchCastrationData, CastrationContent } from "./liveanimals/castration/index";
 
@@ -185,12 +184,6 @@ export function initRegistry() {
         component: InterviewContent
     });
 
-    registerContent('animaisvivos', 'entrevistas', 'Entrevistas', {
-        id: AnimalInterviewContent.id,
-        label: AnimalInterviewContent.label,
-        loader: fetchAnimalInterviewData,
-        component: AnimalInterviewContent
-    });
 
     registerContent('animaisvivos', 'animais', 'Animais', {
         id: LiveAnimalContent.id,

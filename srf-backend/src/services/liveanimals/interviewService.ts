@@ -10,6 +10,7 @@ import {
 export class InterviewService {
     private auditService = new AuditService();
     private formId = 'entrevista';
+    private tableName = 'tutorInterview';
 
     async getAll(requesterId: string): Promise<GetAllInterviewOutput[]> {
         const interviews = await prisma.tutorInterview.findMany({
@@ -51,9 +52,9 @@ export class InterviewService {
 
         const createLogs = await prisma.changeLog.findMany({
             where: {
-                table: 'tutorInterview',
+                table: this.tableName,
                 recordId: { in: interviewIds.map(String) },
-                action: 'CREATE',
+                action: 'CREATE'
             },
             select: {
                 recordId: true,
@@ -66,9 +67,9 @@ export class InterviewService {
             creatorMap.set(log.recordId, log.auditLog.userId);
         }
 
-        const results = await Promise.all(
+        const interviewsWithPermission = await Promise.all(
             interviews.map(async (i) => {
-                const permission = await this.auditService.canUserEditRecord(requesterId, 'tutorInterview', String(i.id), this.formId);
+                const permission = await this.auditService.canUserEditRecord(requesterId, this.tableName, String(i.id), this.formId);
 
                 function formatAnswer(answer: { text: string | null; quantity: number | null; tutorAnswerOption: { text: string } | null }): string {
                     if (answer.tutorAnswerOption) return answer.tutorAnswerOption.text;
@@ -87,7 +88,7 @@ export class InterviewService {
                 const tutorAnswers = i.tutorAnswer.map(a => ({
                     questionId: a.tutorQuestionId,
                     questionText: a.tutorQuestion.text,
-                    answerText: formatAnswer(a),
+                    answerText: formatAnswer(a)
                 }));
 
                 const animalInterviews = i.animalInterview.map(ai => ({
@@ -97,7 +98,7 @@ export class InterviewService {
                     answers: ai.animalAnswer.map(aa => ({
                         questionId: aa.animalQuestionId,
                         questionText: aa.animalQuestion.text,
-                        answerText: formatAnimalAnswer(aa),
+                        answerText: formatAnimalAnswer(aa)
                     })),
                 }));
 
@@ -110,19 +111,24 @@ export class InterviewService {
                     tutorId: i.tutorId,
                     tutorName: i.tutor.name,
                     date: i.date.toISOString(),
-                    hasAnimalInterview: animalInterviews.length > 0,
-                    tutorAnswers,
-                    liveAnimalNames,
+                    tutorAnswers: tutorAnswers,
+                    animalInterviews: animalInterviews,
+                    liveAnimalNames: liveAnimalNames
                 };
             })
         );
 
-        return results;
+        return interviewsWithPermission;
     }
 
     async getFormOptions(): Promise<GetFormOptionsInterviewOutput> {
         const tutors = await prisma.tutor.findMany({
             select: { id: true, name: true },
+            orderBy: { name: 'asc' }
+        });
+
+        const liveAnimals = await prisma.liveAnimal.findMany({
+            select: { id: true, name: true, tutorId: true },
             orderBy: { name: 'asc' }
         });
 
@@ -137,6 +143,17 @@ export class InterviewService {
             orderBy: { id: 'asc' }
         });
 
+        const animalQuestions = await prisma.animalQuestion.findMany({
+            select: {
+                id: true,
+                text: true,
+                animalAnswerOption: {
+                    select: { id: true, text: true }
+                }
+            },
+            orderBy: { id: 'asc' }
+        });
+
         return {
             tutors: tutors.map(t => ({ id: t.id, name: t.name })),
             tutorQuestions: tutorQuestions.map(q => ({
@@ -144,17 +161,41 @@ export class InterviewService {
                 text: q.text,
                 options: q.tutorAnswerOption.map(o => ({ id: o.id, text: o.text })),
             })),
+            liveAnimals: liveAnimals.map(a => ({
+                id: a.id,
+                name: a.name,
+                tutorId: a.tutorId,
+            })),
+            animalQuestions: animalQuestions.map(a => ({
+                id: a.id,
+                text: a.text,
+                options: a.animalAnswerOption.map(o => ({ id: o.id, text: o.text })),
+            }))
         };
     }
 
     async create(data: CreateInterviewInput, requesterId: string) {
-        return prisma.$transaction(async (tx) => {
-            // Verifica se já existe entrevista para o tutor
-            const existing = await tx.tutorInterview.findFirst({
-                where: { tutorId: data.tutorId }
-            });
-            if (existing) throw new Error('Já existe uma entrevista para este tutor.');
+        // Verifica se já existe entrevista para o tutor
+        const existingInterview = await prisma.tutorInterview.findFirst({
+            where: { tutorId: data.tutorId }
+        });
+        if (existingInterview) throw new Error('Já existe uma entrevista para este tutor.');
 
+        // Verifica se os animais estão associados ao tutor
+        if (data.animalInterviews.length > 0) {
+            const animalIds = data.animalInterviews.map(ai => ai.liveAnimalId);
+            const animalAssociation = await prisma.liveAnimal.findMany({
+                where: {
+                    id: { in: animalIds },
+                    tutorId: data.tutorId
+                }
+            });
+            if (animalAssociation.length !== animalIds.length) {
+                throw new Error('Um ou mais animais não estão associados ao tutor.');
+            }
+        }
+
+        return prisma.$transaction(async (tx) => {
             // Cria a entrevista do tutor
             const interview = await tx.tutorInterview.create({
                 data: {
@@ -163,7 +204,7 @@ export class InterviewService {
                 }
             });
 
-            // Cria as respostas
+            // Cria as respostas do tutor
             for (const answer of data.answers) {
                 await tx.tutorAnswer.create({
                     data: {
@@ -175,10 +216,34 @@ export class InterviewService {
                 });
             }
 
+            // Cria as entrevistas dos animais
+            for (const animalInterviewInput of data.animalInterviews) {
+                const animalInterview = await tx.animalInterview.create({
+                    data: {
+                        tutorInterviewId: interview.id,
+                        liveAnimalId: animalInterviewInput.liveAnimalId
+                    }
+                });
+
+                // Cria as respostas do animal
+                for (const answer of animalInterviewInput.answers) {
+                    await tx.animalAnswer.create({
+                        data: {
+                            animalInterviewId: animalInterview.id,
+                            animalQuestionId: answer.questionId,
+                            text: answer.answerOptionId ? null : (answer.text || null),
+                            animalAnswerOptionId: answer.answerOptionId || null,
+                        }
+                    });
+                }
+            }
+
+
+
             // Audit log
             const changes = [
                 {
-                    table: 'tutorInterview',
+                    table: this.tableName,
                     recordId: String(interview.id),
                     action: 'CREATE' as const,
                     newData: interview
@@ -191,22 +256,22 @@ export class InterviewService {
     }
 
     async update(recordId: number, data: UpdateInterviewInput, requesterId: string) {
+        // Verifica se a entrevista existe
+        const existing = await prisma.tutorInterview.findFirst({
+            where: { id: recordId }
+        });
+        if (!existing) throw new Error('Entrevista não encontrada.');
+
+        // Verifica duplicidade de tutor (outro registro)
+        const duplicate = await prisma.tutorInterview.findFirst({
+            where: {
+                tutorId: data.tutorId,
+                id: { not: recordId }
+            }
+        });
+        if (duplicate) throw new Error('Já existe uma entrevista para este tutor.');
+
         return prisma.$transaction(async (tx) => {
-            // Verifica se a entrevista existe
-            const existing = await tx.tutorInterview.findFirst({
-                where: { id: recordId }
-            });
-            if (!existing) throw new Error('Entrevista não encontrada.');
-
-            // Verifica duplicidade de tutor (outro registro)
-            const duplicate = await tx.tutorInterview.findFirst({
-                where: {
-                    tutorId: data.tutorId,
-                    id: { not: recordId }
-                }
-            });
-            if (duplicate) throw new Error('Já existe uma entrevista para este tutor.');
-
             // Atualiza a entrevista
             const interview = await tx.tutorInterview.update({
                 where: { id: recordId },
@@ -216,7 +281,7 @@ export class InterviewService {
                 }
             });
 
-            // Remove respostas antigas e recria
+            // Remove respostas do tutor antigas e recria
             await tx.tutorAnswer.deleteMany({
                 where: { tutorInterviewId: recordId }
             });
@@ -232,10 +297,74 @@ export class InterviewService {
                 });
             }
 
+            // Buscar animal interviews existentes vinculadas a esta entrevista
+            const existingAnimalInterviews = await tx.animalInterview.findMany({
+                where: { tutorInterviewId: recordId },
+                select: { id: true, liveAnimalId: true }
+            });
+
+            const inputAnimalIds = new Set(data.animalInterviews.map(ai => ai.liveAnimalId));
+            const existingAnimalIds = new Map(existingAnimalInterviews.map(ai => [ai.liveAnimalId, ai.id]));
+
+            // Excluir animal interviews que foram removidas (e suas respostas)
+            for (const existingAi of existingAnimalInterviews) {
+                if (!inputAnimalIds.has(existingAi.liveAnimalId)) {
+                    await tx.animalAnswer.deleteMany({
+                        where: { animalInterviewId: existingAi.id }
+                    });
+                    await tx.animalInterview.delete({
+                        where: { id: existingAi.id }
+                    });
+                }
+            }
+
+            // Para cada animal no input: atualizar existente ou criar novo
+            for (const animalInterviewInput of data.animalInterviews) {
+                const existingAiId = existingAnimalIds.get(animalInterviewInput.liveAnimalId);
+
+                if (existingAiId) {
+                    // Já existe vinculada a esta entrevista → atualizar respostas
+                    await tx.animalAnswer.deleteMany({
+                        where: { animalInterviewId: existingAiId }
+                    });
+
+                    for (const answer of animalInterviewInput.answers) {
+                        await tx.animalAnswer.create({
+                            data: {
+                                animalInterviewId: existingAiId,
+                                animalQuestionId: answer.questionId,
+                                text: answer.answerOptionId ? null : (answer.text || null),
+                                animalAnswerOptionId: answer.answerOptionId || null,
+                            }
+                        });
+                    }
+                } else {
+                    // Criar nova animal interview
+                    const newAi = await tx.animalInterview.create({
+                        data: {
+                            tutorInterviewId: interview.id,
+                            liveAnimalId: animalInterviewInput.liveAnimalId
+                        }
+                    });
+
+                    for (const answer of animalInterviewInput.answers) {
+                        await tx.animalAnswer.create({
+                            data: {
+                                animalInterviewId: newAi.id,
+                                animalQuestionId: answer.questionId,
+                                text: answer.answerOptionId ? null : (answer.text || null),
+                                animalAnswerOptionId: answer.answerOptionId || null,
+                            }
+                        });
+                    }
+                }
+            }
+
+
             // Audit log
             const changes = [
                 {
-                    table: 'tutorInterview',
+                    table: this.tableName,
                     recordId: String(interview.id),
                     action: 'UPDATE' as const,
                     newData: interview
@@ -259,10 +388,18 @@ export class InterviewService {
                 where: { tutorInterviewId: recordId }
             });
 
-            // Desvincula entrevistas de animais (não deleta, apenas remove a FK)
-            await tx.animalInterview.updateMany({
+            // Exclui entrevistas de animais vinculadas e suas respostas
+            const linkedAnimalInterviews = await tx.animalInterview.findMany({
                 where: { tutorInterviewId: recordId },
-                data: { tutorInterviewId: null }
+                select: { id: true }
+            });
+            for (const ai of linkedAnimalInterviews) {
+                await tx.animalAnswer.deleteMany({
+                    where: { animalInterviewId: ai.id }
+                });
+            }
+            await tx.animalInterview.deleteMany({
+                where: { tutorInterviewId: recordId }
             });
 
             // Deleta a entrevista
@@ -273,7 +410,7 @@ export class InterviewService {
             // Audit log
             const changes = [
                 {
-                    table: 'tutorInterview',
+                    table: this.tableName,
                     recordId: String(recordId),
                     action: 'DELETE' as const,
                     oldData: existing

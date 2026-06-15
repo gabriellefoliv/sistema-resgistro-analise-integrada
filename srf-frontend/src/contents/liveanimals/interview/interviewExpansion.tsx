@@ -2,12 +2,10 @@ import { useState } from "react";
 import { type GetAllInterviewOutput } from "srf-shared-types";
 import { InterviewFormModal } from "./formInterviewModal";
 import { DeleteInterviewModal } from "./deleteInterviewModal";
-import { AnimalInterviewSideDrawer } from "../animalInterview/animalInterviewSideDrawer";
 
 export function InterviewExpansion({ item, close, refresh }: { item: GetAllInterviewOutput; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [showAnimalInterviewDrawer, setShowAnimalInterviewDrawer] = useState(false);
 
     return (
         <>
@@ -23,12 +21,6 @@ export function InterviewExpansion({ item, close, refresh }: { item: GetAllInter
                     interview={item}
                     close={() => setShowDeleteModal(false)}
                     refresh={refresh}
-                />
-            )}
-            {showAnimalInterviewDrawer && (
-                <AnimalInterviewSideDrawer
-                    filters={{ liveAnimalId: item.id }}
-                    onClose={() => setShowAnimalInterviewDrawer(false)}
                 />
             )}
 
@@ -63,7 +55,7 @@ export function InterviewExpansion({ item, close, refresh }: { item: GetAllInter
             </div>
             <hr className="border-gray-200" />
 
-            {/* Respostas sobre o Tutor */}
+            {/* Respostas sobre o tutor */}
             {(item.tutorAnswers?.length ?? 0) > 0 && (
                 <>
                     <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
@@ -80,20 +72,24 @@ export function InterviewExpansion({ item, close, refresh }: { item: GetAllInter
                 </>
             )}
 
-            {/* Animais Associados */}
-            {item.hasAnimalInterview && (
+            {/* Respostas sobre os animais */}
+            {(item.animalInterviews.length ?? 0) > 0 && (
                 <>
-                    <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
-                        <h3 className="font-bold text-text-main uppercase">Respostas sobre os Animais</h3>
-                    </div>
-                    <div className="gap-2 w-full text-sm flex flex-wrap mb-1">
-                        <button
-                            onClick={() => setShowAnimalInterviewDrawer(true)}
-                            className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                        >
-                            Respostas sobre os Animais
-                        </button>
-                    </div>
+                    {item.animalInterviews.map(ai => (
+                        <div key={ai.id} className="flex flex-col w-full">
+                            <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
+                                <h3 className="font-bold text-text-main uppercase">Respostas sobre {ai.liveAnimalName}</h3>
+                            </div>
+                            <div className="gap-2 w-full text-sm grid grid-cols-2 mb-2">
+                                {ai.answers.map(a => (
+                                    <div key={a.questionId} className="flex flex-col w-full">
+                                        <label className="ml-1 font-bold">{a.questionText}</label>
+                                        <input type="text" disabled value={a.answerText || 'Sem resposta'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
                 </>
             )}
         </>

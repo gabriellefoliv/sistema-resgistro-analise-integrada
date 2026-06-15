@@ -82,7 +82,7 @@ export class LiveAnimalService {
                     hasCastration: !!a.castration,
                     hasVeterinarianVisit: a.veterinarianVisit.length > 0,
                     hasVaccineApplication: a.vaccineApplication.length > 0,
-                    hasAnimalInterview: !!a.animalInterview
+                    hasAnimalInterview: a.animalInterview.length > 0
                 };
             })
         );
