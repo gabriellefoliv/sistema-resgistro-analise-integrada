@@ -73,7 +73,7 @@ export function InterviewExpansion({ item, close, refresh }: { item: GetAllInter
             )}
 
             {/* Respostas sobre os animais */}
-            {(item.animalInterviews.length ?? 0) > 0 && (
+            {(item.animalInterviews?.length ?? 0) > 0 && (
                 <>
                     {item.animalInterviews.map(ai => (
                         <div key={ai.id} className="flex flex-col w-full">
