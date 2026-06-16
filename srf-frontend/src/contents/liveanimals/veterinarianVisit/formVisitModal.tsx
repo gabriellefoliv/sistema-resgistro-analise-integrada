@@ -22,7 +22,6 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
     const [error, setError] = useState<string | null>(null);
     const [options, setOptions] = useState<VeterinarianVisitFormOptions | null>(null);
 
-    // Form fields
     const [liveAnimalId, setLiveAnimalId] = useState<number | ''>(visit?.liveAnimalId || '');
     const [veterinarianId, setVeterinarianId] = useState<number | ''>(visit?.veterinarianId || '');
     const [date, setDate] = useState(visit?.date ? new Date(visit.date).toISOString().slice(0, 10) : '');
@@ -43,20 +42,6 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
         }
         loadOptions();
     }, []);
-
-    function addMeasurement() {
-        setBodyMeasurements([...bodyMeasurements, { bodyMeasurementTypeId: 0, value: 0 }]);
-    }
-
-    function removeMeasurement(index: number) {
-        setBodyMeasurements(bodyMeasurements.filter((element, i) => i !== index));
-    }
-
-    function updateMeasurement(index: number, field: string, value: any) {
-        const updated = [...bodyMeasurements];
-        (updated[index] as any)[field] = field === 'value' ? parseFloat(value) : Number(value);
-        setBodyMeasurements(updated);
-    }
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -102,6 +87,23 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
         }
     }
 
+    function handleAddMeasurement(bodyMeasurementTypeId: number) {
+        if (!options) return;
+        if (bodyMeasurements.some(bm => bm.bodyMeasurementTypeId === bodyMeasurementTypeId)) return;
+
+        setBodyMeasurements(prev => [...prev, { bodyMeasurementTypeId, value: 0 }]);
+    }
+
+    function handleRemoveMeasurement(index: number) {
+        setBodyMeasurements(bodyMeasurements.filter((element, i) => i !== index));
+    }
+
+    function handleUpdateMeasurement(index: number, field: string, value: any) {
+        const updated = [...bodyMeasurements];
+        (updated[index] as any)[field] = field === 'value' ? parseFloat(value) : Number(value);
+        setBodyMeasurements(updated);
+    }
+
     if (!options) {
         return (
             <ModalPortal>
@@ -125,14 +127,13 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
                     >
                         ✕
                     </button>
-
                     <h2 className="absolute top-2 text-2xl text-standard-blue font-bold">
                         {isEditing ? 'Editando Visita Veterinária' : 'Nova Visita Veterinária'}
                     </h2>
 
-                    <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4 mt-2 flex-1 min-h-0">
+                    <form onSubmit={handleSubmit} className="w-full flex flex-col overflow-y-auto gap-4 mt-2 flex-1 min-h-0">
+                        {/* Detalhes da Visita */}
                         <div className="grid grid-cols-2 gap-4">
-                            {/* Animal */}
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Animal</label>
                                 <select
@@ -148,7 +149,6 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
                                 </select>
                             </div>
 
-                            {/* Veterinarian */}
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Veterinário</label>
                                 <select
@@ -164,7 +164,6 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
                                 </select>
                             </div>
 
-                            {/* Date */}
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Data da Realização</label>
                                 <input
@@ -176,7 +175,6 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
                                 />
                             </div>
 
-                            {/* Animal Picture */}
                             <div className="flex flex-col col-span-2">
                                 <label className="text-sm font-bold mb-1 text-left">Foto do Animal (Opcional)</label>
                                 <input
@@ -188,7 +186,6 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
                                 />
                             </div>
 
-                            {/* Note */}
                             <div className="flex flex-col col-span-2">
                                 <label className="text-sm font-bold mb-1 text-left">Observações (Opcional)</label>
                                 <input
@@ -201,40 +198,25 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
                             </div>
                         </div>
 
-                        {/* Body Measurements */}
-                        <div className="flex flex-col gap-2 mt-2 flex-1 min-h-0 overflow-y-auto">
+                        {/* Medidas Corporais */}
+                        <div className="flex flex-col gap-2 mt-2">
                             <div className="flex justify-between items-center">
-                                <label className="text-sm font-bold text-left">Medidas Corporais</label>
-                                <button
-                                    type="button"
-                                    onClick={addMeasurement}
-                                    className="text-sm bg-standard-blue text-white px-3 py-1 rounded cursor-pointer"
-                                >
-                                    + Adicionar Medida
-                                </button>
+                                <label className="text-sm font-bold text-left">Medidas Corporais (Opcional)</label>
                             </div>
-
-                            {bodyMeasurements.length === 0 && (
-                                <p className="text-sm text-text-light-gray italic text-center">Nenhuma medida adicionada</p>
-                            )}
 
                             {bodyMeasurements.map((bm, index) => {
                                 const selectedType = options.bodyMeasurementTypes.find(t => t.id === bm.bodyMeasurementTypeId);
                                 return (
-                                    <div key={index} className="flex gap-2 items-end bg-form-bg p-3 rounded">
+                                    <div key={index} className="relative flex gap-2 items-end bg-white p-3 border border-border rounded mb-2">
                                         <div className="flex flex-col flex-1">
                                             <label className="text-xs font-bold mb-1 text-left">Tipo</label>
-                                            <select
-                                                value={bm.bodyMeasurementTypeId}
-                                                onChange={(e) => updateMeasurement(index, 'bodyMeasurementTypeId', e.target.value)}
-                                                className="border border-border rounded p-2 bg-white"
+                                            <input
+                                                type="text"
+                                                className='border border-border rounded p-2 bg-gray-100'
+                                                value={selectedType?.description}
+                                                disabled
                                                 required
-                                            >
-                                                <option value="">Selecione...</option>
-                                                {options.bodyMeasurementTypes.map(t => (
-                                                    <option key={t.id} value={t.id} disabled={bodyMeasurements.some(bm => bm.bodyMeasurementTypeId === t.id)}>{t.description} ({t.unit})</option>
-                                                ))}
-                                            </select>
+                                            />
                                         </div>
 
                                         <div className="flex flex-col w-32">
@@ -243,28 +225,52 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
                                             </label>
                                             <input
                                                 type="number"
-                                                step="0.01"
+                                                step="1"
+                                                min={1}
                                                 value={bm.value}
-                                                onChange={(e) => updateMeasurement(index, 'value', e.target.value)}
-                                                className={`border border-border rounded p-2 ${selectedType ? 'bg-white' : 'bg-gray-100'}`}
-                                                disabled={!selectedType}
+                                                onChange={(e) => handleUpdateMeasurement(index, 'value', e.target.value)}
+                                                className='border border-border rounded p-2 bg-white'
                                                 placeholder="0"
                                                 required
                                             />
                                         </div>
 
-                                        <button
-                                            type="button"
-                                            onClick={() => removeMeasurement(index)}
-                                            className="text-button-red font-bold text-xl cursor-pointer px-2 pb-2"
-                                            title="Remover medida"
-                                        >
-                                            ✕
-                                        </button>
+                                        <div className="absolute -top-[10px] right-2 flex items-center bg-white px-2  rounded">
+                                            <button
+                                                type="button"
+                                                onClick={() => handleRemoveMeasurement(index)}
+                                                className="text-standard-red font-bold text-xs cursor-pointer"
+                                                title="Remover medida"
+                                            >
+                                                ✕ Remover
+                                            </button>
+                                        </div>
                                     </div>
                                 );
                             })}
+                            {/* Adicionar Medidas Corporais */}
+                            {options.bodyMeasurementTypes.filter(bm => !bodyMeasurements.some(bmm => bmm.bodyMeasurementTypeId === bm.id)).length > 0 && (
+                                <div className="flex items-center gap-3 border border-dashed border-border rounded p-3">
+                                    <label className="text-sm font-bold text-text-main whitespace-nowrap">Adicionar Medida:</label>
+                                    <select
+                                        value=""
+                                        onChange={(e) => {
+                                            if (e.target.value) handleAddMeasurement(Number(e.target.value));
+                                        }}
+                                        className="border border-border rounded p-2 bg-white h-10 flex-1"
+                                    >
+                                        <option value="">Selecione uma medida para adicionar...</option>
+                                        {options.bodyMeasurementTypes.filter(bm => !bodyMeasurements.some(bmm => bmm.bodyMeasurementTypeId === bm.id)).map(bm => (
+                                            <option key={bm.id} value={bm.id}>{bm.description}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )}
                         </div>
+
+                        {(bodyMeasurements.length === 0 && options.bodyMeasurementTypes.length === 0) && (
+                            <p className="text-sm text-text-light-gray italic text-center">Nenhuma medida disponível para adicionar.</p>
+                        )}
 
                         {error && <p className="text-red-500 text-sm">{error}</p>}
 
