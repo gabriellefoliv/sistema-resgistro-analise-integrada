@@ -62,6 +62,7 @@ import { fetchGpsTrackingData, GpsTrackingContent } from "./liveanimals/gpsTrack
 import { fetchInterviewData, InterviewContent } from "./liveanimals/interview/index";
 import { fetchLiveAnimalsData, LiveAnimalContent } from "./liveanimals/liveAnimal/index";
 import { fetchCastrationData, CastrationContent } from "./liveanimals/castration/index";
+import { fetchDeadAnimalsData, DeadAnimalContent } from "./deadanimals/deadAnimal/index";
 import { fetchTutorData, TutorContent } from "./liveanimals/tutor/index";
 
 export function initRegistry() {
@@ -212,6 +213,13 @@ export function initRegistry() {
         label: CastrationContent.label,
         loader: fetchCastrationData,
         component: CastrationContent
+    });
+
+    registerContent('animaismortos', 'animaisatropelados', 'Animais Atropelados', {
+        id: DeadAnimalContent.id,
+        label: DeadAnimalContent.label,
+        loader: fetchDeadAnimalsData,
+        component: DeadAnimalContent
     });
 }
 

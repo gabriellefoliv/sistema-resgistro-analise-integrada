@@ -877,6 +877,7 @@ model storage {
 // ==x== Dead Animal ==x==
 model deadAnimal {
   id                      Int                   @id @default(autoincrement())
+  code                    String                @unique @map("codigo")
   deadAnimalGroupId       Int                   @map("id_grupo_animal_morto")
   deadAnimalGroup         deadAnimalGroup       @relation(fields: [deadAnimalGroupId], references: [id])
   specieId                Int                   @map("id_especie")
