@@ -207,6 +207,7 @@ model enumAnimalGender {
   name String @map("nome")
 
   liveAnimal liveAnimal[]
+  necropsy   necropsy[]
 
   @@map("enum_genero_animal")
 }
@@ -939,6 +940,8 @@ model necropsy {
   id                      Int                       @id @default(autoincrement())
   deadAnimalId            Int                       @unique @map("id_animal_morto")
   deadAnimal              deadAnimal                @relation(fields: [deadAnimalId], references: [id])
+  identifiedGenderId      Int                       @map("id_genero_identificado")
+  identifiedGender        enumAnimalGender          @relation(fields: [identifiedGenderId], references: [id])
   performedDate           DateTime                  @map("data_realizacao")
   bodyConditionId         Int                       @map("id_estado_corporal")
   bodyCondition           enumBodyCondition         @relation(fields: [bodyConditionId], references: [id])

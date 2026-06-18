@@ -2,14 +2,13 @@ import { useState } from "react";
 import { type GetAllDeadAnimalOutput } from "srf-shared-types";
 import { DeadAnimalFormModal } from "./formDeadAnimalModal";
 import { DeleteDeadAnimalModal } from "./deleteDeadAnimalModal";
-// import { NecropsySideDrawer } from "../../deadanimals/necropsy/necropsySideDrawer";
+import { NecropsySideDrawer } from "../../deadanimals/necropsy/necropsySideDrawer";
 
 export function DeadAnimalExpansion({ item, close, refresh }: { item: GetAllDeadAnimalOutput; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-    // Preparado para quando o NecropsySideDrawer for implementado
-    // const [showNecropsyDrawer, setShowNecropsyDrawer] = useState(false);
+    const [showNecropsyDrawer, setShowNecropsyDrawer] = useState(false);
 
     return (
         <>
@@ -22,13 +21,12 @@ export function DeadAnimalExpansion({ item, close, refresh }: { item: GetAllDead
             )}
 
             {/* Side Drawers */}
-            {/* Preparado para quando o NecropsySideDrawer for implementado */}
-            {/* {showNecropsyDrawer && (
+            {showNecropsyDrawer && (
                 <NecropsySideDrawer
                     filters={{ deadAnimalId: item.id }}
                     onClose={() => setShowNecropsyDrawer(false)}
                 />
-            )} */}
+            )}
 
             {/* Cabeçalho */}
             <div className="sticky top-0 z-10 bg-form-bg pb-2">
@@ -108,10 +106,8 @@ export function DeadAnimalExpansion({ item, close, refresh }: { item: GetAllDead
             <div className="gap-2 w-full text-sm flex flex-wrap mb-1">
                 {item.hasNecropsy && (
                     <button
-                        // Preparado para quando o NecropsySideDrawer for implementado
-                        // onClick={() => setShowNecropsyDrawer(true)}
-                        onClick={() => {}}
-                        className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm opacity-60"
+                        onClick={() => setShowNecropsyDrawer(true)}
+                        className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
                         title="Necrópsia (em breve)"
                     >
                         Necrópsia

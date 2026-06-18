@@ -51,7 +51,7 @@ export function GpsTrackingExpansion({ item, close, refresh }: { item: GetAllGps
                 <div className="gap-2 w-full text-sm grid grid-cols-1">
                     <div className="flex flex-col w-full">
                         <label className="ml-1 font-bold">Observações</label>
-                        <input type="text" disabled value={item.note || '-'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                        <input type="text" disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                 </div>
             </div>
