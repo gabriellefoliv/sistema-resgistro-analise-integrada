@@ -73,13 +73,15 @@ export function DeadAnimalExpansion({ item, close, refresh }: { item: GetAllDead
                     <label className="ml-1 font-bold">Responsável pela Coleta</label>
                     <input type="text" disabled value={item.collectionResponsibleName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
-                <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Latitude</label>
-                    <input type="text" disabled value={item.collectionLatitude} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
-                </div>
-                <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Longitude</label>
-                    <input type="text" disabled value={item.collectionLongitude} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                <div className="grid grid-cols-2 w-full gap-2">
+                    <div className="flex flex-col">
+                        <label className="ml-1 font-bold">Latitude</label>
+                        <input type="text" disabled value={item.collectionLatitude} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="ml-1 font-bold">Longitude</label>
+                        <input type="text" disabled value={item.collectionLongitude} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
                 </div>
                 <div className="flex flex-col w-full col-span-2">
                     <label className="ml-1 font-bold">Imagem</label>

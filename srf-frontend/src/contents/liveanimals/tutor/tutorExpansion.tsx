@@ -48,6 +48,8 @@ export function TutorExpansion({ item, close, refresh }: { item: GetAllTutorOutp
                     <input type="text" disabled value={item.genderName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
             </div>
+
+            {/* Registros Associados */}
         </>
     )
 }

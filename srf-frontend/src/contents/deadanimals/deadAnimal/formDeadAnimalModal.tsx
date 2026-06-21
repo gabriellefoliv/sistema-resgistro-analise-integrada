@@ -153,12 +153,12 @@ export function DeadAnimalFormModal({ deadAnimal, close, refresh }: DeadAnimalFo
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Latitude</label>
                                 <input type="number" step="any" value={collectionLatitude} onChange={(e) => setCollectionLatitude(e.target.value ? Number(e.target.value) : '')}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: -23.5505" required />
+                                    className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Longitude</label>
                                 <input type="number" step="any" value={collectionLongitude} onChange={(e) => setCollectionLongitude(e.target.value ? Number(e.target.value) : '')}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: -46.6333" required />
+                                    className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
                             </div>
                         </div>
                         <div className="grid grid-cols-1 gap-4">
