@@ -65,6 +65,7 @@ import { fetchCastrationData, CastrationContent } from "./liveanimals/castration
 import { fetchTutorData, TutorContent } from "./liveanimals/tutor/index";
 import { fetchDeadAnimalsData, DeadAnimalContent } from "./deadanimals/deadAnimal/index";
 import { fetchNecropsyData, NecropsyContent } from "./deadanimals/necropsy/index";
+import { fetchNecropsySampleData, NecropsySampleContent } from "./deadanimals/necropsySample/index";
 
 export function initRegistry() {
     // Exemplo de como registrar um novo conteúdo
@@ -228,6 +229,13 @@ export function initRegistry() {
         label: NecropsyContent.label,
         loader: fetchNecropsyData,
         component: NecropsyContent
+    });
+
+    registerContent('animaismortos', 'necropsias', 'Necrópsias', {
+        id: NecropsySampleContent.id,
+        label: NecropsySampleContent.label,
+        loader: fetchNecropsySampleData,
+        component: NecropsySampleContent
     });
 }
 

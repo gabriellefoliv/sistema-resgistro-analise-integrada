@@ -1,44 +1,41 @@
-import { Request, Response } from "express";
+import { type Request, type Response } from 'express';
 import { ZodError } from "zod";
-import { VeterinarianSampleService } from "../../services/liveanimals/veterinarianSampleService";
-import { AuditService } from "../../services/auditService";
-import {
-    type CreateVeterinarianSampleInput,
-    type UpdateVeterinarianSampleInput
-} from "srf-shared-types";
+import { NecropsySampleService } from '../../services/deadanimals/necropsySampleService';
+import { AuditService } from '../../services/auditService';
+import { CreateNecropsySampleInput, UpdateNecropsySampleInput } from 'srf-shared-types';
 
-export class VeterinarianSampleController {
+export class NecropsySampleController {
     private auditService = new AuditService();
-    private veterinarianSampleService = new VeterinarianSampleService();
-    private formId = 'amostras-av' as const;
-    private tableName = 'sampleAllocationVeterinarian' as const;
+    private necropsySampleService = new NecropsySampleService();
+    private formId = 'amostras-am';
+    private tableName = 'sampleAllocationNecropsy';
 
     getAll = async (req: Request, res: Response) => {
         try {
             const requesterId = req.userId as string;
-            const samples = await this.veterinarianSampleService.getAll(requesterId);
-            return res.status(200).json(samples);
-        } catch (error: any) {
+            const results = await this.necropsySampleService.getAll(requesterId);
+            return res.status(200).json(results);
+        } catch (error) {
             console.error(error);
             if (error instanceof ZodError) {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
-            return res.status(500).json({ error: error.message });
+            return res.status(500).json({ error: 'Erro ao buscar amostras de necrópsia.' });
         }
-    }
+    };
 
     getFormOptions = async (req: Request, res: Response) => {
         try {
-            const options = await this.veterinarianSampleService.getFormOptions();
+            const options = await this.necropsySampleService.getFormOptions();
             return res.status(200).json(options);
-        } catch (error: any) {
+        } catch (error) {
             console.error(error);
             if (error instanceof ZodError) {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
-            return res.status(500).json({ error: error.message });
+            return res.status(500).json({ error: 'Erro ao buscar opções do formulário.' });
         }
-    }
+    };
 
     create = async (req: Request, res: Response) => {
         try {
@@ -48,26 +45,25 @@ export class VeterinarianSampleController {
                 return res.status(403).json({ error: permissionCheck.reason });
             }
 
-            const data = req.body as CreateVeterinarianSampleInput;
-
-            const result = await this.veterinarianSampleService.create(data, requesterId);
-            return res.status(201).json(result);
+            const data = req.body as CreateNecropsySampleInput;
+            const result = await this.necropsySampleService.create(data, requesterId);
+            res.status(201).json(result);
         } catch (error: any) {
             console.error(error);
             if (error instanceof ZodError) {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
-            if (error.message === 'Visita veterinária não encontrada.') return res.status(404).json({ error: error.message });
-            if (error.message === 'Tipo de amostra não encontrado.') return res.status(404).json({ error: error.message });
+            if (error.message === 'Necrópsia não encontrada.') return res.status(404).json({ error: error.message });
+            if (error.message === 'Tipo de amostra não encontrada.') return res.status(404).json({ error: error.message });
             if (error.message === 'Status não encontrado.') return res.status(404).json({ error: error.message });
-            if (error.message === 'Storage não encontrado.') return res.status(404).json({ error: error.message });
-            if (error.message === 'Não é possível criar amostras que compartilhem visita veteriária e tipo.') return res.status(400).json({ error: error.message });
+            if (error.message === 'Armazenamento não encontrado.') return res.status(404).json({ error: error.message });
+            if (error.message === 'Não é possível criar amostras que compartilhem necrópsia e tipo.') return res.status(400).json({ error: error.message });
             if (error.message === 'Não é possível enviar a mesma amostra para o mesmo local.') return res.status(400).json({ error: error.message });
+            if (error.message === 'A data de envio da amostra não pode ser anterior à data da necrópsia.') return res.status(400).json({ error: error.message });
             if (error.message === 'A quantidade de amostras enviadas não pode exceder a quantidade total de amostras.') return res.status(400).json({ error: error.message });
-            if (error.message === 'A data de envio da amostra não pode ser anterior à data da visita veterinária.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
-    }
+    };
 
     update = async (req: Request, res: Response) => {
         try {
@@ -78,27 +74,26 @@ export class VeterinarianSampleController {
                 return res.status(403).json({ error: permissionCheck.reason });
             }
 
-            const data = req.body as UpdateVeterinarianSampleInput;
-
-            const result = await this.veterinarianSampleService.update(Number(recordId), data, requesterId);
-            return res.status(200).json(result);
+            const data = req.body as UpdateNecropsySampleInput;
+            const result = await this.necropsySampleService.update(Number(recordId), data, requesterId);
+            res.status(201).json(result);
         } catch (error: any) {
             console.error(error);
             if (error instanceof ZodError) {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
-            if (error.message === 'Amostra veterinária não encontrada.') return res.status(404).json({ error: error.message });
-            if (error.message === 'Visita veterinária não encontrada.') return res.status(404).json({ error: error.message });
-            if (error.message === 'Tipo de amostra não encontrado.') return res.status(404).json({ error: error.message });
+            if (error.message === 'Amostra de necrópsia não encontrada.') return res.status(404).json({ error: error.message });
+            if (error.message === 'Necrópsia não encontrada.') return res.status(404).json({ error: error.message });
+            if (error.message === 'Tipo de amostra não encontrada.') return res.status(404).json({ error: error.message });
             if (error.message === 'Status não encontrado.') return res.status(404).json({ error: error.message });
-            if (error.message === 'Storage não encontrado.') return res.status(404).json({ error: error.message });
-            if (error.message === 'Não foi possível atualizar a amostra veterinária, pois já existe uma amostra que compartilha a mesma visita veterinária e tipo de amostra.') return res.status(400).json({ error: error.message });
+            if (error.message === 'Armazenamento não encontrado.') return res.status(404).json({ error: error.message });
+            if (error.message === 'Não é possível criar amostras que compartilhem necrópsia e tipo.') return res.status(400).json({ error: error.message });
             if (error.message === 'Não é possível enviar a mesma amostra para o mesmo local.') return res.status(400).json({ error: error.message });
+            if (error.message === 'A data de envio da amostra não pode ser anterior à data da necrópsia.') return res.status(400).json({ error: error.message });
             if (error.message === 'A quantidade de amostras enviadas não pode exceder a quantidade total de amostras.') return res.status(400).json({ error: error.message });
-            if (error.message === 'A data de envio da amostra não pode ser anterior à data da visita veterinária.') return res.status(400).json({ error: error.message });
-            return res.status(500).json({ error: error.message });
+            res.status(400).json({ error: error.message });
         }
-    }
+    };
 
     delete = async (req: Request, res: Response) => {
         try {
@@ -109,15 +104,15 @@ export class VeterinarianSampleController {
                 return res.status(403).json({ error: permissionCheck.reason });
             }
 
-            const result = await this.veterinarianSampleService.delete(Number(recordId), requesterId);
-            return res.status(200).json(result);
+            const result = await this.necropsySampleService.delete(Number(recordId), requesterId);
+            res.status(200).json(result);
         } catch (error: any) {
             console.error(error);
             if (error instanceof ZodError) {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
-            if (error.message === 'Amostra veterinária não encontrada.') return res.status(404).json({ error: error.message });
+            if (error.message === 'Amostra de necrópsia não encontrada.') return res.status(404).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
-    }
+    };
 }

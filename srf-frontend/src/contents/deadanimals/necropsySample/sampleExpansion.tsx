@@ -1,18 +1,18 @@
 import { useState } from "react";
-import { type GetAllVeterinarianSampleOutput } from "srf-shared-types";
-import { VeterinarianSampleFormModal } from "./formSampleModal";
+import { type GetAllNecropsySampleOutput } from "srf-shared-types";
+import { NecropsySampleFormModal } from "./formSampleModal";
 import { DeleteSampleModal } from "./deleteSampleModal";
-import { VeterinarianVisitSideDrawer } from "../veterinarianVisit/veterinarianVisitSideDrawer";
+import { NecropsySideDrawer } from "../necropsy/necropsySideDrawer";
 
-export function SampleExpansion({ item, close, refresh }: { item: GetAllVeterinarianSampleOutput; close: () => void; refresh: () => void }) {
+export function SampleExpansion({ item, close, refresh }: { item: GetAllNecropsySampleOutput; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [showVeterinarianVisitDrawer, setShowVeterinarianVisitDrawer] = useState(false);
+    const [showNecropsyDrawer, setShowNecropsyDrawer] = useState(false);
 
     return (
         <>
             {showFormModal && (
-                <VeterinarianSampleFormModal
+                <NecropsySampleFormModal
                     sample={item}
                     close={() => setShowFormModal(false)}
                     refresh={refresh}
@@ -25,10 +25,10 @@ export function SampleExpansion({ item, close, refresh }: { item: GetAllVeterina
                     refresh={refresh}
                 />
             )}
-            {showVeterinarianVisitDrawer && (
-                <VeterinarianVisitSideDrawer
-                    filters={{ veterinarianVisitId: item.veterinarianVisitId }}
-                    onClose={() => setShowVeterinarianVisitDrawer(false)}
+            {showNecropsyDrawer && (
+                <NecropsySideDrawer
+                    filters={{ deadAnimalId: item.deadAnimalId }}
+                    onClose={() => setShowNecropsyDrawer(false)}
                 />
             )}
             {/* Cabeçalho de Expansão */}
@@ -50,28 +50,23 @@ export function SampleExpansion({ item, close, refresh }: { item: GetAllVeterina
                     </div>
                 </div>
                 <div className="flex gap-2 w-full text-sm">
-                    {/* Data da Visita */}
+                    {/* Data da Necrópsia */}
                     <div className="flex flex-col w-2/12">
-                        <label htmlFor="date" className="ml-1 font-bold">Data da Visita</label>
-                        <input type="text" disabled value={item.veterinarianVisitDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                        <label htmlFor="date" className="ml-1 font-bold">Data da Necrópsia</label>
+                        <input type="text" disabled value={item.necropsyDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
-                    {/* Animal */}
-                    <div className="flex flex-col w-2/12">
-                        <label className="ml-1 font-bold">Animal</label>
-                        <input type="text" disabled value={item.liveAnimalName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
-                    </div>
-                    {/* Veterinário */}
-                    <div className="flex flex-col w-2/12">
-                        <label className="ml-1 font-bold">Veterinário</label>
-                        <input type="text" disabled value={item.veterinarianName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    {/* Código do Animal */}
+                    <div className="flex flex-col w-3/12">
+                        <label className="ml-1 font-bold">Código do Animal</label>
+                        <input type="text" disabled value={item.deadAnimalCode} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     {/* Tipo da Amostra */}
-                    <div className="flex flex-col w-2/12">
+                    <div className="flex flex-col w-3/12">
                         <label className="ml-1 font-bold">Tipo da Amostra</label>
                         <input type="text" disabled value={item.sampleTypeDescription} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     {/* Status */}
-                    <div className="flex flex-col w-2/12">
+                    <div className="flex flex-col w-3/12">
                         <label className="ml-1 font-bold">Status</label>
                         <input type="text" disabled value={item.statusName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
@@ -156,12 +151,13 @@ export function SampleExpansion({ item, close, refresh }: { item: GetAllVeterina
             </div>
             <div className="gap-2 w-full text-sm flex flex-wrap mb-2">
                 <button
-                    onClick={() => setShowVeterinarianVisitDrawer(true)}
+                    onClick={() => setShowNecropsyDrawer(true)}
                     className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
                 >
-                    Visita Veterinária
+                    Necrópsia
                 </button>
             </div>
+
         </>
     );
 }

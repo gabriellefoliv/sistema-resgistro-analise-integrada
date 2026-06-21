@@ -37,6 +37,7 @@ export class NecropsyService {
                     }
                 },
                 // Registros associados
+                sampleAllocationNecropsy: { select: { id: true } },
                 helminthAnalysis: { select: { id: true } },
                 ectoparasiteAnalysisNecropsy: { select: { id: true } },
                 qpcrResult: { select: { id: true } },
@@ -96,6 +97,7 @@ export class NecropsyService {
                     bodyMeasurementTypeUnit: bm.bodyMeasurementType.unit,
                     value: bm.value,
                 })),
+                hasSample: n.sampleAllocationNecropsy.length > 0,
                 hasHelminthAnalysis: n.helminthAnalysis.length > 0,
                 hasEctoparasiteAnalysis: n.ectoparasiteAnalysisNecropsy.length > 0,
                 hasQpcrResult: n.qpcrResult.length > 0,

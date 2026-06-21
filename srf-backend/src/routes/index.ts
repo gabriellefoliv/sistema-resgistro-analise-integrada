@@ -21,6 +21,7 @@ import { castrationRoutes } from "./castrationRoutes";
 import { tutorRoutes } from "./tutorRoutes";
 import { deadAnimalRoutes } from "./deadAnimalRoutes";
 import { necropsyRoutes } from "./necropsyRoutes";
+import { necropsySampleRoutes } from "./necropsySampleRoutes";
 
 export const router = Router();
 
@@ -46,5 +47,6 @@ router.use(castrationRoutes);
 router.use(tutorRoutes);
 router.use(deadAnimalRoutes);
 router.use(necropsyRoutes);
+router.use(necropsySampleRoutes);
 
 

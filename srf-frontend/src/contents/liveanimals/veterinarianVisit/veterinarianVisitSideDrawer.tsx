@@ -5,6 +5,7 @@ import { SideDrawer } from "../../../components/sideDrawer";
 
 interface VeterinarianVisitSideDrawerFilters {
     liveAnimalId?: number;
+    veterinarianVisitId?: number;
 }
 
 interface VeterinarianVisitSideDrawerProps {
@@ -31,12 +32,13 @@ export function VeterinarianVisitSideDrawer({ filters, onClose }: VeterinarianVi
                     }))
                     .filter(v => {
                         if (filters.liveAnimalId && v.liveAnimalId !== filters.liveAnimalId) return false;
+                        if (filters.veterinarianVisitId && v.id !== filters.veterinarianVisitId) return false;
                         return true;
                     });
                 setVisits(filtered);
             })
             .finally(() => setLoading(false));
-    }, [filters.liveAnimalId]);
+    }, [filters.liveAnimalId, filters.veterinarianVisitId]);
 
     const pageFilters: any[] = [];
     const first = visits[0];

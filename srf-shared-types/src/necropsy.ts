@@ -46,6 +46,7 @@ export const getAllNecropsyOutputSchema = z.object({
         bodyMeasurementTypeUnit: z.string().nonempty(),
         value: z.number(),
     })),
+    hasSample: z.boolean(),
     hasHelminthAnalysis: z.boolean(),
     hasEctoparasiteAnalysis: z.boolean(),
     hasQpcrResult: z.boolean(),

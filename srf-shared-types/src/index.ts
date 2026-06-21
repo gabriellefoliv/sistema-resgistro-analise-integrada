@@ -15,3 +15,4 @@ export * from "./tutor";
 export * from "./castration";
 export * from "./deadAnimal";
 export * from "./necropsy";
+export * from "./necropsySample";

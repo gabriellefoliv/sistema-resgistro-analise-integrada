@@ -3,6 +3,7 @@ import { type GetAllNecropsyOutput } from "srf-shared-types";
 import { NecropsyFormModal } from "./formNecropsyModal";
 import { DeleteNecropsyModal } from "./deleteNecropsyModal";
 import { DeadAnimalSideDrawer } from "../deadAnimal/deadAnimalSideDrawer";
+import { NecropsySampleSideDrawer } from "../necropsySample/sampleSideDrawer";
 // import { HelminthAnalysisSideDrawer } from "../helminthAnalysis/helminthAnalysisSideDrawer";
 // import { EctoparasiteAnalysisNecropsySideDrawer } from "../ectoparasiteAnalysisNecropsy/ectoparasiteAnalysisNecropsySideDrawer";
 // import { QpcrResultSideDrawer } from "../qpcrResult/qpcrResultSideDrawer";
@@ -13,6 +14,7 @@ export function NecropsyExpansion({ item, close, refresh }: { item: GetAllNecrop
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const [showDeadAnimalDrawer, setShowDeadAnimalDrawer] = useState(false);
+    const [showNecropsySampleDrawer, setShowNecropsySampleDrawer] = useState(false);
     // const [showHelminthDrawer, setShowHelminthDrawer] = useState(false);
     // const [showEctoparasiteDrawer, setShowEctoparasiteDrawer] = useState(false);
     // const [showQpcrDrawer, setShowQpcrDrawer] = useState(false);
@@ -37,6 +39,12 @@ export function NecropsyExpansion({ item, close, refresh }: { item: GetAllNecrop
                 <DeadAnimalSideDrawer
                     filters={{ deadAnimalId: item.deadAnimalId }}
                     onClose={() => setShowDeadAnimalDrawer(false)}
+                />
+            )}
+            {showNecropsySampleDrawer && (
+                <NecropsySampleSideDrawer
+                    filters={{ necropsyId: item.id }}
+                    onClose={() => setShowNecropsySampleDrawer(false)}
                 />
             )}
             {/* {showHelminthDrawer && (
@@ -156,6 +164,15 @@ export function NecropsyExpansion({ item, close, refresh }: { item: GetAllNecrop
                     >
                         Animal Morto
                     </button>
+                    {item.hasSample && (
+                        <button
+                            onClick={() => setShowNecropsySampleDrawer(true)}
+                            className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                            title="Amostras"
+                        >
+                            Amostras
+                        </button>
+                    )}
                     {item.hasHelminthAnalysis && (
                         <button
                             // onClick={() => setShowHelminthDrawer(true)}

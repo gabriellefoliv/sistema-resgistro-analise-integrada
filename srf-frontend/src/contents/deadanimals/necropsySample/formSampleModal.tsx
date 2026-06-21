@@ -1,33 +1,30 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { ModalPortal } from "../../../components/modalPortal";
 import {
-    type GetAllVeterinarianSampleOutput,
-    type GetFormOptionsVeterinarianSampleOutput,
-    type SendVeterinarianSample,
+    type GetAllNecropsySampleOutput,
+    type GetFormOptionsNecropsySampleOutput,
+    type SendSampleInput
 } from "srf-shared-types";
 import {
-    getVeterinarianSampleFormOptions,
-    createVeterinarianSample,
-    updateVeterinarianSample
-} from "../../../services/liveanimals/veterinarianSampleService";
+    getNecropsySampleFormOptions,
+    createNecropsySample,
+    updateNecropsySample
+} from "../../../services/deadanimals/necropsySampleService";
 
-interface VeterinarianSampleFormModalProps {
-    sample?: GetAllVeterinarianSampleOutput;
+interface NecropsySampleFormModalProps {
+    sample?: GetAllNecropsySampleOutput;
     close: () => void;
     refresh: () => void;
 }
 
-export function VeterinarianSampleFormModal({ sample, close, refresh }: VeterinarianSampleFormModalProps) {
+export function NecropsySampleFormModal({ sample, close, refresh }: NecropsySampleFormModalProps) {
     const isEditing = !!sample;
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [options, setOptions] = useState<GetFormOptionsVeterinarianSampleOutput | null>(null);
+    const [options, setOptions] = useState<GetFormOptionsNecropsySampleOutput | null>(null);
 
-    // Campos de seleção da visita (dependentes entre si)
-    const [selectedDate, setSelectedDate] = useState<string>('');
-    const [selectedAnimalId, setSelectedAnimalId] = useState<number | ''>('');
-    const [selectedVeterinarianId, setSelectedVeterinarianId] = useState<number | ''>('');
+    const [selectedNecropsyId, setSelectedNecropsyId] = useState<number | ''>('');
 
     // Campos do formulário
     const [sampleTypeId, setSampleTypeId] = useState<number | ''>(sample?.sampleTypeId || '');
@@ -36,7 +33,7 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
     const [quantity, setQuantity] = useState<number | ''>(sample?.quantity || '');
     const [imageLink, setImageLink] = useState(sample?.imageLink || '');
     const [note, setNote] = useState(sample?.note || '');
-    const [sendSamples, setSendSamples] = useState<SendVeterinarianSample[]>(
+    const [sendSamples, setSendSamples] = useState<SendSampleInput[]>(
         sample?.sendSamples?.map(s => ({
             id: s.id,
             storageId: s.storageId,
@@ -50,16 +47,14 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
     useEffect(() => {
         async function loadOptions() {
             try {
-                const opts = await getVeterinarianSampleFormOptions();
+                const opts = await getNecropsySampleFormOptions();
                 setOptions(opts);
 
                 // Pré-preencher seletores no modo edição
                 if (sample) {
-                    const matchingVisit = opts.veterinarianVisits.find(v => v.id === sample.veterinarianVisitId);
-                    if (matchingVisit) {
-                        setSelectedDate(matchingVisit.date);
-                        setSelectedAnimalId(matchingVisit.liveAnimal.id);
-                        setSelectedVeterinarianId(matchingVisit.veterinarian.id);
+                    const matchingNecropsy = opts.necropsies.find(n => n.id === sample.necropsyId);
+                    if (matchingNecropsy) {
+                        setSelectedNecropsyId(matchingNecropsy.id);
                     }
                 }
             } catch (error) {
@@ -68,93 +63,6 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
         }
         loadOptions();
     }, []);
-
-    // Datas disponíveis - filtradas pelo animal e veterinário se selecionados
-    const filteredDates = useMemo(() => {
-        if (!options) return [];
-        let visits = options.veterinarianVisits;
-        if (selectedAnimalId) visits = visits.filter(v => v.liveAnimal.id === selectedAnimalId);
-        if (selectedVeterinarianId) visits = visits.filter(v => v.veterinarian.id === selectedVeterinarianId);
-
-        const dateSet = new Map<string, string>();
-        visits.forEach(v => {
-            const dateKey = v.date;
-            if (!dateSet.has(dateKey)) {
-                dateSet.set(dateKey, new Date(dateKey).toLocaleDateString('pt-BR'));
-            }
-        });
-        return Array.from(dateSet.entries()).map(([iso, formatted]) => ({ iso: iso, formatted: formatted }));
-    }, [options, selectedAnimalId, selectedVeterinarianId]);
-
-    // Animais disponíveis - filtrados pela data e veterinário se selecionados
-    const filteredAnimals = useMemo(() => {
-        if (!options) return [];
-        let visits = options.veterinarianVisits;
-        if (selectedDate) visits = visits.filter(v => v.date === selectedDate);
-        if (selectedVeterinarianId) visits = visits.filter(v => v.veterinarian.id === selectedVeterinarianId);
-
-        // Animais únicos
-        const animalMap = new Map<number, string>();
-        visits.forEach(v => {
-            if (!animalMap.has(v.liveAnimal.id)) {
-                animalMap.set(v.liveAnimal.id, v.liveAnimal.name);
-            }
-        });
-        return Array.from(animalMap.entries()).map(([id, name]) => ({ id: id, name: name }));
-    }, [options, selectedDate, selectedVeterinarianId]);
-
-    // Veterinários disponíveis - filtrados pela data e animal se selecionados
-    const filteredVeterinarians = useMemo(() => {
-        if (!options) return [];
-        let visits = options.veterinarianVisits;
-        if (selectedDate) visits = visits.filter(v => v.date === selectedDate);
-        if (selectedAnimalId) visits = visits.filter(v => v.liveAnimal.id === selectedAnimalId);
-
-        // Veterinários únicos
-        const vetMap = new Map<number, string>();
-        visits.forEach(v => {
-            if (!vetMap.has(v.veterinarian.id)) {
-                vetMap.set(v.veterinarian.id, v.veterinarian.name);
-            }
-        });
-        return Array.from(vetMap.entries()).map(([id, name]) => ({ id: id, name: name }));
-    }, [options, selectedDate, selectedAnimalId]);
-
-    // Obter o id da visita veterinária
-    const veterinarianVisitId = useMemo(() => {
-        if (!options || !selectedDate || !selectedAnimalId || !selectedVeterinarianId) return null;
-        const visit = options.veterinarianVisits.find(
-            v => v.date === selectedDate && v.liveAnimal.id === selectedAnimalId && v.veterinarian.id === selectedVeterinarianId
-        );
-        return visit?.id ?? null;
-    }, [options, selectedDate, selectedAnimalId, selectedVeterinarianId]);
-
-    function handleDateChange(value: string) {
-        setSelectedDate(value);
-        if (value) {
-            const matchingVisits = options?.veterinarianVisits.filter(v => v.date === value) || [];
-            if (selectedAnimalId && !matchingVisits.some(v => v.liveAnimal.id === selectedAnimalId)) setSelectedAnimalId('');
-            if (selectedVeterinarianId && !matchingVisits.some(v => v.veterinarian.id === selectedVeterinarianId)) setSelectedVeterinarianId('');
-        }
-    }
-
-    function handleAnimalChange(value: number | '') {
-        setSelectedAnimalId(value);
-        if (value) {
-            const matchingVisits = options?.veterinarianVisits.filter(v => v.liveAnimal.id === value) || [];
-            if (selectedDate && !matchingVisits.some(v => v.date === selectedDate)) setSelectedDate('');
-            if (selectedVeterinarianId && !matchingVisits.some(v => v.veterinarian.id === selectedVeterinarianId)) setSelectedVeterinarianId('');
-        }
-    }
-
-    function handleVeterinarianChange(value: number | '') {
-        setSelectedVeterinarianId(value);
-        if (value) {
-            const matchingVisits = options?.veterinarianVisits.filter(v => v.veterinarian.id === value) || [];
-            if (selectedDate && !matchingVisits.some(v => v.date === selectedDate)) setSelectedDate('');
-            if (selectedAnimalId && !matchingVisits.some(v => v.liveAnimal.id === selectedAnimalId)) setSelectedAnimalId('');
-        }
-    }
 
     function addSendSample(storageId: number) {
         if (sendSamples.some(ss => ss.storageId === storageId)) return;
@@ -173,8 +81,8 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        if (!veterinarianVisitId) {
-            setError('Selecione uma data, um animal e um veterinário para determinar a visita.');
+        if (!selectedNecropsyId) {
+            setError('Selecione uma necrópsia associada.');
             return;
         }
         setLoading(true);
@@ -182,7 +90,7 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
 
         try {
             const data = {
-                veterinarianVisitId: Number(veterinarianVisitId),
+                necropsyId: Number(selectedNecropsyId),
                 sampleTypeId: Number(sampleTypeId),
                 storageId: Number(storageId),
                 statusId: Number(statusId),
@@ -199,9 +107,9 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                 })) : undefined,
             };
             if (isEditing) {
-                await updateVeterinarianSample(sample!.id, data);
+                await updateNecropsySample(sample!.id, data);
             } else {
-                await createVeterinarianSample(data);
+                await createNecropsySample(data);
             }
             refresh();
             close();
@@ -238,61 +146,30 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                     </button>
 
                     <h2 className="absolute top-2 text-2xl text-standard-blue font-bold">
-                        {isEditing ? 'Editando Amostra Veterinária' : 'Nova Amostra Veterinária'}
+                        {isEditing ? 'Editando Amostra de Necrópsia' : 'Nova Amostra de Necrópsia'}
                     </h2>
 
                     <form onSubmit={handleSubmit} className="w-full flex flex-col overflow-y-auto gap-4 mt-2 flex-1 min-h-0">
-                        {/* Seleção da Visita Associada */}
+                        {/* Seleção da Necrópsia Associada */}
                         <fieldset className="border border-border rounded p-4">
-                            <legend className="text-sm font-bold text-standard-blue px-2">Visita Associada</legend>
-                            <div className="grid grid-cols-3 gap-4">
-                                {/* Data da Visita */}
-                                <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Data da Visita</label>
-                                    <select
-                                        value={selectedDate}
-                                        onChange={(e) => handleDateChange(e.target.value)}
-                                        className="border border-border rounded p-2 bg-white"
-                                        required
-                                    >
-                                        <option value="">Selecione...</option>
-                                        {filteredDates.map(d => (
-                                            <option key={d.iso} value={d.iso}>{d.formatted}</option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                {/* Animal */}
-                                <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Animal</label>
-                                    <select
-                                        value={selectedAnimalId}
-                                        onChange={(e) => handleAnimalChange(e.target.value ? Number(e.target.value) : '')}
-                                        className="border border-border rounded p-2 bg-white"
-                                        required
-                                    >
-                                        <option value="">Selecione...</option>
-                                        {filteredAnimals.map(a => (
-                                            <option key={a.id} value={a.id}>{a.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                {/* Veterinário */}
-                                <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Veterinário</label>
-                                    <select
-                                        value={selectedVeterinarianId}
-                                        onChange={(e) => handleVeterinarianChange(e.target.value ? Number(e.target.value) : '')}
-                                        className="border border-border rounded p-2 bg-white"
-                                        required
-                                    >
-                                        <option value="">Selecione...</option>
-                                        {filteredVeterinarians.map(v => (
-                                            <option key={v.id} value={v.id}>{v.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
+                            <legend className="text-sm font-bold text-standard-blue px-2">Necrópsia Associada</legend>
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Data e Animal</label>
+                                <select
+                                    value={selectedNecropsyId}
+                                    onChange={(e) => setSelectedNecropsyId(e.target.value ? Number(e.target.value) : '')}
+                                    className="border border-border rounded p-2 bg-white"
+                                    required
+                                >
+                                    <option value="">Selecione...</option>
+                                    {options.necropsies.map(n => {
+                                        const d = new Date(n.performedDate);
+                                        const dateStr = isNaN(d.getTime()) ? '' : d.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+                                        return (
+                                            <option key={n.id} value={n.id}>{dateStr} - {n.deadAnimal.code}</option>
+                                        )
+                                    })}
+                                </select>
                             </div>
                         </fieldset>
 

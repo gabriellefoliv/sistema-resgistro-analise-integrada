@@ -1,26 +1,25 @@
 import { prisma } from "../..";
 import { AuditService } from "../auditService";
 import {
-    type GetAllVeterinarianSampleOutput,
-    type GetFormOptionsVeterinarianSampleOutput,
-    type CreateVeterinarianSampleInput,
-    type UpdateVeterinarianSampleInput
+    type GetAllNecropsySampleOutput,
+    type GetFormOptionsNecropsySampleOutput,
+    type CreateNecropsySampleInput,
+    type UpdateNecropsySampleInput
 } from "srf-shared-types";
 
-export class VeterinarianSampleService {
+export class NecropsySampleService {
     private auditService = new AuditService();
-    private formId = 'amostras-av';
-    private tableName = 'sampleAllocationVeterinarian';
+    private formId = 'amostras-am';
+    private tableName = 'sampleAllocationNecropsy';
 
-    async getAll(userId: string): Promise<GetAllVeterinarianSampleOutput[]> {
-        const samples = await prisma.sampleAllocationVeterinarian.findMany({
+    async getAll(requesterId: string): Promise<GetAllNecropsySampleOutput[]> {
+        const samples = await prisma.sampleAllocationNecropsy.findMany({
             select: {
                 id: true,
-                veterinarianVisit: {
+                necropsy: {
                     select: {
-                        id: true, date: true,
-                        liveAnimal: { select: { id: true, name: true } },
-                        veterinarian: { select: { id: true, name: true } }
+                        id: true, performedDate: true,
+                        deadAnimal: { select: { id: true, code: true } }
                     }
                 },
                 sampleType: { select: { id: true, description: true } },
@@ -29,7 +28,7 @@ export class VeterinarianSampleService {
                 quantity: true,
                 imageLink: true,
                 note: true,
-                sendSampleVeterinarian: {
+                sendSampleNecropsy: {
                     select: {
                         id: true,
                         storage: { select: { id: true, name: true } },
@@ -41,8 +40,8 @@ export class VeterinarianSampleService {
                 }
             },
             orderBy: {
-                veterinarianVisit: {
-                    date: 'desc'
+                necropsy: {
+                    performedDate: 'desc'
                 }
             }
         });
@@ -67,17 +66,15 @@ export class VeterinarianSampleService {
 
         const samplesWithPermission = await Promise.all(
             samples.map(async (s) => {
-                const permission = await this.auditService.canUserEditRecord(userId, this.tableName, String(s.id), this.formId);
+                const permission = await this.auditService.canUserEditRecord(requesterId, this.tableName, String(s.id), this.formId);
                 return {
                     id: s.id,
                     canEdit: permission.canEdit,
-                    createdByMe: creatorMap.get(String(s.id)) === userId,
-                    veterinarianVisitId: s.veterinarianVisit.id,
-                    veterinarianVisitDate: s.veterinarianVisit.date.toISOString(),
-                    liveAnimalId: s.veterinarianVisit.liveAnimal.id,
-                    liveAnimalName: s.veterinarianVisit.liveAnimal.name,
-                    veterinarianId: s.veterinarianVisit.veterinarian.id,
-                    veterinarianName: s.veterinarianVisit.veterinarian.name,
+                    createdByMe: creatorMap.get(String(s.id)) === requesterId,
+                    necropsyId: s.necropsy.id,
+                    necropsyDate: s.necropsy.performedDate.toISOString(),
+                    deadAnimalId: s.necropsy.deadAnimal.id,
+                    deadAnimalCode: s.necropsy.deadAnimal.code,
                     sampleTypeId: s.sampleType.id,
                     sampleTypeDescription: s.sampleType.description,
                     statusId: s.status.id,
@@ -87,7 +84,7 @@ export class VeterinarianSampleService {
                     quantity: s.quantity,
                     imageLink: s.imageLink || undefined,
                     note: s.note || undefined,
-                    sendSamples: s.sendSampleVeterinarian.map(sends => ({
+                    sendSamples: s.sendSampleNecropsy.map(sends => ({
                         id: sends.id,
                         storageId: sends.storage.id,
                         storageName: sends.storage.name,
@@ -97,8 +94,8 @@ export class VeterinarianSampleService {
                         quantity: sends.quantity,
                         note: sends.note || undefined
                     })),
-                    allStorageNames: s.storage.name + "," + s.sendSampleVeterinarian.map(sends => sends.storage.name).join(","),
-                    allStatusNames: s.status.name + "," + s.sendSampleVeterinarian.map(sends => sends.status.name).join(",")
+                    allStorageNames: s.storage.name + "," + s.sendSampleNecropsy.map(sends => sends.storage.name).join(","),
+                    allStatusNames: s.status.name + "," + s.sendSampleNecropsy.map(sends => sends.status.name).join(",")
                 };
             })
         );
@@ -106,22 +103,21 @@ export class VeterinarianSampleService {
         return samplesWithPermission;
     }
 
-    async getFormOptions(): Promise<GetFormOptionsVeterinarianSampleOutput> {
-        const [veterinarianVisits, sampleTypes, status, storages] = await Promise.all([
-            prisma.veterinarianVisit.findMany({
+    async getFormOptions(): Promise<GetFormOptionsNecropsySampleOutput> {
+        const [necropsies, sampleTypes, status, storages] = await Promise.all([
+            prisma.necropsy.findMany({
                 select: {
                     id: true,
-                    date: true,
-                    liveAnimal: { select: { id: true, name: true } },
-                    veterinarian: { select: { id: true, name: true } }
+                    performedDate: true,
+                    deadAnimal: { select: { id: true, code: true } }
                 },
-                orderBy: { date: 'desc' }
+                orderBy: { performedDate: 'desc' }
             }),
-            prisma.veterinarianSampleType.findMany({
+            prisma.necropsySampleType.findMany({
                 select: { id: true, description: true },
                 orderBy: { description: 'asc' }
             }),
-            prisma.enumVeterinarianSampleAllocationStatus.findMany({
+            prisma.enumNecropsySampleAllocationStatus.findMany({
                 select: { id: true, name: true },
                 orderBy: { name: 'asc' }
             }),
@@ -132,28 +128,27 @@ export class VeterinarianSampleService {
         ]);
 
         return {
-            veterinarianVisits: veterinarianVisits.map(v => ({
-                id: v.id,
-                date: v.date.toISOString(),
-                liveAnimal: v.liveAnimal,
-                veterinarian: v.veterinarian
+            necropsies: necropsies.map(n => ({
+                id: n.id,
+                performedDate: n.performedDate.toISOString(),
+                deadAnimal: n.deadAnimal
             })),
             sampleTypes, status, storages
         };
     }
 
-    async create(data: CreateVeterinarianSampleInput, requesterId: string) {
+    async create(data: CreateNecropsySampleInput, requesterId: string) {
         return prisma.$transaction(async (tx) => {
-            // Verifica se a visita veterinária existe
-            const existingVisit = await tx.veterinarianVisit.findUnique({
+            // Verifica se a necropsia existe
+            const existingNecropsy = await tx.necropsy.findUnique({
                 where: {
-                    id: data.veterinarianVisitId
+                    id: data.necropsyId
                 }
             });
-            if (!existingVisit) throw new Error('Visita veterinária não encontrada.');
+            if (!existingNecropsy) throw new Error('Necrópsia não encontrada.');
 
             // Verifica se o tipo de amostra existe
-            const existingSampleType = await tx.veterinarianSampleType.findUnique({
+            const existingSampleType = await tx.necropsySampleType.findUnique({
                 where: {
                     id: data.sampleTypeId
                 }
@@ -161,7 +156,7 @@ export class VeterinarianSampleService {
             if (!existingSampleType) throw new Error('Tipo de amostra não encontrado.');
 
             // Verifica se o status existe
-            const existingStatus = await tx.enumVeterinarianSampleAllocationStatus.findUnique({
+            const existingStatus = await tx.enumNecropsySampleAllocationStatus.findUnique({
                 where: {
                     id: data.statusId
                 }
@@ -177,24 +172,24 @@ export class VeterinarianSampleService {
             if (!existingStorage) throw new Error('Storage não encontrado.');
 
             // Verifica se a amostra já existe
-            const existingSample = await tx.sampleAllocationVeterinarian.findFirst({
+            const existingSample = await tx.sampleAllocationNecropsy.findFirst({
                 where: {
-                    veterinarianVisitId: data.veterinarianVisitId,
+                    necropsyId: data.necropsyId,
                     sampleTypeId: data.sampleTypeId
                 }
             });
-            if (existingSample) throw new Error('Não é possível criar amostras que compartilhem visita veteriária e tipo.');
+            if (existingSample) throw new Error('Não é possível criar amostras que compartilhem necrópsia e tipo.');
 
-            // Cria a amostra veterinária
-            const sample = await tx.sampleAllocationVeterinarian.create({
+            // Cria a amostra de necropsia
+            const sample = await tx.sampleAllocationNecropsy.create({
                 data: {
-                    veterinarianVisitId: data.veterinarianVisitId,
+                    necropsyId: data.necropsyId,
                     sampleTypeId: data.sampleTypeId,
                     storageId: data.storageId,
                     statusId: data.statusId,
                     quantity: data.quantity,
                     imageLink: data.imageLink || null,
-                    note: data.note || null
+                    note: data.note || null,
                 }
             });
 
@@ -205,12 +200,12 @@ export class VeterinarianSampleService {
                     if (countStorageId > 1) throw new Error('Não é possível enviar a mesma amostra para o mesmo local.')
                 });
 
-                // Verifica se a data de envio não é anterior à data da visita
-                const visitDate = new Date(existingVisit.date);
-                visitDate.setUTCHours(0, 0, 0, 0);
+                // Verifica se a data de envio não é anterior à data da necropsia
+                const necropsyDate = new Date(existingNecropsy.performedDate);
+                necropsyDate.setUTCHours(0, 0, 0, 0);
                 data.sendSamples.forEach(sendSample => {
                     const sendDate = new Date(sendSample.sendDate + 'T00:00:00Z');
-                    if (sendDate < visitDate) throw new Error('A data de envio da amostra não pode ser anterior à data da visita veterinária.');
+                    if (sendDate < necropsyDate) throw new Error('A data de envio da amostra não pode ser anterior à data da necrópsia.');
                 });
 
                 // Verifica se a quantidade total de amostras enviadas não excede a quantidade total de amostras
@@ -222,9 +217,9 @@ export class VeterinarianSampleService {
             const sendSamples = [];
             if (data.sendSamples) {
                 for (const sendSample of data.sendSamples) {
-                    const sendSampleCreated = await tx.sendSampleVeterinarian.create({
+                    const sendSampleCreated = await tx.sendSampleNecropsy.create({
                         data: {
-                            sampleAllocationVeterinarianId: sample.id,
+                            sampleAllocationNecropsyId: sample.id,
                             storageId: sendSample.storageId,
                             statusId: sendSample.statusId,
                             quantity: sendSample.quantity,
@@ -243,7 +238,6 @@ export class VeterinarianSampleService {
                     recordId: String(sample.id),
                     action: 'CREATE' as const,
                     newData: sample
-
                 }
             ];
             await this.auditService.logTransaction(requesterId, this.formId, 'SUBMIT', changes);
@@ -252,25 +246,25 @@ export class VeterinarianSampleService {
         });
     }
 
-    async update(recordId: number, data: UpdateVeterinarianSampleInput, requesterId: string) {
+    async update(recordId: number, data: UpdateNecropsySampleInput, requesterId: string) {
         return prisma.$transaction(async (tx) => {
-            // Verifica se a amostra veterinária existe
-            const existingSample = await tx.sampleAllocationVeterinarian.findUnique({
+            // Verifica se a amostra de necropsia existe
+            const existingSample = await tx.sampleAllocationNecropsy.findUnique({
                 where: { id: recordId },
-                include: { sendSampleVeterinarian: true }
+                include: { sendSampleNecropsy: true }
             });
-            if (!existingSample) throw new Error('Amostra veterinária não encontrada.');
+            if (!existingSample) throw new Error('Amostra de necrópsia não encontrada.');
 
-            // Verifica se a visita veterinária existe
-            const existingVisit = await tx.veterinarianVisit.findUnique({
+            // Verifica se a necropsia existe
+            const existingNecropsy = await tx.necropsy.findUnique({
                 where: {
-                    id: data.veterinarianVisitId
+                    id: data.necropsyId
                 }
             });
-            if (!existingVisit) throw new Error('Visita veterinária não encontrada.');
+            if (!existingNecropsy) throw new Error('Necrópsia não encontrada.');
 
             // Verifica se o tipo de amostra existe
-            const existingSampleType = await tx.veterinarianSampleType.findUnique({
+            const existingSampleType = await tx.necropsySampleType.findUnique({
                 where: {
                     id: data.sampleTypeId
                 }
@@ -278,7 +272,7 @@ export class VeterinarianSampleService {
             if (!existingSampleType) throw new Error('Tipo de amostra não encontrado.');
 
             // Verifica se o status existe
-            const existingStatus = await tx.enumVeterinarianSampleAllocationStatus.findUnique({
+            const existingStatus = await tx.enumNecropsySampleAllocationStatus.findUnique({
                 where: {
                     id: data.statusId
                 }
@@ -293,21 +287,21 @@ export class VeterinarianSampleService {
             });
             if (!existingStorage) throw new Error('Storage não encontrado.');
 
-            // Verifica se a nova amostra veterinária já existe
-            const existingSampleWithSameData = await tx.sampleAllocationVeterinarian.findFirst({
+            // Verifica se a nova amostra de necropsia já existe
+            const existingSampleWithSameData = await tx.sampleAllocationNecropsy.findFirst({
                 where: {
-                    veterinarianVisitId: data.veterinarianVisitId,
+                    necropsyId: data.necropsyId,
                     sampleTypeId: data.sampleTypeId,
                     id: { not: recordId }
                 }
             });
-            if (existingSampleWithSameData) throw new Error('Não foi possível atualizar a amostra veterinária, pois já existe uma amostra que compartilha a mesma visita veterinária e tipo de amostra.');
+            if (existingSampleWithSameData) throw new Error('Não foi possível atualizar a amostra de necrópsia, pois já existe uma amostra que compartilha a mesma necrópsia e tipo de amostra.');
 
-            // Atualiza a amostra veterinária
-            const sample = await tx.sampleAllocationVeterinarian.update({
+            // Atualiza a amostra de necropsia
+            const sample = await tx.sampleAllocationNecropsy.update({
                 where: { id: recordId },
                 data: {
-                    veterinarianVisitId: data.veterinarianVisitId,
+                    necropsyId: data.necropsyId,
                     sampleTypeId: data.sampleTypeId,
                     storageId: data.storageId,
                     statusId: data.statusId,
@@ -324,12 +318,12 @@ export class VeterinarianSampleService {
                     if (countStorageId > 1) throw new Error('Não é possível enviar a mesma amostra para o mesmo local.')
                 });
 
-                // Verifica se a data de envio não é anterior à data da visita
-                const visitDate = new Date(existingVisit.date);
-                visitDate.setUTCHours(0, 0, 0, 0);
+                // Verifica se a data de envio não é anterior à data da necropsia
+                const necropsyDate = new Date(existingNecropsy.performedDate);
+                necropsyDate.setUTCHours(0, 0, 0, 0);
                 data.sendSamples.forEach(sendSample => {
                     const sendDate = new Date(sendSample.sendDate + 'T00:00:00Z');
-                    if (sendDate < visitDate) throw new Error('A data de envio da amostra não pode ser anterior à data da visita veterinária.');
+                    if (sendDate < necropsyDate) throw new Error('A data de envio da amostra não pode ser anterior à data da necrópsia.');
                 });
 
                 // Verifica se a quantidade total de amostras enviadas não excede a quantidade total de amostras
@@ -338,17 +332,17 @@ export class VeterinarianSampleService {
             }
 
             // Deleta as amostras enviadas antigas
-            await tx.sendSampleVeterinarian.deleteMany({
-                where: { sampleAllocationVeterinarianId: sample.id }
+            await tx.sendSampleNecropsy.deleteMany({
+                where: { sampleAllocationNecropsyId: sample.id }
             });
 
             // Cria as amostras enviadas novas
             const sendSamples = [];
             if (data.sendSamples) {
                 for (const sendSample of data.sendSamples) {
-                    const sendSampleCreated = await tx.sendSampleVeterinarian.create({
+                    const sendSampleCreated = await tx.sendSampleNecropsy.create({
                         data: {
-                            sampleAllocationVeterinarianId: sample.id,
+                            sampleAllocationNecropsyId: sample.id,
                             storageId: sendSample.storageId,
                             statusId: sendSample.statusId,
                             quantity: sendSample.quantity,
@@ -378,31 +372,28 @@ export class VeterinarianSampleService {
 
     async delete(recordId: number, requesterId: string) {
         return prisma.$transaction(async (tx) => {
-            // Verifica se a amostra veterinária existe
-            const existingSample = await tx.sampleAllocationVeterinarian.findUnique({
+            // Verifica se a amostra de necropsia existe
+            const existingSample = await tx.sampleAllocationNecropsy.findUnique({
                 where: { id: recordId },
                 include: {
-                    sendSampleVeterinarian: true
+                    sendSampleNecropsy: true
                 }
             });
-            if (!existingSample) throw new Error('Amostra veterinária não encontrada.');
+            if (!existingSample) throw new Error('Amostra de necrópsia não encontrada.');
 
             // Salva dados para o audit log
             const oldData = {
                 ...existingSample,
-                sendSamples: existingSample.sendSampleVeterinarian
+                sendSamples: existingSample.sendSampleNecropsy
             };
 
-            // Verifica se há algum registro ligado a amostra (que não seja amostras enviadas)
-            // Atualmente não há registros "fora" da página de amostra veterinária que dependam dela.
-
             // Deleta as amostras enviadas
-            await tx.sendSampleVeterinarian.deleteMany({
-                where: { sampleAllocationVeterinarianId: recordId }
+            await tx.sendSampleNecropsy.deleteMany({
+                where: { sampleAllocationNecropsyId: recordId }
             });
 
-            // Deleta a amostra veterinária
-            await tx.sampleAllocationVeterinarian.delete({
+            // Deleta a amostra de necropsia
+            await tx.sampleAllocationNecropsy.delete({
                 where: { id: recordId }
             });
 
@@ -417,7 +408,7 @@ export class VeterinarianSampleService {
             ];
             await this.auditService.logTransaction(requesterId, this.formId, 'DELETE', changes);
 
-            return { message: 'Amostra veterinária deletada com sucesso.' };
+            return { message: 'Amostra de necrópsia deletada com sucesso.' };
         });
     }
 

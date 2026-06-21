@@ -53,7 +53,9 @@ export const getAllVeterinarianSampleOutputSchema = veterinarianSampleSchema.omi
         sendDateFormatted: z.string().optional(),
         quantity: z.number().int().positive(),
         note: z.string().optional()
-    })).optional()
+    })).optional(),
+    allStorageNames: z.string().nonempty(),
+    allStatusNames: z.string().nonempty()
 });
 
 export const getFormOptionsVeterinarianSampleOutputSchema = z.object({
