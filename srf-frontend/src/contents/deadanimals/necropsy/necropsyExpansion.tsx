@@ -122,12 +122,11 @@ export function NecropsyExpansion({ item, close, refresh }: { item: GetAllNecrop
                     <label className="ml-1 font-bold">Idade</label>
                     <input type="text" disabled value={item.ageName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
-                {item.tutorId && (
-                    <div className="flex flex-col w-full">
-                        <label className="ml-1 font-bold">Tutor</label>
-                        <input type="text" disabled value={item.tutorName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
-                    </div>
-                )}
+                <div className="flex flex-col w-full">
+                    <label className="ml-1 font-bold">Tutor</label>
+                    <input type="text" disabled value={item.tutorName || 'Nenhum tutor associado'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
+
                 <div className="flex flex-col w-full col-span-3">
                     <label className="ml-1 font-bold">Observações</label>
                     <input type="text" disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
