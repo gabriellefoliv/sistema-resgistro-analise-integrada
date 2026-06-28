@@ -66,6 +66,8 @@ import { fetchTutorData, TutorContent } from "./liveanimals/tutor/index";
 import { fetchDeadAnimalsData, DeadAnimalContent } from "./deadanimals/deadAnimal/index";
 import { fetchNecropsyData, NecropsyContent } from "./deadanimals/necropsy/index";
 import { fetchNecropsySampleData, NecropsySampleContent } from "./deadanimals/necropsySample/index";
+import { fetchLiveAnimalRegistrationData, LiveAnimalRegistrationContent } from "./basicregistrations/liveAnimalRegistration/index";
+import { fetchDeadAnimalRegistrationData, DeadAnimalRegistrationContent } from "./basicregistrations/deadAnimalRegistration/index";
 
 export function initRegistry() {
     // Exemplo de como registrar um novo conteúdo
@@ -236,6 +238,20 @@ export function initRegistry() {
         label: NecropsySampleContent.label,
         loader: fetchNecropsySampleData,
         component: NecropsySampleContent
+    });
+
+    registerContent('cadastrosbasicos', 'geral', 'Geral', {
+        id: LiveAnimalRegistrationContent.id,
+        label: LiveAnimalRegistrationContent.label,
+        loader: fetchLiveAnimalRegistrationData,
+        component: LiveAnimalRegistrationContent
+    });
+
+    registerContent('cadastrosbasicos', 'geral', 'Geral', {
+        id: DeadAnimalRegistrationContent.id,
+        label: DeadAnimalRegistrationContent.label,
+        loader: fetchDeadAnimalRegistrationData,
+        component: DeadAnimalRegistrationContent
     });
 }
 
