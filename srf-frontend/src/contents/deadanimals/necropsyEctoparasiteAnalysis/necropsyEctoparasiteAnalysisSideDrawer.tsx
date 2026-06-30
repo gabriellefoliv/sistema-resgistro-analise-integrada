@@ -1,57 +1,56 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { type GetAllEctoparasiteAnalysisOutput } from "srf-shared-types";
-import { getEctoparasiteAnalyses } from "../../../services/liveanimals/ectoparasiteAnalysisService";
+import { type GetAllNecropsyEctoparasiteAnalysisOutput } from "srf-shared-types";
+import { getNecropsyEctoparasiteAnalyses } from "../../../services/deadanimals/necropsyEctoparasiteAnalysisService";
 import { SideDrawer } from "../../../components/sideDrawer";
 
-interface EctoparasiteAnalysisSideDrawerFilters {
-    veterinarianVisitId?: number;
-    liveAnimalId?: number;
+interface NecropsyEctoparasiteAnalysisSideDrawerFilters {
+    necropsyId?: number;
+    deadAnimalId?: number;
 }
 
-interface EctoparasiteAnalysisSideDrawerProps {
-    filters: EctoparasiteAnalysisSideDrawerFilters;
+interface NecropsyEctoparasiteAnalysisSideDrawerProps {
+    filters: NecropsyEctoparasiteAnalysisSideDrawerFilters;
     onClose: () => void;
 }
 
-export function EctoparasiteAnalysisSideDrawer({ filters, onClose }: EctoparasiteAnalysisSideDrawerProps) {
-    const [results, setResults] = useState<GetAllEctoparasiteAnalysisOutput[]>([]);
+export function NecropsyEctoparasiteAnalysisSideDrawer({ filters, onClose }: NecropsyEctoparasiteAnalysisSideDrawerProps) {
+    const [results, setResults] = useState<GetAllNecropsyEctoparasiteAnalysisOutput[]>([]);
     const [loading, setLoading] = useState(true);
     const [expandedId, setExpandedId] = useState<number | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         setLoading(true);
-        getEctoparasiteAnalyses()
+        getNecropsyEctoparasiteAnalyses()
             .then(all => {
                 const filtered = all
                     .map(e => ({
                         ...e,
-                        veterinarianVisitDateFormatted: e.veterinarianVisitDate
-                            ? new Date(e.veterinarianVisitDate).toLocaleDateString('pt-BR')
+                        necropsyDateFormatted: e.necropsyDate
+                            ? new Date(e.necropsyDate).toLocaleDateString('pt-BR')
                             : '',
                     }))
                     .filter(e => {
-                        if (filters.veterinarianVisitId && e.veterinarianVisitId !== filters.veterinarianVisitId) return false;
-                        if (filters.liveAnimalId && e.liveAnimalId !== filters.liveAnimalId) return false;
+                        if (filters.necropsyId && e.necropsyId !== filters.necropsyId) return false;
+                        if (filters.deadAnimalId && e.deadAnimalId !== filters.deadAnimalId) return false;
                         return true;
                     });
                 setResults(filtered);
             })
             .finally(() => setLoading(false));
-    }, [filters.veterinarianVisitId, filters.liveAnimalId]);
+    }, [filters.necropsyId, filters.deadAnimalId]);
 
     const pageFilters: any[] = [];
     const first = results[0];
     if (first) {
-        if (first.veterinarianVisitDate) {
-            const date = first.veterinarianVisitDate.split('T')[0];
-            pageFilters.push({ field: 'veterinarianVisitDate', value: { type: 'date' as const, from: date, to: date } });
+        if (first.necropsyDate) {
+            const date = first.necropsyDate.split('T')[0];
+            pageFilters.push({ field: 'necropsyDate', value: { type: 'date' as const, from: date, to: date } });
         }
-        pageFilters.push({ field: 'liveAnimalName', value: { type: 'text' as const, term: first.liveAnimalName } });
-        pageFilters.push({ field: 'veterinarianName', value: { type: 'text' as const, term: first.veterinarianName } });
+        pageFilters.push({ field: 'deadAnimalCode', value: { type: 'text' as const, term: first.deadAnimalCode } });
     }
-    const pageUrl = `/animaisvivos/exameseanalises/analiseectoparasitos-av?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
+    const pageUrl = `/animaismortos/resultadoseanalises/analiseectoparasitos-am?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
 
     return (
         <SideDrawer
@@ -111,9 +110,8 @@ export function EctoparasiteAnalysisSideDrawer({ filters, onClose }: Ectoparasit
                                             Detalhes da Análise de Ectoparasitos
                                         </h4>
                                         <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
-                                            <Field label="Data da Visita" value={result.veterinarianVisitDateFormatted || ''} />
-                                            <Field label="Animal" value={result.liveAnimalName} />
-                                            <Field label="Veterinário" value={result.veterinarianName} />
+                                            <Field label="Data da Necropsia" value={result.necropsyDateFormatted || ''} />
+                                            <Field label="Código do Animal" value={result.deadAnimalCode} />
                                             <Field label="Gênero" value={result.genusName} />
                                             <Field label="Espécie" value={result.specieName} />
                                             <Field label="Subespécie" value={result.subSpecieName} />
