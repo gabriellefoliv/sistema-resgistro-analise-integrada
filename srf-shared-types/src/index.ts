@@ -17,3 +17,6 @@ export * from "./deadAnimal";
 export * from "./necropsy";
 export * from "./necropsySample";
 export * from "./basicRegistration";
+export * from "./necropsyEctoparasiteAnalysis";
+export * from "./helminthAnalysis";
+export * from "./pcrResult";

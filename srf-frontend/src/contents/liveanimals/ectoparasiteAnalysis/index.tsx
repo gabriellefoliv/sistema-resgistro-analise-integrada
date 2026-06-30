@@ -27,10 +27,11 @@ export const EctoparasiteAnalysisContentDefinition = {
     label: 'Ectoparasitos',
     columns: [
         { key: 'veterinarianVisitDateFormatted', label: 'Data da Visita', width: 'w-2/12' },
-        { key: 'liveAnimalName', label: 'Animal', width: 'w-3/12' },
-        { key: 'veterinarianName', label: 'Veterinário', width: 'w-3/12' },
-        { key: 'genusName', label: 'Gênero', width: 'w-2/12' },
-        { key: 'specieName', label: 'Espécie', width: 'w-1/12' }
+        { key: 'liveAnimalName', label: 'Animal', width: 'w-2/12' },
+        { key: 'veterinarianName', label: 'Veterinário', width: 'w-2/12' },
+        { key: 'genusName', label: 'Gênero', width: 'w-1/12' },
+        { key: 'specieName', label: 'Espécie', width: 'w-2/12' },
+        { key: 'subSpecieName', label: 'Subespécie', width: 'w-2/12' },
         // deixar w-1/12 sobrando para ações
     ],
     get filterFields() {

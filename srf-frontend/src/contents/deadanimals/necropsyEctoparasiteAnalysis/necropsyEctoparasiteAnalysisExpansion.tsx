@@ -1,18 +1,18 @@
 import { useState } from "react";
-import { type GetAllEctoparasiteAnalysisOutput } from "srf-shared-types";
-import { EctoparasiteAnalysisFormModal } from "./formEctoparasiteAnalysisModal";
-import { DeleteEctoparasiteAnalysisModal } from "./deleteEctoparasiteAnalysisModal";
+import { type GetAllNecropsyEctoparasiteAnalysisOutput } from "srf-shared-types";
+import { NecropsyEctoparasiteAnalysisFormModal } from "./formNecropsyEctoparasiteAnalysisModal";
+import { DeleteNecropsyEctoparasiteAnalysisModal } from "./deleteNecropsyEctoparasiteAnalysisModal";
 
-export function EctoparasiteAnalysisExpansion({ item, close, refresh }: { item: GetAllEctoparasiteAnalysisOutput; close: () => void; refresh: () => void }) {
+export function NecropsyEctoparasiteAnalysisExpansion({ item, close, refresh }: { item: GetAllNecropsyEctoparasiteAnalysisOutput; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     return (
         <>
             {showFormModal && (
-                <EctoparasiteAnalysisFormModal ectoparasiteAnalysis={item} close={() => setShowFormModal(false)} refresh={refresh} />
+                <NecropsyEctoparasiteAnalysisFormModal necropsyEctoparasiteAnalysis={item} close={() => setShowFormModal(false)} refresh={refresh} />
             )}
             {showDeleteModal && (
-                <DeleteEctoparasiteAnalysisModal ectoparasiteAnalysis={item} close={() => setShowDeleteModal(false)} refresh={refresh} />
+                <DeleteNecropsyEctoparasiteAnalysisModal necropsyEctoparasiteAnalysis={item} close={() => setShowDeleteModal(false)} refresh={refresh} />
             )}
             {/* CABEÇALHO */}
             <div className="sticky top-0 z-10 bg-form-bg pb-2">
@@ -26,18 +26,14 @@ export function EctoparasiteAnalysisExpansion({ item, close, refresh }: { item: 
                 </div>
                 <div className="flex gap-2 w-full text-sm">
                     <div className="flex flex-col w-2/12">
-                        <label className="ml-1 font-bold">Data da Visita</label>
-                        <input type="text" disabled value={item.veterinarianVisitDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                        <label className="ml-1 font-bold">Data da Necropsia</label>
+                        <input type="text" disabled value={item.necropsyDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
+                    <div className="flex flex-col w-3/12">
+                        <label className="ml-1 font-bold">Código do Animal</label>
+                        <input type="text" disabled value={item.deadAnimalCode} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     <div className="flex flex-col w-2/12">
-                        <label className="ml-1 font-bold">Animal</label>
-                        <input type="text" disabled value={item.liveAnimalName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
-                    </div>
-                    <div className="flex flex-col w-2/12">
-                        <label className="ml-1 font-bold">Veterinário</label>
-                        <input type="text" disabled value={item.veterinarianName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
-                    </div>
-                    <div className="flex flex-col w-1/12">
                         <label className="ml-1 font-bold">Gênero</label>
                         <input type="text" disabled value={item.genusName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
@@ -55,6 +51,7 @@ export function EctoparasiteAnalysisExpansion({ item, close, refresh }: { item: 
 
             {/* CORPO DA EXPANSÃO */}
             <div className="gap-2 w-full text-sm grid grid-cols-5 mb-2">
+
                 <div className="flex flex-col w-full">
                     <label className="ml-1 font-bold">Qtde de Machos</label>
                     <input type="text" disabled value={String(item.maleQuantity)} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
