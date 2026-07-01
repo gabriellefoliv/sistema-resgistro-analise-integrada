@@ -245,9 +245,9 @@ model monitoringMethod {
 }
 
 model trackingDevice {
-  id           Int     @id @default(autoincrement())
-  brand        String  @map("marca")
-  serialNumber String  @map("numero_serie")
+  id           Int    @id @default(autoincrement())
+  brand        String @map("marca")
+  serialNumber String @map("numero_serie")
 
   gpsTracking gpsTracking[]
 
@@ -1025,6 +1025,7 @@ model helminthAnalysis {
   totalQuantity    Int            @map("quantidade_total")
   note             String?        @map("observacao")
 
+  @@unique([necropsyId, helminthSpecieId, location])
   @@map("analise_helminto")
 }
 

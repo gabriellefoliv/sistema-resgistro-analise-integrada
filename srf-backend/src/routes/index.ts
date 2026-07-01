@@ -24,6 +24,7 @@ import { necropsyRoutes } from "./necropsyRoutes";
 import { necropsySampleRoutes } from "./necropsySampleRoutes";
 import { basicRegistrationRoutes } from "./basicRegistrationRoutes";
 import { necropsyEctoparasiteAnalysisRoutes } from "./necropsyEctoparasiteAnalysisRoutes";
+import { helminthAnalysisRoutes } from "./helminthAnalysisRoutes";
 
 export const router = Router();
 
@@ -52,3 +53,4 @@ router.use(necropsyRoutes);
 router.use(necropsySampleRoutes);
 router.use(basicRegistrationRoutes);
 router.use(necropsyEctoparasiteAnalysisRoutes);
+router.use(helminthAnalysisRoutes);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams, Navigate } from "react-router-dom";
 import { Content } from "../components/content";
 import { getPageConfig, initRegistry } from "../contents/contentRegistry";
 import { useAuth } from "../contexts/AuthContext";
@@ -126,8 +126,7 @@ export function DynamicContent() {
     };
 
     if (!formId) {
-        navigate(`/${categoryId}/${subCategoryId}/${config.contents[0].id}`);
-        return;
+        return <Navigate to={`/${categoryId}/${subCategoryId}/${config.contents[0].id}`} replace />;
     }
 
     const currentHasAccess = checkAccess(formId);

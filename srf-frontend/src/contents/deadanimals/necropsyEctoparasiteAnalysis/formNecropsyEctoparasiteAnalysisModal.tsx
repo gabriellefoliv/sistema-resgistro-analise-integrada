@@ -25,7 +25,7 @@ export function NecropsyEctoparasiteAnalysisFormModal({ necropsyEctoparasiteAnal
 
 
     // Campos do ectoparasito
-    const [selectedNecropsyId, setSelectedNecropsyId] = useState<number | ''>('');
+    const [selectedNecropsyId, setSelectedNecropsyId] = useState<number | ''>(necropsyEctoparasiteAnalysis?.necropsyId ?? '');
     const [ectoparasiteGenusId, setEctoparasiteGenusId] = useState<number | ''>(necropsyEctoparasiteAnalysis?.ectoparasiteGenusId ?? '');
     const [ectoparasiteSpecieId, setEctoparasiteSpecieId] = useState<number | ''>(necropsyEctoparasiteAnalysis?.ectoparasiteSpecieId ?? '');
     const [ectoparasiteSubSpecieId, setEctoparasiteSubSpecieId] = useState<number | ''>(necropsyEctoparasiteAnalysis?.ectoparasiteSubSpecieId ?? '');

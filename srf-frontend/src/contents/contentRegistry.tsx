@@ -69,6 +69,7 @@ import { fetchNecropsySampleData, NecropsySampleContent } from "./deadanimals/ne
 import { fetchLiveAnimalRegistrationData, LiveAnimalRegistrationContent } from "./basicregistrations/liveAnimalRegistration/index";
 import { fetchDeadAnimalRegistrationData, DeadAnimalRegistrationContent } from "./basicregistrations/deadAnimalRegistration/index";
 import { fetchNecropsyEctoparasiteAnalysisData, NecropsyEctoparasiteAnalysisContent } from "./deadanimals/necropsyEctoparasiteAnalysis/index";
+import { fetchHelminthAnalysisData, HelminthAnalysisContent } from "./deadanimals/helminthAnalysis/index";
 
 export function initRegistry() {
     // Exemplo de como registrar um novo conteúdo
@@ -246,6 +247,13 @@ export function initRegistry() {
         label: NecropsyEctoparasiteAnalysisContent.label,
         loader: fetchNecropsyEctoparasiteAnalysisData,
         component: NecropsyEctoparasiteAnalysisContent
+    });
+
+    registerContent('animaismortos', 'resultadoseanalises', 'Resultados e Análises', {
+        id: HelminthAnalysisContent.id,
+        label: HelminthAnalysisContent.label,
+        loader: fetchHelminthAnalysisData,
+        component: HelminthAnalysisContent
     });
 
     registerContent('cadastrosbasicos', 'geral', 'Geral', {
