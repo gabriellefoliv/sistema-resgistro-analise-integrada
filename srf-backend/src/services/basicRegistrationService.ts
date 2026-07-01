@@ -172,7 +172,7 @@ export class BasicRegistrationService {
             secundaryValue: r.secundaryValue,
             canEdit: canEditAll,
             createdByMe: false,
-        }));
+        })).sort((a, b) => a.type.localeCompare(b.type));
     }
 
     async getFormOptions(types: TypeConfig[]): Promise<GetFormOptionsBasicRegistrationOutput> {
@@ -183,7 +183,7 @@ export class BasicRegistrationService {
                 valueFieldLabel: t.valueFieldLabel,
                 hasSecondaryValue: !!t.secondaryField,
                 secondaryValueLabel: t.secondaryFieldLabel,
-            })),
+            })).sort((a, b) => a.name.localeCompare(b.name)),
         };
     }
 
