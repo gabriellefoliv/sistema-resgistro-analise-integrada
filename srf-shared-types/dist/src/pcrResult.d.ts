@@ -1,0 +1,224 @@
+import { z } from 'zod';
+declare const getAllCPCRResultOutputSchema: z.ZodObject<{
+    id: z.ZodNumber;
+    createdByMe: z.ZodBoolean;
+    canEdit: z.ZodBoolean;
+    necropsyId: z.ZodNumber;
+    necropsyDate: z.ZodString;
+    necropsyDateFormatted: z.ZodOptional<z.ZodString>;
+    deadAnimalId: z.ZodNumber;
+    deadAnimalCode: z.ZodString;
+    sampleTypeId: z.ZodNumber;
+    sampleTypeName: z.ZodString;
+    performedDate: z.ZodString;
+    performedDateFormatted: z.ZodOptional<z.ZodString>;
+    extractionTypeId: z.ZodNumber;
+    extractionTypeName: z.ZodString;
+    targetGeneId: z.ZodNumber;
+    targetGeneName: z.ZodString;
+    primer: z.ZodString;
+    pb: z.ZodNumber;
+    suspiciousAgentId: z.ZodNumber;
+    suspiciousAgentName: z.ZodString;
+    cpcrMethodId: z.ZodNumber;
+    cpcrMethodName: z.ZodString;
+    cpcrStatusId: z.ZodNumber;
+    cpcrStatusName: z.ZodString;
+    control: z.ZodString;
+}, z.core.$strip>;
+declare const getAllQPCRResultOutputSchema: z.ZodObject<{
+    id: z.ZodNumber;
+    createdByMe: z.ZodBoolean;
+    canEdit: z.ZodBoolean;
+    necropsyId: z.ZodNumber;
+    necropsyDate: z.ZodString;
+    necropsyDateFormatted: z.ZodOptional<z.ZodString>;
+    deadAnimalId: z.ZodNumber;
+    deadAnimalCode: z.ZodString;
+    sampleTypeId: z.ZodNumber;
+    sampleTypeName: z.ZodString;
+    performedDate: z.ZodString;
+    performedDateFormatted: z.ZodOptional<z.ZodString>;
+    targetGeneId: z.ZodNumber;
+    targetGeneName: z.ZodString;
+    suspiciousAgentId: z.ZodNumber;
+    suspiciousAgentName: z.ZodString;
+    meanCt: z.ZodNumber;
+    estimatedCopies: z.ZodNumber;
+    qpcrStatusId: z.ZodNumber;
+    qpcrStatusName: z.ZodString;
+    control: z.ZodString;
+}, z.core.$strip>;
+declare const getAllNecropsyExamResultOutputSchema: z.ZodObject<{
+    uniqueId: z.ZodString;
+    type: z.ZodString;
+    result: z.ZodUnion<[z.ZodObject<{
+        id: z.ZodNumber;
+        createdByMe: z.ZodBoolean;
+        canEdit: z.ZodBoolean;
+        necropsyId: z.ZodNumber;
+        necropsyDate: z.ZodString;
+        necropsyDateFormatted: z.ZodOptional<z.ZodString>;
+        deadAnimalId: z.ZodNumber;
+        deadAnimalCode: z.ZodString;
+        sampleTypeId: z.ZodNumber;
+        sampleTypeName: z.ZodString;
+        performedDate: z.ZodString;
+        performedDateFormatted: z.ZodOptional<z.ZodString>;
+        extractionTypeId: z.ZodNumber;
+        extractionTypeName: z.ZodString;
+        targetGeneId: z.ZodNumber;
+        targetGeneName: z.ZodString;
+        primer: z.ZodString;
+        pb: z.ZodNumber;
+        suspiciousAgentId: z.ZodNumber;
+        suspiciousAgentName: z.ZodString;
+        cpcrMethodId: z.ZodNumber;
+        cpcrMethodName: z.ZodString;
+        cpcrStatusId: z.ZodNumber;
+        cpcrStatusName: z.ZodString;
+        control: z.ZodString;
+    }, z.core.$strip>, z.ZodObject<{
+        id: z.ZodNumber;
+        createdByMe: z.ZodBoolean;
+        canEdit: z.ZodBoolean;
+        necropsyId: z.ZodNumber;
+        necropsyDate: z.ZodString;
+        necropsyDateFormatted: z.ZodOptional<z.ZodString>;
+        deadAnimalId: z.ZodNumber;
+        deadAnimalCode: z.ZodString;
+        sampleTypeId: z.ZodNumber;
+        sampleTypeName: z.ZodString;
+        performedDate: z.ZodString;
+        performedDateFormatted: z.ZodOptional<z.ZodString>;
+        targetGeneId: z.ZodNumber;
+        targetGeneName: z.ZodString;
+        suspiciousAgentId: z.ZodNumber;
+        suspiciousAgentName: z.ZodString;
+        meanCt: z.ZodNumber;
+        estimatedCopies: z.ZodNumber;
+        qpcrStatusId: z.ZodNumber;
+        qpcrStatusName: z.ZodString;
+        control: z.ZodString;
+    }, z.core.$strip>]>;
+}, z.core.$strip>;
+declare const getFormOptionsPCRResultOutputSchema: z.ZodObject<{
+    necropsies: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        performedDate: z.ZodString;
+        deadAnimal: z.ZodObject<{
+            id: z.ZodNumber;
+            code: z.ZodString;
+        }, z.core.$strip>;
+    }, z.core.$strip>>;
+    sampleTypes: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
+    extractionTypes: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
+    targetGenes: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
+    suspiciousAgents: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
+    cpcrMethods: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
+    cpcrStatuses: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
+}, z.core.$strip>;
+declare const getFormOptionsQPCRResultOutputSchema: z.ZodObject<{
+    necropsies: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        performedDate: z.ZodString;
+        performedDateFormatted: z.ZodOptional<z.ZodString>;
+        deadAnimal: z.ZodObject<{
+            id: z.ZodNumber;
+            code: z.ZodString;
+        }, z.core.$strip>;
+    }, z.core.$strip>>;
+    sampleTypes: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
+    targetGenes: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
+    suspiciousAgents: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
+    qpcrStatuses: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
+}, z.core.$strip>;
+declare const createCPCRResultInputSchema: z.ZodObject<{
+    necropsyId: z.ZodNumber;
+    sampleTypeId: z.ZodNumber;
+    performedDate: z.ZodString;
+    extractionTypeId: z.ZodNumber;
+    targetGeneId: z.ZodNumber;
+    primer: z.ZodString;
+    pb: z.ZodNumber;
+    suspiciousAgentId: z.ZodNumber;
+    cpcrMethodId: z.ZodNumber;
+    cpcrStatusId: z.ZodNumber;
+    control: z.ZodString;
+}, z.core.$strip>;
+declare const updateCPCRResultInputSchema: z.ZodObject<{
+    necropsyId: z.ZodNumber;
+    sampleTypeId: z.ZodNumber;
+    performedDate: z.ZodString;
+    extractionTypeId: z.ZodNumber;
+    targetGeneId: z.ZodNumber;
+    primer: z.ZodString;
+    pb: z.ZodNumber;
+    suspiciousAgentId: z.ZodNumber;
+    cpcrMethodId: z.ZodNumber;
+    cpcrStatusId: z.ZodNumber;
+    control: z.ZodString;
+}, z.core.$strip>;
+declare const createQPCRResultInputSchema: z.ZodObject<{
+    necropsyId: z.ZodNumber;
+    sampleTypeId: z.ZodNumber;
+    performedDate: z.ZodString;
+    targetGeneId: z.ZodNumber;
+    suspiciousAgentId: z.ZodNumber;
+    meanCt: z.ZodNumber;
+    estimatedCopies: z.ZodNumber;
+    qpcrStatusId: z.ZodNumber;
+    control: z.ZodString;
+}, z.core.$strip>;
+declare const updateQPCRResultInputSchema: z.ZodObject<{
+    necropsyId: z.ZodNumber;
+    sampleTypeId: z.ZodNumber;
+    performedDate: z.ZodString;
+    targetGeneId: z.ZodNumber;
+    suspiciousAgentId: z.ZodNumber;
+    meanCt: z.ZodNumber;
+    estimatedCopies: z.ZodNumber;
+    qpcrStatusId: z.ZodNumber;
+    control: z.ZodString;
+}, z.core.$strip>;
+export type GetAllCPCRResultOutput = z.infer<typeof getAllCPCRResultOutputSchema>;
+export type GetAllQPCRResultOutput = z.infer<typeof getAllQPCRResultOutputSchema>;
+export type GetAllNecropsyExamResultOutput = z.infer<typeof getAllNecropsyExamResultOutputSchema>;
+export type GetFormOptionsCPCRResultOutput = z.infer<typeof getFormOptionsPCRResultOutputSchema>;
+export type GetFormOptionsQPCRResultOutput = z.infer<typeof getFormOptionsQPCRResultOutputSchema>;
+export type CreateCPCRResultInput = z.infer<typeof createCPCRResultInputSchema>;
+export type CreateQPCRResultInput = z.infer<typeof createQPCRResultInputSchema>;
+export type UpdateCPCRResultInput = z.infer<typeof updateCPCRResultInputSchema>;
+export type UpdateQPCRResultInput = z.infer<typeof updateQPCRResultInputSchema>;
+export {};
+//# sourceMappingURL=pcrResult.d.ts.map

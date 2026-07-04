@@ -1,0 +1,108 @@
+import z from 'zod';
+export declare const getAllNecropsyOutputSchema: z.ZodObject<{
+    id: z.ZodNumber;
+    createdByMe: z.ZodBoolean;
+    canEdit: z.ZodBoolean;
+    deadAnimalId: z.ZodNumber;
+    deadAnimalCode: z.ZodString;
+    identifiedGenderId: z.ZodNumber;
+    identifiedGenderName: z.ZodString;
+    performedDate: z.ZodString;
+    performedDateFormatted: z.ZodOptional<z.ZodString>;
+    bodyConditionId: z.ZodNumber;
+    bodyConditionName: z.ZodString;
+    clinicalConditionId: z.ZodNumber;
+    clinicalConditionName: z.ZodString;
+    tutorId: z.ZodOptional<z.ZodNumber>;
+    tutorName: z.ZodOptional<z.ZodString>;
+    reproductiveConditionId: z.ZodNumber;
+    reproductiveConditionName: z.ZodString;
+    weight: z.ZodNumber;
+    ageId: z.ZodNumber;
+    ageName: z.ZodString;
+    note: z.ZodOptional<z.ZodString>;
+    bodyMeasurements: z.ZodArray<z.ZodObject<{
+        bodyMeasurementTypeId: z.ZodNumber;
+        bodyMeasurementTypeDescription: z.ZodString;
+        bodyMeasurementTypeUnit: z.ZodString;
+        value: z.ZodNumber;
+    }, z.core.$strip>>;
+    hasSample: z.ZodBoolean;
+    hasHelminthAnalysis: z.ZodBoolean;
+    hasEctoparasiteAnalysis: z.ZodBoolean;
+    hasQpcrResult: z.ZodBoolean;
+    hasCpcrResult: z.ZodBoolean;
+    hasTutor: z.ZodBoolean;
+}, z.core.$strip>;
+export declare const getFormOptionsNecropsyOutputSchema: z.ZodObject<{
+    deadAnimals: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        code: z.ZodString;
+    }, z.core.$strip>>;
+    identifiedGenders: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
+    bodyConditions: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
+    clinicalConditions: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
+    tutors: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
+    reproductiveConditions: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
+    ages: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
+    bodyMeasurementTypes: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        description: z.ZodString;
+        unit: z.ZodString;
+    }, z.core.$strip>>;
+}, z.core.$strip>;
+export declare const createNecropsyInputSchema: z.ZodObject<{
+    deadAnimalId: z.ZodNumber;
+    identifiedGenderId: z.ZodNumber;
+    performedDate: z.ZodString;
+    bodyConditionId: z.ZodNumber;
+    clinicalConditionId: z.ZodNumber;
+    tutorId: z.ZodOptional<z.ZodNumber>;
+    reproductiveConditionId: z.ZodNumber;
+    weight: z.ZodNumber;
+    ageId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodString>;
+    bodyMeasurements: z.ZodOptional<z.ZodArray<z.ZodObject<{
+        bodyMeasurementTypeId: z.ZodNumber;
+        value: z.ZodNumber;
+    }, z.core.$strip>>>;
+}, z.core.$strip>;
+export declare const updateNecropsyInputSchema: z.ZodObject<{
+    deadAnimalId: z.ZodNumber;
+    identifiedGenderId: z.ZodNumber;
+    performedDate: z.ZodString;
+    bodyConditionId: z.ZodNumber;
+    clinicalConditionId: z.ZodNumber;
+    tutorId: z.ZodOptional<z.ZodNumber>;
+    reproductiveConditionId: z.ZodNumber;
+    weight: z.ZodNumber;
+    ageId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodString>;
+    bodyMeasurements: z.ZodOptional<z.ZodArray<z.ZodObject<{
+        bodyMeasurementTypeId: z.ZodNumber;
+        value: z.ZodNumber;
+    }, z.core.$strip>>>;
+}, z.core.$strip>;
+export type GetAllNecropsyOutput = z.infer<typeof getAllNecropsyOutputSchema>;
+export type GetFormOptionsNecropsyOutput = z.infer<typeof getFormOptionsNecropsyOutputSchema>;
+export type CreateNecropsyInput = z.infer<typeof createNecropsyInputSchema>;
+export type UpdateNecropsyInput = z.infer<typeof updateNecropsyInputSchema>;
+//# sourceMappingURL=necropsy.d.ts.map

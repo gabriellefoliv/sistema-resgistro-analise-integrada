@@ -1134,6 +1134,7 @@ model cpcrResult {
   cpcrStatus        enumCpcrStatus  @relation(fields: [cpcrStatusId], references: [id])
   control           String          @map("controle")
 
+  @@unique([necropsyId, sampleTypeId])
   @@map("resultado_cpcr")
 }
 
@@ -1154,6 +1155,7 @@ model qpcrResult {
   qpcrStatus        enumQpcrStatus  @relation(fields: [qpcrStatusId], references: [id])
   control           String          @map("controle")
 
+  @@unique([necropsyId, sampleTypeId])
   @@map("resultado_qpcr")
 }
 

@@ -1,7 +1,5 @@
 import { z } from 'zod';
-
 // Modelo Prisma
-
 // model cpcrResult {
 //   id                Int             @id @default(autoincrement())
 //   necropsyId        Int             @map("id_necropsia")
@@ -22,10 +20,8 @@ import { z } from 'zod';
 //   cpcrStatusId      Int             @map("id_resultado_cpcr")
 //   cpcrStatus        enumCpcrStatus  @relation(fields: [cpcrStatusId], references: [id])
 //   control           String          @map("controle")
-
 //   @@map("resultado_cpcr")
 // }
-
 // model qpcrResult {
 //   id                Int             @id @default(autoincrement())
 //   necropsyId        Int             @map("id_necropsia")
@@ -42,10 +38,8 @@ import { z } from 'zod';
 //   qpcrStatusId      Int             @map("id_resultado_qpcr")
 //   qpcrStatus        enumQpcrStatus  @relation(fields: [qpcrStatusId], references: [id])
 //   control           String          @map("controle")
-
 //   @@map("resultado_qpcr")
 // }
-
 // Outputs
 const getAllCPCRResultOutputSchema = z.object({
     id: z.number().int(),
@@ -74,7 +68,6 @@ const getAllCPCRResultOutputSchema = z.object({
     cpcrStatusName: z.string().nonempty(),
     control: z.string().nonempty(),
 });
-
 const getAllQPCRResultOutputSchema = z.object({
     id: z.number().int(),
     createdByMe: z.boolean(),
@@ -98,13 +91,11 @@ const getAllQPCRResultOutputSchema = z.object({
     qpcrStatusName: z.string().nonempty(),
     control: z.string().nonempty(),
 });
-
 const getAllNecropsyExamResultOutputSchema = z.object({
     uniqueId: z.string().nonempty(),
     type: z.string().nonempty(),
     result: getAllCPCRResultOutputSchema.or(getAllQPCRResultOutputSchema)
-})
-
+});
 const getFormOptionsPCRResultOutputSchema = z.object({
     necropsies: z.array(z.object({
         id: z.number().int(),
@@ -139,7 +130,6 @@ const getFormOptionsPCRResultOutputSchema = z.object({
         name: z.string().nonempty()
     }))
 });
-
 const getFormOptionsQPCRResultOutputSchema = z.object({
     necropsies: z.array(z.object({
         id: z.number().int(),
@@ -167,7 +157,6 @@ const getFormOptionsQPCRResultOutputSchema = z.object({
         name: z.string().nonempty()
     }))
 });
-
 // Inputs
 const createCPCRResultInputSchema = z.object({
     necropsyId: z.number().int(),
@@ -182,9 +171,7 @@ const createCPCRResultInputSchema = z.object({
     cpcrStatusId: z.number().int(),
     control: z.string().nonempty()
 });
-
 const updateCPCRResultInputSchema = createCPCRResultInputSchema;
-
 const createQPCRResultInputSchema = z.object({
     necropsyId: z.number().int(),
     sampleTypeId: z.number().int(),
@@ -196,16 +183,4 @@ const createQPCRResultInputSchema = z.object({
     qpcrStatusId: z.number().int(),
     control: z.string().nonempty()
 });
-
 const updateQPCRResultInputSchema = createQPCRResultInputSchema;
-
-// Types
-export type GetAllCPCRResultOutput = z.infer<typeof getAllCPCRResultOutputSchema>;
-export type GetAllQPCRResultOutput = z.infer<typeof getAllQPCRResultOutputSchema>;
-export type GetAllNecropsyExamResultOutput = z.infer<typeof getAllNecropsyExamResultOutputSchema>;
-export type GetFormOptionsCPCRResultOutput = z.infer<typeof getFormOptionsPCRResultOutputSchema>;
-export type GetFormOptionsQPCRResultOutput = z.infer<typeof getFormOptionsQPCRResultOutputSchema>;
-export type CreateCPCRResultInput = z.infer<typeof createCPCRResultInputSchema>;
-export type CreateQPCRResultInput = z.infer<typeof createQPCRResultInputSchema>;
-export type UpdateCPCRResultInput = z.infer<typeof updateCPCRResultInputSchema>;
-export type UpdateQPCRResultInput = z.infer<typeof updateQPCRResultInputSchema>;

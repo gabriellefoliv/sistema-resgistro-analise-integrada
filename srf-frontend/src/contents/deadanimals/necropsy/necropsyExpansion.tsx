@@ -4,10 +4,9 @@ import { NecropsyFormModal } from "./formNecropsyModal";
 import { DeleteNecropsyModal } from "./deleteNecropsyModal";
 import { DeadAnimalSideDrawer } from "../deadAnimal/deadAnimalSideDrawer";
 import { NecropsySampleSideDrawer } from "../necropsySample/sampleSideDrawer";
-// import { HelminthAnalysisSideDrawer } from "../helminthAnalysis/helminthAnalysisSideDrawer";
-// import { EctoparasiteAnalysisNecropsySideDrawer } from "../ectoparasiteAnalysisNecropsy/ectoparasiteAnalysisNecropsySideDrawer";
-// import { QpcrResultSideDrawer } from "../qpcrResult/qpcrResultSideDrawer";
-// import { CpcrResultSideDrawer } from "../cpcrResult/cpcrResultSideDrawer";
+import { HelminthAnalysisSideDrawer } from "../helminthAnalysis/helminthAnalysisSideDrawer";
+import { NecropsyEctoparasiteAnalysisSideDrawer } from "../necropsyEctoparasiteAnalysis/necropsyEctoparasiteAnalysisSideDrawer";
+import { NecropsyExamResultSideDrawer } from "../necropsyExamResult/necropsyExamResultSideDrawer";
 
 export function NecropsyExpansion({ item, close, refresh }: { item: GetAllNecropsyOutput; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
@@ -15,10 +14,9 @@ export function NecropsyExpansion({ item, close, refresh }: { item: GetAllNecrop
 
     const [showDeadAnimalDrawer, setShowDeadAnimalDrawer] = useState(false);
     const [showNecropsySampleDrawer, setShowNecropsySampleDrawer] = useState(false);
-    // const [showHelminthDrawer, setShowHelminthDrawer] = useState(false);
-    // const [showEctoparasiteDrawer, setShowEctoparasiteDrawer] = useState(false);
-    // const [showQpcrDrawer, setShowQpcrDrawer] = useState(false);
-    // const [showCpcrDrawer, setShowCpcrDrawer] = useState(false);
+    const [showHelminthDrawer, setShowHelminthDrawer] = useState(false);
+    const [showEctoparasiteDrawer, setShowEctoparasiteDrawer] = useState(false);
+    const [showExamResultDrawer, setShowExamResultDrawer] = useState(false);
 
     const performedDateFormatted = item.performedDate
         ? new Date(item.performedDate).toLocaleDateString('pt-BR', { timeZone: 'UTC' })
@@ -47,30 +45,24 @@ export function NecropsyExpansion({ item, close, refresh }: { item: GetAllNecrop
                     onClose={() => setShowNecropsySampleDrawer(false)}
                 />
             )}
-            {/* {showHelminthDrawer && (
+            {showHelminthDrawer && (
                 <HelminthAnalysisSideDrawer
                     filters={{ necropsyId: item.id }}
                     onClose={() => setShowHelminthDrawer(false)}
                 />
-            )} */}
-            {/* {showEctoparasiteDrawer && (
-                <EctoparasiteAnalysisNecropsySideDrawer
+            )}
+            {showEctoparasiteDrawer && (
+                <NecropsyEctoparasiteAnalysisSideDrawer
                     filters={{ necropsyId: item.id }}
                     onClose={() => setShowEctoparasiteDrawer(false)}
                 />
-            )} */}
-            {/* {showQpcrDrawer && (
-                <QpcrResultSideDrawer
+            )}
+            {showExamResultDrawer && (
+                <NecropsyExamResultSideDrawer
                     filters={{ necropsyId: item.id }}
-                    onClose={() => setShowQpcrDrawer(false)}
+                    onClose={() => setShowExamResultDrawer(false)}
                 />
-            )} */}
-            {/* {showCpcrDrawer && (
-                <CpcrResultSideDrawer
-                    filters={{ necropsyId: item.id }}
-                    onClose={() => setShowCpcrDrawer(false)}
-                />
-            )} */}
+            )}
 
             {/* Cabeçalho */}
             <div className="sticky top-0 z-10 bg-form-bg pb-2">
@@ -174,8 +166,7 @@ export function NecropsyExpansion({ item, close, refresh }: { item: GetAllNecrop
                     )}
                     {item.hasHelminthAnalysis && (
                         <button
-                            // onClick={() => setShowHelminthDrawer(true)}
-                            onClick={() => { }}
+                            onClick={() => setShowHelminthDrawer(true)}
                             className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
                             title="Análise de Helmintos"
                         >
@@ -184,32 +175,20 @@ export function NecropsyExpansion({ item, close, refresh }: { item: GetAllNecrop
                     )}
                     {item.hasEctoparasiteAnalysis && (
                         <button
-                            // onClick={() => setShowEctoparasiteDrawer(true)}
-                            onClick={() => { }}
+                            onClick={() => setShowEctoparasiteDrawer(true)}
                             className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
                             title="Análise de Ectoparasitos"
                         >
                             Análise de Ectoparasitos
                         </button>
                     )}
-                    {item.hasQpcrResult && (
+                    {(item.hasQpcrResult || item.hasCpcrResult) && (
                         <button
-                            // onClick={() => setShowQpcrDrawer(true)}
-                            onClick={() => { }}
+                            onClick={() => setShowExamResultDrawer(true)}
                             className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                            title="Resultado QPCR"
+                            title="Resultado CPCR/QPCR"
                         >
-                            Resultado QPCR
-                        </button>
-                    )}
-                    {item.hasCpcrResult && (
-                        <button
-                            // onClick={() => setShowCpcrDrawer(true)}
-                            onClick={() => { }}
-                            className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                            title="Resultado CPCR"
-                        >
-                            Resultado CPCR
+                            Resultado CPCR/QPCR
                         </button>
                     )}
                 </div>
