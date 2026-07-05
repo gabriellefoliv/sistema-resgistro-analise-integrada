@@ -1,0 +1,12 @@
+import { Request, Response } from "express";
+export declare class EctoparasiteAnalysisController {
+    private auditService;
+    private ectoparasiteAnalysisService;
+    private formId;
+    getAll: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+    getFormOptions: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+    create: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+    update: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+    delete: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+}
+//# sourceMappingURL=ectoparasiteAnalysisController.d.ts.map

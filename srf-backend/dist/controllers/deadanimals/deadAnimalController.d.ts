@@ -1,0 +1,13 @@
+import { Request, Response } from "express";
+export declare class DeadAnimalController {
+    private auditService;
+    private deadAnimalService;
+    private formId;
+    private tableName;
+    getAll: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+    getFormOptions: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+    create: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+    update: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+    delete: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+}
+//# sourceMappingURL=deadAnimalController.d.ts.map

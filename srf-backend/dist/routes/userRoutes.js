@@ -1,0 +1,20 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.userRoutes = void 0;
+const express_1 = require("express");
+const authMiddleware_1 = require("../middlewares/authMiddleware");
+const userController_1 = require("../controllers/userController");
+exports.userRoutes = (0, express_1.Router)();
+const userController = new userController_1.UserController();
+exports.userRoutes.get('/user/get-all', (0, authMiddleware_1.authMiddleware)('admin'), userController.getAll);
+exports.userRoutes.get('/user/user-access/:userId', (0, authMiddleware_1.authMiddleware)(), userController.getUserAccess);
+exports.userRoutes.post('/user/create', (0, authMiddleware_1.authMiddleware)('admin'), userController.create);
+exports.userRoutes.post('/login', userController.login);
+exports.userRoutes.post('/forgot-password', userController.forgotPassword);
+exports.userRoutes.get('/reset-password/confirm', userController.confirmPasswordReset);
+exports.userRoutes.delete('/user/delete', (0, authMiddleware_1.authMiddleware)('admin'), userController.delete);
+exports.userRoutes.put('/user/update/details', (0, authMiddleware_1.authMiddleware)(), userController.updateDetails);
+exports.userRoutes.put('/user/update/role', (0, authMiddleware_1.authMiddleware)('admin'), userController.updateRole);
+exports.userRoutes.put('/user/update/access', (0, authMiddleware_1.authMiddleware)('admin'), userController.updateUserAccess);
+exports.userRoutes.put('/user/update/password', (0, authMiddleware_1.authMiddleware)('admin'), userController.updatePassword);
+//# sourceMappingURL=userRoutes.js.map
