@@ -2,10 +2,12 @@ import { useState } from "react";
 import { type GetAllInterviewOutput } from "srf-shared-types";
 import { InterviewFormModal } from "./formInterviewModal";
 import { DeleteInterviewModal } from "./deleteInterviewModal";
+import { TutorSideDrawer } from "../tutor/tutorSideDrawer";
 
 export function InterviewExpansion({ item, close, refresh }: { item: GetAllInterviewOutput; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showTutorDrawer, setShowTutorDrawer] = useState(false);
 
     return (
         <>
@@ -21,6 +23,12 @@ export function InterviewExpansion({ item, close, refresh }: { item: GetAllInter
                     interview={item}
                     close={() => setShowDeleteModal(false)}
                     refresh={refresh}
+                />
+            )}
+            {showTutorDrawer && (
+                <TutorSideDrawer
+                    filters={{ tutorId: item.tutorId }}
+                    onClose={() => setShowTutorDrawer(false)}
                 />
             )}
 
@@ -92,6 +100,18 @@ export function InterviewExpansion({ item, close, refresh }: { item: GetAllInter
                     ))}
                 </>
             )}
+
+            <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
+                <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
+            </div>
+            <div className="gap-2 w-full text-sm flex flex-wrap mb-2">
+                <button
+                    onClick={() => setShowTutorDrawer(true)}
+                    className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                >
+                    Tutor
+                </button>
+            </div>
         </>
     );
 }

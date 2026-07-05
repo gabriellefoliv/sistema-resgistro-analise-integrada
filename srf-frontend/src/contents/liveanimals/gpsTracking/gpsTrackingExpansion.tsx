@@ -2,10 +2,12 @@ import { useState } from "react";
 import { type GetAllGpsTrackingOutput } from "srf-shared-types";
 import { GpsTrackingFormModal } from "./formGpsTrackingModal";
 import { DeleteGpsTrackingModal } from "./deleteGpsTrackingModal";
+import { LiveAnimalSideDrawer } from "../liveAnimal/liveAnimalSideDrawer";
 
 export function GpsTrackingExpansion({ item, close, refresh }: { item: GetAllGpsTrackingOutput; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showLiveAnimalDrawer, setShowLiveAnimalDrawer] = useState(false);
     return (
         <>
             {showFormModal && (
@@ -13,6 +15,12 @@ export function GpsTrackingExpansion({ item, close, refresh }: { item: GetAllGps
             )}
             {showDeleteModal && (
                 <DeleteGpsTrackingModal gpsTracking={item} close={() => setShowDeleteModal(false)} refresh={refresh} />
+            )}
+            {showLiveAnimalDrawer && (
+                <LiveAnimalSideDrawer
+                    filters={{ liveAnimalId: item.liveAnimalId }}
+                    onClose={() => setShowLiveAnimalDrawer(false)}
+                />
             )}
             {/* Cabeçalho */}
             <div className="sticky top-0 z-10 bg-form-bg pb-2">
@@ -115,6 +123,18 @@ export function GpsTrackingExpansion({ item, close, refresh }: { item: GetAllGps
                         Última atualização em: {item.editedSpreadsheetUpdateDateFormatted || '-'}
                     </label> */}
                 </div>
+            </div>
+
+            <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
+                <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
+            </div>
+            <div className="gap-2 w-full text-sm flex flex-wrap mb-2">
+                <button
+                    onClick={() => setShowLiveAnimalDrawer(true)}
+                    className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                >
+                    Animal
+                </button>
             </div>
         </>
     )

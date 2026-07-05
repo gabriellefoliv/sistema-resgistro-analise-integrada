@@ -2,10 +2,14 @@ import { useState } from "react";
 import { type GetAllNecropsyExamResultOutput } from "srf-shared-types";
 import { NecropsyExamResultFormModal } from "./formNecropsyExamResultModal";
 import { DeleteNecropsyExamResultModal } from "./deleteNecropsyExamResultModal";
+import { DeadAnimalSideDrawer } from "../deadAnimal/deadAnimalSideDrawer";
+import { NecropsySideDrawer } from "../necropsy/necropsySideDrawer";
 
 export function NecropsyExamResultExpansion({ item, close, refresh }: { item: GetAllNecropsyExamResultOutput; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showDeadAnimalDrawer, setShowDeadAnimalDrawer] = useState(false);
+    const [showNecropsyDrawer, setShowNecropsyDrawer] = useState(false);
 
     const isCPCR = item.type === 'cpcr' || item.type === 'CPCR';
     const result = item.result;
@@ -25,6 +29,18 @@ export function NecropsyExamResultExpansion({ item, close, refresh }: { item: Ge
             )}
             {showDeleteModal && (
                 <DeleteNecropsyExamResultModal necropsyExamResult={item} close={() => setShowDeleteModal(false)} refresh={refresh} />
+            )}
+            {showDeadAnimalDrawer && (
+                <DeadAnimalSideDrawer
+                    filters={{ deadAnimalId: result.deadAnimalId }}
+                    onClose={() => setShowDeadAnimalDrawer(false)}
+                />
+            )}
+            {showNecropsyDrawer && (
+                <NecropsySideDrawer
+                    filters={{ necropsyId: result.necropsyId }}
+                    onClose={() => setShowNecropsyDrawer(false)}
+                />
             )}
             {/* Cabeçalho */}
             <div className="sticky top-0 z-10 bg-form-bg pb-2">
@@ -126,6 +142,24 @@ export function NecropsyExamResultExpansion({ item, close, refresh }: { item: Ge
                     </div>
                 </div>
             )}
+
+            <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
+                <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
+            </div>
+            <div className="gap-2 w-full text-sm flex flex-wrap mb-2">
+                <button
+                    onClick={() => setShowDeadAnimalDrawer(true)}
+                    className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                >
+                    Animal Morto
+                </button>
+                <button
+                    onClick={() => setShowNecropsyDrawer(true)}
+                    className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                >
+                    Necropsia
+                </button>
+            </div>
         </>
     )
 }

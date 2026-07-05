@@ -2,11 +2,13 @@ import { useState } from "react";
 import { type GetAllExamResultOutput } from "srf-shared-types";
 import { ExamResultFormModal } from "./formExamResultModal";
 import { DeleteExamResultModal } from "./deleteExamResultModal";
+import { VeterinarianVisitSideDrawer } from "../veterinarianVisit/veterinarianVisitSideDrawer";
 import grayQuestionMark from '../../../assets/grayQuestionMark.svg';
 
 export function ExamResultExpansion({ item, close, refresh }: { item: GetAllExamResultOutput; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showVeterinarianVisitDrawer, setShowVeterinarianVisitDrawer] = useState(false);
     return (
         <>
             {showFormModal && (
@@ -14,6 +16,12 @@ export function ExamResultExpansion({ item, close, refresh }: { item: GetAllExam
             )}
             {showDeleteModal && (
                 <DeleteExamResultModal examResult={item} close={() => setShowDeleteModal(false)} refresh={refresh} />
+            )}
+            {showVeterinarianVisitDrawer && (
+                <VeterinarianVisitSideDrawer
+                    filters={{ veterinarianVisitId: item.veterinarianVisitId }}
+                    onClose={() => setShowVeterinarianVisitDrawer(false)}
+                />
             )}
             {/* CABEÇALHO */}
             <div className="sticky top-0 z-10 bg-form-bg pb-2">

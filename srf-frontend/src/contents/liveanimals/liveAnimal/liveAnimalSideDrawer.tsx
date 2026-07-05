@@ -6,6 +6,7 @@ import { SideDrawer } from "../../../components/sideDrawer";
 
 interface LiveAnimalSideDrawerFilters {
     liveAnimalId?: number;
+    tutorId?: number;
 }
 
 interface LiveAnimalSideDrawerProps {
@@ -32,12 +33,13 @@ export function LiveAnimalSideDrawer({ filters, onClose }: LiveAnimalSideDrawerP
                     }))
                     .filter(a => {
                         if (filters.liveAnimalId && a.id !== filters.liveAnimalId) return false;
+                        if (filters.tutorId && a.tutorId !== filters.tutorId) return false;
                         return true;
                     });
                 setAnimals(filtered);
             })
             .finally(() => setLoading(false));
-    }, [filters.liveAnimalId]);
+    }, [filters.liveAnimalId, filters.tutorId]);
 
     const pageFilters: any[] = [];
     if (filters.liveAnimalId) {

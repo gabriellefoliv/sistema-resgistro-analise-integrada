@@ -2,10 +2,12 @@ import { useState } from "react";
 import { type GetAllEctoparasiteAnalysisOutput } from "srf-shared-types";
 import { EctoparasiteAnalysisFormModal } from "./formEctoparasiteAnalysisModal";
 import { DeleteEctoparasiteAnalysisModal } from "./deleteEctoparasiteAnalysisModal";
+import { VeterinarianVisitSideDrawer } from "../veterinarianVisit/veterinarianVisitSideDrawer";
 
 export function EctoparasiteAnalysisExpansion({ item, close, refresh }: { item: GetAllEctoparasiteAnalysisOutput; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showVeterinarianVisitDrawer, setShowVeterinarianVisitDrawer] = useState(false);
     return (
         <>
             {showFormModal && (
@@ -13,6 +15,12 @@ export function EctoparasiteAnalysisExpansion({ item, close, refresh }: { item: 
             )}
             {showDeleteModal && (
                 <DeleteEctoparasiteAnalysisModal ectoparasiteAnalysis={item} close={() => setShowDeleteModal(false)} refresh={refresh} />
+            )}
+            {showVeterinarianVisitDrawer && (
+                <VeterinarianVisitSideDrawer
+                    filters={{ veterinarianVisitId: item.veterinarianVisitId }}
+                    onClose={() => setShowVeterinarianVisitDrawer(false)}
+                />
             )}
             {/* CABEÇALHO */}
             <div className="sticky top-0 z-10 bg-form-bg pb-2">
@@ -79,6 +87,18 @@ export function EctoparasiteAnalysisExpansion({ item, close, refresh }: { item: 
                     <label className="ml-1 font-bold">Observações</label>
                     <input type="text" disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
+            </div>
+
+            <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
+                <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
+            </div>
+            <div className="gap-2 w-full text-sm flex flex-wrap mb-2">
+                <button
+                    onClick={() => setShowVeterinarianVisitDrawer(true)}
+                    className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                >
+                    Visita Veterinária
+                </button>
             </div>
         </>
     )

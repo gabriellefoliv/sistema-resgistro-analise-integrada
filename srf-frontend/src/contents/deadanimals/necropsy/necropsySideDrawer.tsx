@@ -6,6 +6,7 @@ import { SideDrawer } from "../../../components/sideDrawer";
 
 interface NecropsySideDrawerFilters {
     deadAnimalId?: number;
+    necropsyId?: number;
 }
 
 interface NecropsySideDrawerProps {
@@ -32,12 +33,13 @@ export function NecropsySideDrawer({ filters, onClose }: NecropsySideDrawerProps
                     }))
                     .filter(n => {
                         if (filters.deadAnimalId && n.deadAnimalId !== filters.deadAnimalId) return false;
+                        if (filters.necropsyId && n.id !== filters.necropsyId) return false;
                         return true;
                     });
                 setNecropsies(filtered);
             })
             .finally(() => setLoading(false));
-    }, [filters.deadAnimalId]);
+    }, [filters.deadAnimalId, filters.necropsyId]);
 
     const pageFilters: any[] = [];
     const first = necropsies[0];

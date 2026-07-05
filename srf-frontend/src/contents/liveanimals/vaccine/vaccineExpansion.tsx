@@ -2,10 +2,14 @@ import { useState } from "react";
 import { type GetAllVaccineOutput } from "srf-shared-types";
 import { VaccineFormModal } from "./formVaccineModal";
 import { DeleteVaccineModal } from "./deleteVaccineModal";
+import { LiveAnimalSideDrawer } from "../liveAnimal/liveAnimalSideDrawer";
+import { VeterinarianVisitSideDrawer } from "../veterinarianVisit/veterinarianVisitSideDrawer";
 
 export function VaccineExpansion({ item, close, refresh }: { item: GetAllVaccineOutput; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showLiveAnimalDrawer, setShowLiveAnimalDrawer] = useState(false);
+    const [showVeterinarianVisitDrawer, setShowVeterinarianVisitDrawer] = useState(false);
 
     return (
         <>
@@ -21,6 +25,18 @@ export function VaccineExpansion({ item, close, refresh }: { item: GetAllVaccine
                     vaccine={item}
                     close={() => setShowDeleteModal(false)}
                     refresh={refresh}
+                />
+            )}
+            {showLiveAnimalDrawer && (
+                <LiveAnimalSideDrawer
+                    filters={{ liveAnimalId: item.liveAnimalId }}
+                    onClose={() => setShowLiveAnimalDrawer(false)}
+                />
+            )}
+            {showVeterinarianVisitDrawer && item.veterinarianVisitId && (
+                <VeterinarianVisitSideDrawer
+                    filters={{ veterinarianVisitId: item.veterinarianVisitId }}
+                    onClose={() => setShowVeterinarianVisitDrawer(false)}
                 />
             )}
             {/* ==== Cabeçalho de Expansão ==== */}

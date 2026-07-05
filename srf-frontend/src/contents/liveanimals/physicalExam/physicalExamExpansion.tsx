@@ -2,11 +2,13 @@ import { useState } from "react";
 import { type GetAllPhysicalExamOutput } from "srf-shared-types";
 import { PhysicalExamFormModal } from "./formPhysicalExamModal";
 import { DeletePhysicalExamModal } from "./deletePhysicalExamModal";
+import { VeterinarianVisitSideDrawer } from "../veterinarianVisit/veterinarianVisitSideDrawer";
 import grayQuestionMark from '../../../assets/grayQuestionMark.svg';
 
 export function PhysicalExamExpansion({ item, close, refresh }: { item: GetAllPhysicalExamOutput; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showVeterinarianVisitDrawer, setShowVeterinarianVisitDrawer] = useState(false);
     return (
         <>
             {showFormModal && (
@@ -21,6 +23,12 @@ export function PhysicalExamExpansion({ item, close, refresh }: { item: GetAllPh
                     exam={item}
                     close={() => setShowDeleteModal(false)}
                     refresh={refresh}
+                />
+            )}
+            {showVeterinarianVisitDrawer && (
+                <VeterinarianVisitSideDrawer
+                    filters={{ veterinarianVisitId: item.veterinarianVisitId }}
+                    onClose={() => setShowVeterinarianVisitDrawer(false)}
                 />
             )}
             {/* ==== Cabeçalho de Expansão ==== */}
