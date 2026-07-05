@@ -8,13 +8,13 @@ export declare class VeterinarianSampleService {
     create(data: CreateVeterinarianSampleInput, requesterId: string): Promise<{
         sample: {
             id: number;
-            imageLink: string | null;
             note: string | null;
             veterinarianVisitId: number;
             sampleTypeId: number;
             storageId: number;
             statusId: number;
             quantity: number;
+            imageLink: string | null;
         };
         sendSamples: {
             id: number;
@@ -22,20 +22,20 @@ export declare class VeterinarianSampleService {
             storageId: number;
             statusId: number;
             quantity: number;
-            sampleAllocationVeterinarianId: number;
             sendDate: Date;
+            sampleAllocationVeterinarianId: number;
         }[];
     }>;
     update(recordId: number, data: UpdateVeterinarianSampleInput, requesterId: string): Promise<{
         sample: {
             id: number;
-            imageLink: string | null;
             note: string | null;
             veterinarianVisitId: number;
             sampleTypeId: number;
             storageId: number;
             statusId: number;
             quantity: number;
+            imageLink: string | null;
         };
         sendSamples: {
             id: number;
@@ -43,8 +43,8 @@ export declare class VeterinarianSampleService {
             storageId: number;
             statusId: number;
             quantity: number;
-            sampleAllocationVeterinarianId: number;
             sendDate: Date;
+            sampleAllocationVeterinarianId: number;
         }[];
     }>;
     delete(recordId: number, requesterId: string): Promise<{

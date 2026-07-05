@@ -21,10 +21,10 @@ declare class ApplicantService {
         };
     }>;
     rejectApplicant(id: string): Promise<{
-        password: string;
         name: string;
         id: string;
         email: string;
+        password: string;
         date: Date;
         message: string | null;
     }>;

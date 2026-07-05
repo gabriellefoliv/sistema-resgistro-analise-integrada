@@ -19,14 +19,13 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.0.10",
     "nodemon": "^3.1.11",
-    "prisma": "^7.3.0",
+    "prisma": "^6.4.1",
     "srf-shared-types": "*",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@prisma/adapter-mariadb": "^7.3.0",
-    "@prisma/client": "^7.3.0",
+    "@prisma/client": "^6.4.1",
     "@types/express": "^5.0.6",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",

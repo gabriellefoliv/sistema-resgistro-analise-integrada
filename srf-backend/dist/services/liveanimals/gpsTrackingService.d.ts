@@ -6,8 +6,8 @@ export declare class GpsTrackingService {
     getFormOptions(): Promise<GetFormOptionsGpsTrackingOutput>;
     create(data: CreateGpsTrackingInput, requesterId: string): Promise<{
         id: number;
-        note: string | null;
         liveAnimalId: number;
+        note: string | null;
         trackingDeviceId: number;
         startDate: Date;
         endDate: Date | null;
@@ -22,8 +22,8 @@ export declare class GpsTrackingService {
     }>;
     update(recordId: number, data: UpdateGpsTrackingInput, requesterId: string): Promise<{
         id: number;
-        note: string | null;
         liveAnimalId: number;
+        note: string | null;
         trackingDeviceId: number;
         startDate: Date;
         endDate: Date | null;

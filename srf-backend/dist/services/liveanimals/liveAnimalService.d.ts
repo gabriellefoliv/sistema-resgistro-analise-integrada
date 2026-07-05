@@ -8,22 +8,24 @@ export declare class LiveAnimalService {
     create(data: CreateLiveAnimalInput, requesterId: string): Promise<{
         name: string;
         id: number;
+        animalPicture: string | null;
         specieId: number;
         genderId: number;
         birthDate: Date;
         active: boolean;
-        animalPicture: string | null;
         cardLink: string | null;
+        tutorId: number;
     }>;
     update(recordId: number, data: UpdateLiveAnimalInput, requesterId: string): Promise<{
         name: string;
         id: number;
+        animalPicture: string | null;
         specieId: number;
         genderId: number;
         birthDate: Date;
         active: boolean;
-        animalPicture: string | null;
         cardLink: string | null;
+        tutorId: number;
     }>;
     delete(recordId: number, requesterId: string): Promise<{
         message: string;

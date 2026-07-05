@@ -7,15 +7,15 @@ export declare class CastrationService {
     create(data: CreateCastrationInput, requesterId: string): Promise<{
         id: number;
         date: Date;
-        note: string | null;
         liveAnimalId: number;
+        note: string | null;
         veterinarianVisitId: number | null;
     }>;
     update(recordId: number, data: UpdateCastrationInput, requesterId: string): Promise<{
         id: number;
         date: Date;
-        note: string | null;
         liveAnimalId: number;
+        note: string | null;
         veterinarianVisitId: number | null;
     }>;
     delete(recordId: number, requesterId: string): Promise<{

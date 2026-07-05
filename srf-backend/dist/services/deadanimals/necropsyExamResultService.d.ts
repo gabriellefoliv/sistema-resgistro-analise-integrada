@@ -9,28 +9,28 @@ export declare class NecropsyExamResultService {
         sampleTypeId: number;
         performedDate: Date;
         necropsyId: number;
-        extractionTypeId: number;
         targetGeneId: number;
+        suspiciousAgentId: number;
+        control: string;
+        extractionTypeId: number;
         primer: string;
         pb: number;
-        suspiciousAgentId: number;
         cpcrMethodId: number;
         cpcrStatusId: number;
-        control: string;
     }>;
     updateCPCR(recordId: number, data: UpdateCPCRResultInput, requesterId: string): Promise<{
         id: number;
         sampleTypeId: number;
         performedDate: Date;
         necropsyId: number;
-        extractionTypeId: number;
         targetGeneId: number;
+        suspiciousAgentId: number;
+        control: string;
+        extractionTypeId: number;
         primer: string;
         pb: number;
-        suspiciousAgentId: number;
         cpcrMethodId: number;
         cpcrStatusId: number;
-        control: string;
     }>;
     deleteCPCR(recordId: number, requesterId: string): Promise<{
         message: string;
@@ -43,10 +43,10 @@ export declare class NecropsyExamResultService {
         necropsyId: number;
         targetGeneId: number;
         suspiciousAgentId: number;
-        control: string;
         meanCt: number;
         estimatedCopies: number;
         qpcrStatusId: number;
+        control: string;
     }>;
     updateQPCR(recordId: number, data: UpdateQPCRResultInput, requesterId: string): Promise<{
         id: number;
@@ -55,10 +55,10 @@ export declare class NecropsyExamResultService {
         necropsyId: number;
         targetGeneId: number;
         suspiciousAgentId: number;
-        control: string;
         meanCt: number;
         estimatedCopies: number;
         qpcrStatusId: number;
+        control: string;
     }>;
     deleteQPCR(recordId: number, requesterId: string): Promise<{
         message: string;

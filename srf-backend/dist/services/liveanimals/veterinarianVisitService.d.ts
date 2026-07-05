@@ -48,18 +48,18 @@ export declare class VeterinarianVisitService {
     create(data: z.infer<typeof veterinarianVisitCreateInput>, userId: string): Promise<{
         id: number;
         date: Date;
-        animalPicture: string | null;
-        note: string | null;
         liveAnimalId: number;
         veterinarianId: number;
+        animalPicture: string | null;
+        note: string | null;
     }>;
     update(visitId: number, data: z.infer<typeof veterinarianVisitUpdateInput>, userId: string): Promise<{
         id: number;
         date: Date;
-        animalPicture: string | null;
-        note: string | null;
         liveAnimalId: number;
         veterinarianId: number;
+        animalPicture: string | null;
+        note: string | null;
     }>;
     delete(visitId: number, userId: string): Promise<{
         success: boolean;

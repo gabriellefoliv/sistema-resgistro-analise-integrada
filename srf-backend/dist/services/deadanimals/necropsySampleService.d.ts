@@ -8,12 +8,12 @@ export declare class NecropsySampleService {
     create(data: CreateNecropsySampleInput, requesterId: string): Promise<{
         sample: {
             id: number;
-            imageLink: string | null;
             note: string | null;
             sampleTypeId: number;
             storageId: number;
             statusId: number;
             quantity: number;
+            imageLink: string | null;
             necropsyId: number;
         };
         sendSamples: {
@@ -29,12 +29,12 @@ export declare class NecropsySampleService {
     update(recordId: number, data: UpdateNecropsySampleInput, requesterId: string): Promise<{
         sample: {
             id: number;
-            imageLink: string | null;
             note: string | null;
             sampleTypeId: number;
             storageId: number;
             statusId: number;
             quantity: number;
+            imageLink: string | null;
             necropsyId: number;
         };
         sendSamples: {

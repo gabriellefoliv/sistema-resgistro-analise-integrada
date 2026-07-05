@@ -8,9 +8,10 @@ export declare class NecropsyService {
     create(data: CreateNecropsyInput, requesterId: string): Promise<{
         id: number;
         note: string | null;
-        weight: number;
         tutorId: number | null;
+        weight: number;
         deadAnimalId: number;
+        identifiedGenderId: number;
         performedDate: Date;
         bodyConditionId: number;
         clinicalConditionId: number;
@@ -20,9 +21,10 @@ export declare class NecropsyService {
     update(recordId: number, data: UpdateNecropsyInput, requesterId: string): Promise<{
         id: number;
         note: string | null;
-        weight: number;
         tutorId: number | null;
+        weight: number;
         deadAnimalId: number;
+        identifiedGenderId: number;
         performedDate: Date;
         bodyConditionId: number;
         clinicalConditionId: number;

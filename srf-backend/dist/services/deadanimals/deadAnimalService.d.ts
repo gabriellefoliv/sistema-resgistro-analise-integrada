@@ -7,7 +7,10 @@ export declare class DeadAnimalService {
     getFormOptions(): Promise<GetFormOptionsDeadAnimalOutput>;
     create(data: CreateDeadAnimalInput, requesterId: string): Promise<{
         id: number;
+        note: string | null;
         specieId: number;
+        imageLink: string | null;
+        code: string;
         deadAnimalGroupId: number;
         deadAnimalOriginId: number;
         deadAnimalStatusId: number;
@@ -15,12 +18,13 @@ export declare class DeadAnimalService {
         collectionResponsibleId: number;
         collectionLongitude: number;
         collectionLatitude: number;
-        imageLink: string | null;
-        note: string | null;
     }>;
     update(recordId: number, data: UpdateDeadAnimalInput, requesterId: string): Promise<{
         id: number;
+        note: string | null;
         specieId: number;
+        imageLink: string | null;
+        code: string;
         deadAnimalGroupId: number;
         deadAnimalOriginId: number;
         deadAnimalStatusId: number;
@@ -28,8 +32,6 @@ export declare class DeadAnimalService {
         collectionResponsibleId: number;
         collectionLongitude: number;
         collectionLatitude: number;
-        imageLink: string | null;
-        note: string | null;
     }>;
     delete(recordId: number, requesterId: string): Promise<{
         message: string;

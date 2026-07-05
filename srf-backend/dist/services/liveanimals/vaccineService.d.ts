@@ -8,16 +8,16 @@ export declare class VaccineService {
         id: number;
         date: Date;
         liveAnimalId: number;
-        vaccineId: number;
         veterinarianVisitId: number | null;
+        vaccineId: number;
         vaccineTypeId: number;
     }>;
     update(recordId: number, data: UpdateVaccineInput, requesterId: string): Promise<{
         id: number;
         date: Date;
         liveAnimalId: number;
-        vaccineId: number;
         veterinarianVisitId: number | null;
+        vaccineId: number;
         vaccineTypeId: number;
     }>;
     delete(recordId: number, requesterId: string): Promise<{

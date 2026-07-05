@@ -8,23 +8,23 @@ export declare class SorologyResultService {
         result: number;
         id: number;
         veterinarianVisitId: number;
-        interpretationId: number;
         sorologyTestId: number;
         sorologyAgentId: number;
         cuttingPointSymbol: string;
         cuttingPointValue: string;
         resultTypeId: number;
+        interpretationId: number;
     }>;
     update(recordId: number, data: UpdateSorologyResultInput, requesterId: string): Promise<{
         result: number;
         id: number;
         veterinarianVisitId: number;
-        interpretationId: number;
         sorologyTestId: number;
         sorologyAgentId: number;
         cuttingPointSymbol: string;
         cuttingPointValue: string;
         resultTypeId: number;
+        interpretationId: number;
     }>;
     delete(recordId: number, requesterId: string): Promise<{
         message: string;

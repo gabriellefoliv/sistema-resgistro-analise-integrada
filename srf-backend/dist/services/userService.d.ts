@@ -9,10 +9,10 @@ export declare class UserService {
         };
     }>;
     delete(targetId: string, requesterId: string): Promise<{
-        password: string;
         name: string;
         id: string;
         email: string;
+        password: string;
         roleId: string;
         userPic: string | null;
     }>;
@@ -22,10 +22,10 @@ export declare class UserService {
         email: string;
     }>;
     updateRole(data: UserUpdateRoleInput, requesterId: string): Promise<{
-        password: string;
         name: string;
         id: string;
         email: string;
+        password: string;
         roleId: string;
         userPic: string | null;
     }>;
