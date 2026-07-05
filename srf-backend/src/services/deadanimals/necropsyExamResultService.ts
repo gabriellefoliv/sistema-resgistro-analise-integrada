@@ -230,6 +230,12 @@ export class NecropsyExamResultService {
             });
             if (existing) throw new Error('Já existe um resultado CPCR para esta necrópsia e tipo de amostra.');
 
+            // Verifica se a data de realização é válida (não pode ser anterior à data da necrópsia)
+            const performedDate = new Date(data.performedDate + 'T12:00:00Z');
+            if (performedDate < existingNecropsy.performedDate) {
+                throw new Error('A data de realização do exame não pode ser anterior à data da necrópsia.');
+            }
+
             const result = await tx.cpcrResult.create({
                 data: {
                     necropsyId: data.necropsyId,
@@ -260,14 +266,20 @@ export class NecropsyExamResultService {
 
     async updateCPCR(recordId: number, data: UpdateCPCRResultInput, requesterId: string) {
         return prisma.$transaction(async (tx) => {
-            const existing = await tx.cpcrResult.findUnique({ where: { id: recordId } });
-            if (!existing) throw new Error('Resultado CPCR não encontrado.');
+            const existingNecropsy = await tx.cpcrResult.findUnique({ where: { id: recordId } });
+            if (!existingNecropsy) throw new Error('Resultado CPCR não encontrado.');
 
             // Verifica duplicata (necropsyId + sampleTypeId é unique, excluindo o próprio registro)
             const duplicate = await tx.cpcrResult.findFirst({
                 where: { necropsyId: data.necropsyId, sampleTypeId: data.sampleTypeId, id: { not: recordId } }
             });
             if (duplicate) throw new Error('Já existe um resultado CPCR para esta necrópsia e tipo de amostra.');
+
+            // Verifica se a data de realização é válida (não pode ser anterior à data da necrópsia)
+            const performedDate = new Date(data.performedDate + 'T12:00:00Z');
+            if (performedDate < existingNecropsy.performedDate) {
+                throw new Error('A data de realização do exame não pode ser anterior à data da necrópsia.');
+            }
 
             const updated = await tx.cpcrResult.update({
                 where: { id: recordId },
@@ -290,7 +302,7 @@ export class NecropsyExamResultService {
                 table: 'cpcrResult',
                 recordId: String(updated.id),
                 action: 'UPDATE' as const,
-                oldData: existing,
+                oldData: existingNecropsy,
                 newData: updated
             }];
             await this.auditService.logTransaction(requesterId, this.formId, 'SUBMIT', changes);
@@ -372,6 +384,12 @@ export class NecropsyExamResultService {
             });
             if (existing) throw new Error('Já existe um resultado QPCR para esta necrópsia e tipo de amostra.');
 
+            // Verifica se a data de realização é válida (não pode ser anterior à data da necrópsia)
+            const performedDate = new Date(data.performedDate + 'T12:00:00Z');
+            if (performedDate < existingNecropsy.performedDate) {
+                throw new Error('A data de realização do exame não pode ser anterior à data da necrópsia.');
+            }
+
             const result = await tx.qpcrResult.create({
                 data: {
                     necropsyId: data.necropsyId,
@@ -400,14 +418,20 @@ export class NecropsyExamResultService {
 
     async updateQPCR(recordId: number, data: UpdateQPCRResultInput, requesterId: string) {
         return prisma.$transaction(async (tx) => {
-            const existing = await tx.qpcrResult.findUnique({ where: { id: recordId } });
-            if (!existing) throw new Error('Resultado QPCR não encontrado.');
+            const existingNecropsy = await tx.qpcrResult.findUnique({ where: { id: recordId } });
+            if (!existingNecropsy) throw new Error('Resultado QPCR não encontrado.');
 
             // Verifica duplicata (necropsyId + sampleTypeId é unique, excluindo o próprio registro)
             const duplicate = await tx.qpcrResult.findFirst({
                 where: { necropsyId: data.necropsyId, sampleTypeId: data.sampleTypeId, id: { not: recordId } }
             });
             if (duplicate) throw new Error('Já existe um resultado qPCR para esta necrópsia e tipo de amostra.');
+
+            // Verifica se a data de realização é válida (não pode ser anterior à data da necrópsia)
+            const performedDate = new Date(data.performedDate + 'T12:00:00Z');
+            if (performedDate < existingNecropsy.performedDate) {
+                throw new Error('A data de realização do exame não pode ser anterior à data da necrópsia.');
+            }
 
             const updated = await tx.qpcrResult.update({
                 where: { id: recordId },
@@ -428,7 +452,7 @@ export class NecropsyExamResultService {
                 table: 'qpcrResult',
                 recordId: String(updated.id),
                 action: 'UPDATE' as const,
-                oldData: existing,
+                oldData: existingNecropsy,
                 newData: updated
             }];
             await this.auditService.logTransaction(requesterId, this.formId, 'SUBMIT', changes);

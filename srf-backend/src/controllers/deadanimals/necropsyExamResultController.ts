@@ -59,6 +59,7 @@ export class NecropsyExamResultController {
             if (error instanceof ZodError) return res.status(400).json({ message: error.flatten().fieldErrors });
             if (error.message === 'Necrópsia não encontrada.') return res.status(404).json({ error: error.message });
             if (error.message === 'Já existe um resultado CPCR para esta necrópsia e tipo de amostra.') return res.status(409).json({ error: error.message });
+            if (error.message === 'A data de realização do exame não pode ser anterior à data da necrópsia.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }
@@ -80,6 +81,7 @@ export class NecropsyExamResultController {
             if (error instanceof ZodError) return res.status(400).json({ message: error.flatten().fieldErrors });
             if (error.message === 'Resultado CPCR não encontrado.') return res.status(404).json({ error: error.message });
             if (error.message === 'Já existe um resultado CPCR para esta necrópsia e tipo de amostra.') return res.status(409).json({ error: error.message });
+            if (error.message === 'A data de realização do exame não pode ser anterior à data da necrópsia.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }
@@ -134,6 +136,7 @@ export class NecropsyExamResultController {
             if (error instanceof ZodError) return res.status(400).json({ message: error.flatten().fieldErrors });
             if (error.message === 'Necrópsia não encontrada.') return res.status(404).json({ error: error.message });
             if (error.message === 'Já existe um resultado QPCR para esta necrópsia e tipo de amostra.') return res.status(409).json({ error: error.message });
+            if (error.message === 'A data de realização do exame não pode ser anterior à data da necrópsia.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }
@@ -155,6 +158,7 @@ export class NecropsyExamResultController {
             if (error instanceof ZodError) return res.status(400).json({ message: error.flatten().fieldErrors });
             if (error.message === 'Resultado QPCR não encontrado.') return res.status(404).json({ error: error.message });
             if (error.message === 'Já existe um resultado QPCR para esta necrópsia e tipo de amostra.') return res.status(409).json({ error: error.message });
+            if (error.message === 'A data de realização do exame não pode ser anterior à data da necrópsia.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }
