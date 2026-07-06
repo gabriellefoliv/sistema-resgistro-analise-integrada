@@ -1,10 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  provider   = "prisma-client-js"
+  output     = "../generated/prisma"
+
 }
 
 datasource db {
   provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model applicant {
@@ -394,7 +396,7 @@ model veterinarianVisit {
   sorologyAnalysis     sorologyAnalysis?
   vaccineApplication   vaccineApplication[]
   castration           castration?
-  exam                 exam?
+  // exam                 exam?
   physicalExam         physicalExam?
   bodyMeasurement      bodyMeasurementVeterinarian[]
   examResult           examResult?
@@ -449,69 +451,69 @@ model enumVaccineType {
   @@map("enum_tipo_vacina")
 }
 
-model exam {
-  id                  Int                      @id @default(autoincrement())
-  veterinarianVisitId Int                      @unique @map("id_visita_veterinaria")
-  generalConditionId  Int                      @map("id_estado_geral")
-  interpretationId    Int                      @map("id_interpretacao")
-  note                String?                  @map("observacao")
-  generalCondition    enumExamGeneralCondition @relation(fields: [generalConditionId], references: [id])
-  interpretation      enumExamInterpretation   @relation(fields: [interpretationId], references: [id])
-  veterinarianVisit   veterinarianVisit        @relation(fields: [veterinarianVisitId], references: [id])
-  examValue           examValue[]
+// model exam {
+//   id                  Int                      @id @default(autoincrement())
+//   veterinarianVisitId Int                      @unique @map("id_visita_veterinaria")
+//   generalConditionId  Int                      @map("id_estado_geral")
+//   interpretationId    Int                      @map("id_interpretacao")
+//   note                String?                  @map("observacao")
+//   generalCondition    enumExamGeneralCondition @relation(fields: [generalConditionId], references: [id])
+//   interpretation      enumExamInterpretation   @relation(fields: [interpretationId], references: [id])
+//   veterinarianVisit   veterinarianVisit        @relation(fields: [veterinarianVisitId], references: [id])
+//   examValue           examValue[]
 
-  @@index([generalConditionId], map: "exame_id_estado_geral_fkey")
-  @@index([interpretationId], map: "exame_id_interpretacao_fkey")
-  @@map("exame")
-}
+//   @@index([generalConditionId], map: "exame_id_estado_geral_fkey")
+//   @@index([interpretationId], map: "exame_id_interpretacao_fkey")
+//   @@map("exame")
+// }
 
-model enumExamGeneralCondition {
-  id   Int    @id @default(autoincrement())
-  name String @map("nome")
-  exam exam[]
+// model enumExamGeneralCondition {
+//   id   Int    @id @default(autoincrement())
+//   name String @map("nome")
+//   exam exam[]
 
-  @@map("enum_estado_geral")
-}
+//   @@map("enum_estado_geral")
+// }
 
 model enumExamInterpretation {
   id   Int    @id @default(autoincrement())
   name String @map("nome")
-  exam exam[]
+  examResult examResult[]
 
   @@map("enum_interpretacao")
 }
 
-model examValue {
-  id               Int                          @id @default(autoincrement())
-  examId           Int                          @map("id_exame")
-  examTypeId       Int                          @map("id_tipo_exame")
-  value            String                       @map("valor")
-  interpretationId Int?                         @map("id_interpretacao")
-  exam             exam                         @relation(fields: [examId], references: [id])
-  interpretation   enumExamValueInterpretation? @relation(fields: [interpretationId], references: [id])
-  examType         examType                     @relation(fields: [examTypeId], references: [id])
+// model examValue {
+//   id               Int                          @id @default(autoincrement())
+//   examId           Int                          @map("id_exame")
+//   examTypeId       Int                          @map("id_tipo_exame")
+//   value            String                       @map("valor")
+//   interpretationId Int?                         @map("id_interpretacao")
+//   exam             exam                         @relation(fields: [examId], references: [id])
+//   interpretation   enumExamValueInterpretation? @relation(fields: [interpretationId], references: [id])
+//   examType         examType                     @relation(fields: [examTypeId], references: [id])
 
-  @@index([examId], map: "valor_exame_id_exame_fkey")
-  @@index([interpretationId], map: "valor_exame_id_interpretacao_fkey")
-  @@index([examTypeId], map: "valor_exame_id_tipo_exame_fkey")
-  @@map("valor_exame")
-}
+//   @@index([examId], map: "valor_exame_id_exame_fkey")
+//   @@index([interpretationId], map: "valor_exame_id_interpretacao_fkey")
+//   @@index([examTypeId], map: "valor_exame_id_tipo_exame_fkey")
+//   @@map("valor_exame")
+// }
 
-model enumExamValueInterpretation {
-  id        Int         @id @default(autoincrement())
-  name      String      @map("nome")
-  examValue examValue[]
+// model enumExamValueInterpretation {
+//   id        Int         @id @default(autoincrement())
+//   name      String      @map("nome")
+//   examValue examValue[]
 
-  @@map("enum_interpretacao_valor_exame")
-}
+//   @@map("enum_interpretacao_valor_exame")
+// }
 
-model examType {
-  id        Int         @id @default(autoincrement())
-  name      String      @map("nome")
-  examValue examValue[]
+// model examType {
+//   id        Int         @id @default(autoincrement())
+//   name      String      @map("nome")
+//   examValue examValue[]
 
-  @@map("tipo_exame")
-}
+//   @@map("tipo_exame")
+// }
 
 model stoolAnalysis {
   id                     Int                  @id @default(autoincrement())
@@ -700,6 +702,7 @@ model ectoparasiteSpecie {
 model examResult {
   id                       Int               @id @default(autoincrement())
   veterinarianVisitId      Int               @unique @map("id_visita_veterinaria")
+  interpretationId         Int               @map("id_interpretacao")
   erythrocytes             Float             @map("eritrocitos")
   hemoglobin               Float             @map("hemoglobina")
   hematocrit               Float             @map("hematocrito")
@@ -724,7 +727,9 @@ model examResult {
   alkalinePhosphatase      Float             @map("fosfatase_alcalina")
   totalProtein             Float             @map("proteina_total")
   urea                     Float             @map("ureia")
+  note                     String?           @map("observacao")
   veterinarianVisit        veterinarianVisit @relation(fields: [veterinarianVisitId], references: [id])
+  interpretation           enumExamInterpretation @relation(fields: [interpretationId], references: [id])
 
   @@map("resultado_exame")
 }
