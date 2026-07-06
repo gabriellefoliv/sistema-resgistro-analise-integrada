@@ -94,6 +94,8 @@ export function ExamResultSideDrawer({ filters, onClose }: ExamResultSideDrawerP
                                     <Field label="Data da Visita" value={result.veterinarianVisitDateFormatted || ''} />
                                     <Field label="Animal" value={result.liveAnimalName} />
                                     <Field label="Veterinário" value={result.veterinarianName} />
+                                    <Field label="Interpretação" value={result.interpretationName} />
+                                    <Field label="Observações" fullWidth value={result.note || 'Nenhuma observação informada'} />
                                 </div>
 
                                 {/* Hemograma */}

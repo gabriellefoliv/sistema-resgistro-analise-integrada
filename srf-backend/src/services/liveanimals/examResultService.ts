@@ -22,6 +22,7 @@ export class ExamResultService {
                         veterinarian: { select: { id: true, name: true } }
                     }
                 },
+                interpretation: { select: { id: true, name: true } },
                 erythrocytes: true,
                 hemoglobin: true,
                 hematocrit: true,
@@ -45,7 +46,8 @@ export class ExamResultService {
                 creatinine: true,
                 alkalinePhosphatase: true,
                 totalProtein: true,
-                urea: true
+                urea: true,
+                note: true
             },
             orderBy: {
                 veterinarianVisit: {
@@ -82,6 +84,8 @@ export class ExamResultService {
                     createdByMe: creatorMap.get(String(r.id)) === requesterId,
                     veterinarianVisitId: r.veterinarianVisit.id,
                     veterinarianVisitDate: r.veterinarianVisit.date.toISOString(),
+                    interpretationId: r.interpretation.id,
+                    interpretationName: r.interpretation.name,
                     liveAnimalId: r.veterinarianVisit.liveAnimal.id,
                     liveAnimalName: r.veterinarianVisit.liveAnimal.name,
                     veterinarianId: r.veterinarianVisit.veterinarian.id,
@@ -109,7 +113,8 @@ export class ExamResultService {
                     creatinine: r.creatinine,
                     alkalinePhosphatase: r.alkalinePhosphatase,
                     totalProtein: r.totalProtein,
-                    urea: r.urea
+                    urea: r.urea,
+                    note: r.note || undefined
                 };
             })
         );
@@ -130,13 +135,24 @@ export class ExamResultService {
             }
         });
 
+        const interpretations = await prisma.enumExamInterpretation.findMany({
+            select: {
+                id: true,
+                name: true
+            },
+            orderBy : {
+                name: 'asc'
+            }
+        });
+
         return {
             veterinarianVisits: veterinarianVisits.map(v => ({
                 id: v.id,
                 date: v.date.toISOString(),
                 liveAnimal: v.liveAnimal,
                 veterinarian: v.veterinarian
-            }))
+            })),
+            interpretations
         };
     }
 
@@ -154,6 +170,7 @@ export class ExamResultService {
             const result = await tx.examResult.create({
                 data: {
                     veterinarianVisitId: data.veterinarianVisitId,
+                    interpretationId: data.interpretationId,
                     erythrocytes: data.erythrocytes,
                     hemoglobin: data.hemoglobin,
                     hematocrit: data.hematocrit,
@@ -177,7 +194,8 @@ export class ExamResultService {
                     creatinine: data.creatinine,
                     alkalinePhosphatase: data.alkalinePhosphatase,
                     totalProtein: data.totalProtein,
-                    urea: data.urea
+                    urea: data.urea,
+                    note: data.note || null
                 }
             });
 
@@ -220,6 +238,7 @@ export class ExamResultService {
                 },
                 data: {
                     veterinarianVisitId: data.veterinarianVisitId,
+                    interpretationId: data.interpretationId,
                     erythrocytes: data.erythrocytes,
                     hemoglobin: data.hemoglobin,
                     hematocrit: data.hematocrit,
@@ -243,7 +262,8 @@ export class ExamResultService {
                     creatinine: data.creatinine,
                     alkalinePhosphatase: data.alkalinePhosphatase,
                     totalProtein: data.totalProtein,
-                    urea: data.urea
+                    urea: data.urea,
+                    note: data.note || null
                 }
             });
 

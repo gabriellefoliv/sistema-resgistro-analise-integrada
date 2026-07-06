@@ -34,21 +34,32 @@ export function ExamResultExpansion({ item, close, refresh }: { item: GetAllExam
                     </div>
                 </div>
                 <div className="flex gap-2 w-full text-sm">
-                    <div className="flex flex-col w-3/12">
+                    <div className="flex flex-col w-2/12">
                         <label className="ml-1 font-bold">Data da Visita</label>
                         <input type="text" disabled value={item.veterinarianVisitDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
-                    <div className="flex flex-col w-4/12">
+                    <div className="flex flex-col w-3/12">
                         <label className="ml-1 font-bold">Animal</label>
                         <input type="text" disabled value={item.liveAnimalName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
-                    <div className="flex flex-col w-4/12">
+                    <div className="flex flex-col w-3/12">
                         <label className="ml-1 font-bold">Veterinário</label>
                         <input type="text" disabled value={item.veterinarianName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
+                    <div className="flex flex-col w-3/12">
+                        <label className="ml-1 font-bold">Interpretação</label>
+                        <input type="text" disabled value={item.interpretationName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                 </div>
             </div>
             <hr className="border-gray-200" />
+
+            <div className="flex gap-2 w-full text-sm">
+                <div className="flex flex-col w-full">
+                    <label className="ml-1 font-bold">Observações</label>
+                    <input type="text" disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
+            </div>
 
             {/* CORPO DA EXPANSÃO */}
             {/* Hemograma */}

@@ -29,7 +29,11 @@ export function ExamResultFormModal({ examResult, close, refresh }: ExamResultFo
     const [selectedAnimalId, setSelectedAnimalId] = useState<number | ''>('');
     const [selectedVeterinarianId, setSelectedVeterinarianId] = useState<number | ''>('');
 
-    // Eritrograma
+    // Interpretação
+    const [interpretationId, setInterpretationId] = useState<number | ''>(examResult?.interpretationId ?? '');
+    const [note, setNote] = useState<string>(examResult?.note ?? '');
+
+    // Hemograma
     const [erythrocytes, setErythrocytes] = useState<number | ''>(examResult?.erythrocytes ?? '');
     const [hemoglobin, setHemoglobin] = useState<number | ''>(examResult?.hemoglobin ?? '');
     const [hematocrit, setHematocrit] = useState<number | ''>(examResult?.hematocrit ?? '');
@@ -37,8 +41,6 @@ export function ExamResultFormModal({ examResult, close, refresh }: ExamResultFo
     const [hcm, setHcm] = useState<number | ''>(examResult?.hcm ?? '');
     const [chcm, setChcm] = useState<number | ''>(examResult?.chcm ?? '');
     const [platelets, setPlatelets] = useState<number | ''>(examResult?.platelets ?? '');
-
-    // Leucograma
     const [whiteBloodCells, setWhiteBloodCells] = useState<number | ''>(examResult?.whiteBloodCells ?? '');
     const [bandCells, setBandCells] = useState<number | ''>(examResult?.bandCells ?? '');
     const [segmentedCells, setSegmentedCells] = useState<number | ''>(examResult?.segmentedCells ?? '');
@@ -157,6 +159,7 @@ export function ExamResultFormModal({ examResult, close, refresh }: ExamResultFo
         try {
             const data = {
                 veterinarianVisitId: Number(veterinarianVisitId),
+                interpretationId: Number(interpretationId),
                 erythrocytes: Number(erythrocytes), hemoglobin: Number(hemoglobin),
                 hematocrit: Number(hematocrit), vcm: Number(vcm), hcm: Number(hcm),
                 chcm: Number(chcm), platelets: Number(platelets),
@@ -168,7 +171,8 @@ export function ExamResultFormModal({ examResult, close, refresh }: ExamResultFo
                 basophils: Number(basophils), basophilsPercentage: Number(basophilsPercentage),
                 alt: Number(alt), creatinine: Number(creatinine),
                 alkalinePhosphatase: Number(alkalinePhosphatase),
-                totalProtein: Number(totalProtein), urea: Number(urea)
+                totalProtein: Number(totalProtein), urea: Number(urea),
+                note: note || undefined
             };
             if (isEditing && examResult) {
                 await updateExamResult(examResult.id, data);
@@ -249,6 +253,19 @@ export function ExamResultFormModal({ examResult, close, refresh }: ExamResultFo
                                 </div>
                             </div>
                         </fieldset>
+
+                        {/* Interpretação e Observação */}
+                        <div className="flex flex-col">
+                            <label className="text-sm font-bold mb-1 text-left">Interpretação</label>
+                            <select value={interpretationId} onChange={(e) => setInterpretationId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
+                                <option value="">Selecione...</option>
+                                {options.interpretations.map(i => (<option key={i.id} value={i.id}>{i.name}</option>))}
+                            </select>
+                        </div>
+                        <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Observações (Opcional)</label>
+                                <input type="text" value={note} onChange={(e) => setNote(e.target.value)} className="border border-border rounded p-2 bg-white h-10" placeholder="Digite observações..." />
+                        </div>
 
                         {/* Hemograma */}
                         <fieldset className="border border-border rounded p-4">
