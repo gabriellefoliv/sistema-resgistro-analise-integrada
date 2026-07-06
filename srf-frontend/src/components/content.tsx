@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import React, { type ReactNode } from "react";
 import { FilterBar, type FilterValue, type ActiveFilter } from "./filter";
 
@@ -76,7 +76,6 @@ export function Content({
     const [expandedId, setExpandedId] = useState<string | null>(null);
     const [filteredData, setFilteredData] = useState(activeContent?.data);
     const [sortConfig, setSortConfig] = useState<{ key: string | null, direction: 'asc' | 'desc' }>({ key: null, direction: 'asc' });
-
     const initialFilters: ActiveFilter[] | undefined = initialFilter && initialFilter.length > 0
         ? initialFilter.map(filter => ({
             field: filter.field,
@@ -87,18 +86,31 @@ export function Content({
         }))
         : undefined;
 
-    useEffect(() => {
-        if (initialFilters && activeContent?.data) {
-            setFilteredData(applyFilters(activeContent.data, initialFilters));
-        } else {
-            setFilteredData(activeContent?.data);
-        }
-    }, [activeContent?.data])
+    const currentFiltersRef = useRef<ActiveFilter[]>(initialFilters || []);
+    const prevFormIdRef = useRef(activeFormId);
 
     useEffect(() => {
-        setExpandedId(null);
-        setSortConfig({ key: null, direction: 'asc' });
-    }, [activeFormId])
+        const tabChanged = prevFormIdRef.current !== activeFormId;
+        prevFormIdRef.current = activeFormId;
+
+        if (tabChanged) {
+            setExpandedId(null);
+            setSortConfig({ key: null, direction: 'asc' });
+            currentFiltersRef.current = [];
+        }
+
+        if (!activeContent?.data) return;
+
+        const filtersToApply = currentFiltersRef.current.length > 0
+            ? currentFiltersRef.current
+            : tabChanged ? undefined : initialFilters;
+
+        if (filtersToApply && filtersToApply.length > 0) {
+            setFilteredData(applyFilters(activeContent.data, filtersToApply));
+        } else {
+            setFilteredData(activeContent.data);
+        }
+    }, [activeFormId, activeContent?.data])
 
     const sortedData = useMemo(() => {
         if (!filteredData) return [];
@@ -154,6 +166,7 @@ export function Content({
     }
 
     function handleFilter(filters: ActiveFilter[]) {
+        currentFiltersRef.current = filters;
         if (!activeContent?.data) return;
 
         if (filters.length === 0) {

@@ -18,7 +18,7 @@ export interface TypeConfig {
 
 // Tipos compartilhados (Animais Vivos e Animais Mortos)
 const sharedTypes: TypeConfig[] = [
-    { label: 'Espécie', prismaModel: 'specie', valueField: 'name', valueFieldLabel: 'Nome' },
+    { label: 'Espécie do Animal', prismaModel: 'specie', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Gênero de Ectoparasito', prismaModel: 'ectoparasiteGenus', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Espécie de Ectoparasito', prismaModel: 'ectoparasiteSpecie', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Armazém', prismaModel: 'storage', valueField: 'name', valueFieldLabel: 'Nome' }

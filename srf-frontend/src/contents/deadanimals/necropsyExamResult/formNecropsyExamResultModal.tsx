@@ -167,7 +167,6 @@ export function NecropsyExamResultFormModal({ necropsyExamResult, close, refresh
                                     <option value="cpcr">CPCR</option>
                                     <option value="qpcr">QPCR</option>
                                 </select>
-                                {error && <p className="text-red-500 text-sm mt-1 text-center">{error}</p>}
                             </div>
                         </fieldset>
 
@@ -364,7 +363,7 @@ export function NecropsyExamResultFormModal({ necropsyExamResult, close, refresh
                         {/* Botões de Ação */}
                         {type && (
                             <>
-                                {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+                                {error && <p className="text-red-500 text-sm">{error}</p>}
                                 <div className="flex justify-center items-center gap-5 mt-2">
                                     <button type="submit" className="bg-standard-blue text-white text-xl font-bold py-2 px-5 rounded-xl cursor-pointer" disabled={loading}>
                                         {loading ? 'Salvando...' : 'Salvar'}

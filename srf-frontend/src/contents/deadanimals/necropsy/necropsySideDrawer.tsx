@@ -46,7 +46,7 @@ export function NecropsySideDrawer({ filters, onClose }: NecropsySideDrawerProps
     if (first) {
         pageFilters.push({ field: 'deadAnimalCode', value: { type: 'text' as const, term: first.deadAnimalCode } });
     }
-    const pageUrl = `/animaismortos/necropsia/necropsia?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
+    const pageUrl = `/animaismortos/necropsias/necropsia?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
 
     return (
         <SideDrawer

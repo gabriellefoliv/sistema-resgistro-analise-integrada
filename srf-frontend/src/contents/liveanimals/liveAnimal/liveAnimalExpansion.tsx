@@ -88,7 +88,7 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
             <hr className="border-gray-200" />
 
             {/* Corpo */}
-            <div className="gap-2 w-full text-sm grid grid-cols-2 mb-2">
+            <div className="gap-2 w-full text-sm grid grid-cols-3 mb-2">
                 <div className="flex flex-col w-full">
                     <label className="ml-1 font-bold">Data de Nascimento</label>
                     <input type="text" disabled value={item.birthDateFormatted} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
@@ -97,7 +97,11 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
                     <label className="ml-1 font-bold">Gênero</label>
                     <input type="text" disabled value={item.genderName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
-                <div className="flex flex-col w-full col-span-2">
+                <div className="flex flex-col w-full">
+                    <label className="ml-1 font-bold">Tutor</label>
+                    <input type="text" disabled value={item.tutorName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
+                <div className="flex flex-col w-full col-span-3">
                     <label className="ml-1 font-bold">Foto</label>
                     <div className="mb-2 border border-border rounded px-2 py-1 text-text-input">
                         {item.animalPicture ? (
@@ -109,7 +113,7 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
                         )}
                     </div>
                 </div>
-                <div className="flex flex-col w-full col-span-2">
+                <div className="flex flex-col w-full col-span-3">
                     <label className="ml-1 font-bold">Carteirinha</label>
                     <div className="mb-2 border border-border rounded px-2 py-1 text-text-input">
                         {item.cardLink ? (

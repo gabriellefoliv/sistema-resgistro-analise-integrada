@@ -238,7 +238,7 @@ export class NecropsyEctoparasiteAnalysisService {
             if (!existingResult) throw new Error('Análise de ectoparasito não encontrada.');
 
             // Deleta
-            await tx.ectoparasiteAnalysisVeterinarian.delete({
+            await tx.ectoparasiteAnalysisNecropsy.delete({
                 where: { id: recordId }
             });
 

@@ -17,6 +17,7 @@ export function DeleteNecropsyEctoparasiteAnalysisModal({ necropsyEctoparasiteAn
         setLoading(true);
         setError('');
         try {
+            console.log(necropsyEctoparasiteAnalysis);
             await deleteNecropsyEctoparasiteAnalysis(necropsyEctoparasiteAnalysis.id);
             refresh();
             close();
