@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: srf-backend
+    env: node
+    buildCommand: npm install && npm run build --workspace=srf-backend
+    startCommand: npm run start:prod --workspace=srf-backend
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_USER
+        sync: false
+      - key: DATABASE_PASSWORD
+        sync: false
+      - key: DATABASE_HOST
+        sync: false
+      - key: DATABASE_PORT
+        sync: false
+      - key: DATABASE_NAME
+        sync: false
+      - key: PORT
+        sync: false
+      - key: MAILTRAP_API_KEY
+        sync: false
+      - key: MAILTRAP_USE_SANDBOX
+        sync: false
+      - key: MAILTRAP_INBOX_ID
+        sync: false
