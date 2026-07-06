@@ -11,12 +11,12 @@ export declare class NecropsyService {
         tutorId: number | null;
         weight: number;
         deadAnimalId: number;
-        identifiedGenderId: number;
         performedDate: Date;
         bodyConditionId: number;
         clinicalConditionId: number;
         reproductiveConditionId: number;
         ageId: number;
+        identifiedGenderId: number;
     }>;
     update(recordId: number, data: UpdateNecropsyInput, requesterId: string): Promise<{
         id: number;
@@ -24,12 +24,12 @@ export declare class NecropsyService {
         tutorId: number | null;
         weight: number;
         deadAnimalId: number;
-        identifiedGenderId: number;
         performedDate: Date;
         bodyConditionId: number;
         clinicalConditionId: number;
         reproductiveConditionId: number;
         ageId: number;
+        identifiedGenderId: number;
     }>;
     delete(recordId: number, requesterId: string): Promise<{
         message: string;

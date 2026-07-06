@@ -10,10 +10,10 @@ export declare class SorologyResultService {
         veterinarianVisitId: number;
         sorologyTestId: number;
         sorologyAgentId: number;
+        interpretationId: number;
+        resultTypeId: number;
         cuttingPointSymbol: string;
         cuttingPointValue: string;
-        resultTypeId: number;
-        interpretationId: number;
     }>;
     update(recordId: number, data: UpdateSorologyResultInput, requesterId: string): Promise<{
         result: number;
@@ -21,10 +21,10 @@ export declare class SorologyResultService {
         veterinarianVisitId: number;
         sorologyTestId: number;
         sorologyAgentId: number;
+        interpretationId: number;
+        resultTypeId: number;
         cuttingPointSymbol: string;
         cuttingPointValue: string;
-        resultTypeId: number;
-        interpretationId: number;
     }>;
     delete(recordId: number, requesterId: string): Promise<{
         message: string;

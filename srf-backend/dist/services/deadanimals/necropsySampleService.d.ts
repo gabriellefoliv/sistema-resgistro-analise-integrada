@@ -12,8 +12,8 @@ export declare class NecropsySampleService {
             sampleTypeId: number;
             storageId: number;
             statusId: number;
-            quantity: number;
             imageLink: string | null;
+            quantity: number;
             necropsyId: number;
         };
         sendSamples: {
@@ -33,8 +33,8 @@ export declare class NecropsySampleService {
             sampleTypeId: number;
             storageId: number;
             statusId: number;
-            quantity: number;
             imageLink: string | null;
+            quantity: number;
             necropsyId: number;
         };
         sendSamples: {

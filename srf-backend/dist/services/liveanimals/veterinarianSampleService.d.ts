@@ -13,8 +13,8 @@ export declare class VeterinarianSampleService {
             sampleTypeId: number;
             storageId: number;
             statusId: number;
-            quantity: number;
             imageLink: string | null;
+            quantity: number;
         };
         sendSamples: {
             id: number;
@@ -34,8 +34,8 @@ export declare class VeterinarianSampleService {
             sampleTypeId: number;
             storageId: number;
             statusId: number;
-            quantity: number;
             imageLink: string | null;
+            quantity: number;
         };
         sendSamples: {
             id: number;

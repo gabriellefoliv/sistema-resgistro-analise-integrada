@@ -55,6 +55,8 @@ class NecropsyExamResultController {
                 return res.status(404).json({ error: error.message });
             if (error.message === 'Já existe um resultado CPCR para esta necrópsia e tipo de amostra.')
                 return res.status(409).json({ error: error.message });
+            if (error.message === 'A data de realização do exame não pode ser anterior à data da necrópsia.')
+                return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     };
@@ -78,6 +80,8 @@ class NecropsyExamResultController {
                 return res.status(404).json({ error: error.message });
             if (error.message === 'Já existe um resultado CPCR para esta necrópsia e tipo de amostra.')
                 return res.status(409).json({ error: error.message });
+            if (error.message === 'A data de realização do exame não pode ser anterior à data da necrópsia.')
+                return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     };
@@ -134,6 +138,8 @@ class NecropsyExamResultController {
                 return res.status(404).json({ error: error.message });
             if (error.message === 'Já existe um resultado QPCR para esta necrópsia e tipo de amostra.')
                 return res.status(409).json({ error: error.message });
+            if (error.message === 'A data de realização do exame não pode ser anterior à data da necrópsia.')
+                return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     };
@@ -157,6 +163,8 @@ class NecropsyExamResultController {
                 return res.status(404).json({ error: error.message });
             if (error.message === 'Já existe um resultado QPCR para esta necrópsia e tipo de amostra.')
                 return res.status(409).json({ error: error.message });
+            if (error.message === 'A data de realização do exame não pode ser anterior à data da necrópsia.')
+                return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     };
