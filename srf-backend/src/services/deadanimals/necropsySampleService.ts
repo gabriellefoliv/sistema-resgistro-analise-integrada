@@ -214,7 +214,7 @@ export class NecropsySampleService {
             }
 
             // Cria as amostras enviadas
-            const sendSamples = [];
+            const sendSamples: any[] = [];
             if (data.sendSamples) {
                 for (const sendSample of data.sendSamples) {
                     const sendSampleCreated = await tx.sendSampleNecropsy.create({
@@ -337,7 +337,7 @@ export class NecropsySampleService {
             });
 
             // Cria as amostras enviadas novas
-            const sendSamples = [];
+            const sendSamples: any[] = [];
             if (data.sendSamples) {
                 for (const sendSample of data.sendSamples) {
                     const sendSampleCreated = await tx.sendSampleNecropsy.create({

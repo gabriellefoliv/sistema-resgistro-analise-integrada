@@ -16,15 +16,7 @@ export declare class VeterinarianSampleService {
             imageLink: string | null;
             quantity: number;
         };
-        sendSamples: {
-            id: number;
-            note: string | null;
-            storageId: number;
-            statusId: number;
-            quantity: number;
-            sendDate: Date;
-            sampleAllocationVeterinarianId: number;
-        }[];
+        sendSamples: any[];
     }>;
     update(recordId: number, data: UpdateVeterinarianSampleInput, requesterId: string): Promise<{
         sample: {
@@ -37,15 +29,7 @@ export declare class VeterinarianSampleService {
             imageLink: string | null;
             quantity: number;
         };
-        sendSamples: {
-            id: number;
-            note: string | null;
-            storageId: number;
-            statusId: number;
-            quantity: number;
-            sendDate: Date;
-            sampleAllocationVeterinarianId: number;
-        }[];
+        sendSamples: any[];
     }>;
     delete(recordId: number, requesterId: string): Promise<{
         message: string;

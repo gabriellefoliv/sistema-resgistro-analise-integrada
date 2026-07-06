@@ -219,7 +219,7 @@ export class VeterinarianSampleService {
             }
 
             // Cria as amostras enviadas
-            const sendSamples = [];
+            const sendSamples: any[] = [];
             if (data.sendSamples) {
                 for (const sendSample of data.sendSamples) {
                     const sendSampleCreated = await tx.sendSampleVeterinarian.create({
@@ -343,7 +343,7 @@ export class VeterinarianSampleService {
             });
 
             // Cria as amostras enviadas novas
-            const sendSamples = [];
+            const sendSamples: any[] = [];
             if (data.sendSamples) {
                 for (const sendSample of data.sendSamples) {
                     const sendSampleCreated = await tx.sendSampleVeterinarian.create({

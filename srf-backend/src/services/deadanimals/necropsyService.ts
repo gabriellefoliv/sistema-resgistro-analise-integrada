@@ -197,7 +197,7 @@ export class NecropsyService {
             });
 
             // Cria as medidas corporais
-            const measurements = [];
+            const measurements: any[] = [];
             if (data.bodyMeasurements) {
                 for (const bm of data.bodyMeasurements) {
                     const measurement = await tx.bodyMeasurementNecropsy.create({
@@ -293,7 +293,7 @@ export class NecropsyService {
             });
 
             // Cria as medidas corporais novas
-            const newMeasurements = [];
+            const newMeasurements: any[] = [];
             if (data.bodyMeasurements) {
                 for (const bm of data.bodyMeasurements) {
                     const measurement = await tx.bodyMeasurementNecropsy.create({

@@ -16,15 +16,7 @@ export declare class NecropsySampleService {
             quantity: number;
             necropsyId: number;
         };
-        sendSamples: {
-            id: number;
-            note: string | null;
-            storageId: number;
-            statusId: number;
-            quantity: number;
-            sendDate: Date;
-            sampleAllocationNecropsyId: number;
-        }[];
+        sendSamples: any[];
     }>;
     update(recordId: number, data: UpdateNecropsySampleInput, requesterId: string): Promise<{
         sample: {
@@ -37,15 +29,7 @@ export declare class NecropsySampleService {
             quantity: number;
             necropsyId: number;
         };
-        sendSamples: {
-            id: number;
-            note: string | null;
-            storageId: number;
-            statusId: number;
-            quantity: number;
-            sendDate: Date;
-            sampleAllocationNecropsyId: number;
-        }[];
+        sendSamples: any[];
     }>;
     delete(recordId: number, requesterId: string): Promise<{
         message: string;

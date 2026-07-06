@@ -233,7 +233,7 @@ export class VeterinarianVisitService {
             }
 
             // Create body measurements
-            const measurements = [];
+            const measurements: any[] = [];
             if (data.bodyMeasurements) {
                 for (const bm of data.bodyMeasurements) {
                     const measurement = await tx.bodyMeasurementVeterinarian.create({
@@ -326,7 +326,7 @@ export class VeterinarianVisitService {
             });
 
             // Create new body measurements
-            const newMeasurements = [];
+            const newMeasurements: any[] = [];
             if (data.bodyMeasurements) {
                 for (const bm of data.bodyMeasurements) {
                     const measurement = await tx.bodyMeasurementVeterinarian.create({
