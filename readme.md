@@ -42,11 +42,6 @@ VITE_API_URL=http://localhost:3333
 <h5>Back-end</h5>
 <pre>
 DATABASE_URL="mysql://[user]:[senha]@localhost:3306/[banco_de_dados]?schema=public"
-DATABASE_USER="[user]"
-DATABASE_PASSWORD="[senha]"
-DATABASE_NAME="[banco_de_dados]"
-DATABASE_HOST="localhost"
-DATABASE_PORT=3306
 
 PORT=3333
 JWT_SECRET="[string_aleatória]"
