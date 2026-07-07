@@ -29,7 +29,7 @@ const liveAnimalOnlyTypes: TypeConfig[] = [
     { label: 'Veterinário', prismaModel: 'veterinarian', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Tipo da Vacina', prismaModel: 'vaccine', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Tipo de Aplicação da Vacina', prismaModel: 'enumVaccineType', valueField: 'name', valueFieldLabel: 'Nome' },
-    { label: 'Interpretação do Exame', prismaModel: 'enumExamResultInterpretation', valueField: 'name', valueFieldLabel: 'Nome' },
+    { label: 'Interpretação do Exame', prismaModel: 'enumExamInterpretation', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Tecnologia de Processamento', prismaModel: 'processingTechnology', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Espécie de Ovo/Cisto', prismaModel: 'eggCystSpecie', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Estado Geral do Exame Físico', prismaModel: 'enumPhysicalExamGeneralCondition', valueField: 'name', valueFieldLabel: 'Nome' },
