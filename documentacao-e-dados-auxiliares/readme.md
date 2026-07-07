@@ -18,6 +18,8 @@ Sobre a análise de helmintos:
 
 Lista de cadastros básicos:
 <ul>
+    <li>Perguntas voltadas ao animal (Entrevista)</li>
+    <li>Perguntas voltadas ao tutor (Entrevista)</li>
     <li>Espécie do Animal (Animal Vivo e Animal Atropelado)</li>
     <li>Gênero de Ectoparasito</li>
     <li>Espécie de Ectoparasito</li>
@@ -49,7 +51,7 @@ Lista de cadastros básicos:
     <li>Condição Reprodutiva (Animal Atropelado)</li>
     <li>Faixa Etária (Animal Atropelado)</li>
     <li>Espécie de Helminto</li>
-    <li>?Localização? (Análise de Helminto)</li>
+    <li>Localização (Análise de Helminto)</li>
     <li>Status da Amostra de Necrópsia</li>
     <li>Tipo da Amostra de Necrópsia'</li>
     <li>Medida Corporal (Necrópsia)</li>
@@ -58,7 +60,7 @@ Lista de cadastros básicos:
     <li>Tipo de Extração (Resultado CPCR)</li>
     <li>Gene Alvo (QPCR e CPCR)</li>
     <li>Agente Suspeito (QPCR e CPCR)</li>
-    <li>Método de CPCR</li>
-    <li>Status de CPCR</li>
-    <li>Status de QPCR</li>
+    <li>Método do Resultado CPCR</li>
+    <li>Status do Resultado CPCR</li>
+    <li>Status do Resultado QPCR</li>
 </ul>
