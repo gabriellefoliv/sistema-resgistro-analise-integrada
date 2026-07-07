@@ -55,6 +55,7 @@ export function DynamicContent() {
             return;
         }
 
+        setContents([]);
         setConfig(pageConfig);
     }, [categoryId, subCategoryId, user]);
 
@@ -126,7 +127,11 @@ export function DynamicContent() {
     };
 
     if (!formId) {
-        return <Navigate to={`/${categoryId}/${subCategoryId}/${config.contents[0].id}`} replace />;
+        const freshConfig = getPageConfig(categoryId!, subCategoryId!);
+        if (freshConfig) {
+            return <Navigate to={`/${categoryId}/${subCategoryId}/${freshConfig.contents[0].id}`} replace />;
+        }
+        return <div className="ml-sidebar-size p-8 text-text-main">Carregando...</div>;
     }
 
     const currentHasAccess = checkAccess(formId);

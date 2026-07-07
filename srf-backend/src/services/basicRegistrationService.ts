@@ -26,6 +26,8 @@ const sharedTypes: TypeConfig[] = [
 
 // Tipos exclusivos de Animais Vivos
 const liveAnimalOnlyTypes: TypeConfig[] = [
+    { label: 'Pergunta sobre o Tutor', prismaModel: 'tutorQuestion', valueField: 'text', valueFieldLabel: 'Pergunta' },
+    { label: 'Pergunta sobre o Animal', prismaModel: 'animalQuestion', valueField: 'text', valueFieldLabel: 'Pergunta' },
     { label: 'Veterinário', prismaModel: 'veterinarian', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Tipo da Vacina', prismaModel: 'vaccine', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Tipo de Aplicação da Vacina', prismaModel: 'enumVaccineType', valueField: 'name', valueFieldLabel: 'Nome' },
@@ -242,9 +244,9 @@ export class BasicRegistrationService {
 
     async delete(recordId: number, typeLabel: string, requesterId: string, types: TypeConfig[], formId: string) {
         const config = this.findTypeConfig(types, typeLabel);
-
+        
         return prisma.$transaction(async (tx) => {
-            const model = (tx as any)[config.prismaModel];
+            const model = (tx as any)[config.prismaModel];            
 
             const existing = await model.findUnique({ where: { id: recordId } });
             if (!existing) throw new Error('Registro não encontrado.');

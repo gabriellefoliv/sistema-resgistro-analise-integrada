@@ -101,6 +101,7 @@ export class NecropsyExamResultController {
             console.error(error);
             if (error instanceof ZodError) return res.status(400).json({ message: error.flatten().fieldErrors });
             if (error.message === 'Resultado CPCR não encontrado.') return res.status(404).json({ error: error.message });
+            if (error.message.includes('Foreign key constraint violated')) return res.status(400).json({ error: 'Não é possível excluir pois existem outros registros vinculados. Remova os registros antes de excluir.' });
             return res.status(500).json({ error: error.message });
         }
     }
@@ -178,6 +179,7 @@ export class NecropsyExamResultController {
             console.error(error);
             if (error instanceof ZodError) return res.status(400).json({ message: error.flatten().fieldErrors });
             if (error.message === 'Resultado QPCR não encontrado.') return res.status(404).json({ error: error.message });
+            if (error.message.includes('Foreign key constraint violated')) return res.status(400).json({ error: 'Não é possível excluir pois existem outros registros vinculados. Remova os registros antes de excluir.' });
             return res.status(500).json({ error: error.message });
         }
     }

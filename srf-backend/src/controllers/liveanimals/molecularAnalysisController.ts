@@ -102,6 +102,7 @@ export class MolecularAnalysisController {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
             if (error.message === 'Análise molecular não encontrada.') return res.status(404).json({ error: error.message });
+            if (error.message.includes('Foreign key constraint violated')) return res.status(400).json({ error: 'Não é possível excluir pois existem outros registros vinculados. Remova os registros antes de excluir.' });
             return res.status(500).json({ error: error.message });
         }
     }

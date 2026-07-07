@@ -102,6 +102,7 @@ export class TutorController {
             }
             if (error.message === 'Tutor não encontrado.') return res.status(404).json({ error: error.message });
             if (error.message === 'Este tutor possui registros associados e não pode ser deletado. Remova os registros associados antes de deletar o tutor.') return res.status(409).json({ error: error.message });
+            if (error.message.includes('Foreign key constraint violated')) return res.status(400).json({ error: 'Não é possível excluir pois existem outros registros vinculados. Remova os registros antes de excluir.' });
             return res.status(500).json({ error: error.message });
         }
     }
