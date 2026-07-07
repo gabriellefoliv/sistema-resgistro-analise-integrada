@@ -42,10 +42,10 @@ VITE_API_URL=http://localhost:3333
 <h5>Back-end</h5>
 <pre>
 DATABASE_URL="mysql://[user]:[senha]@localhost:3306/[banco_de_dados]?schema=public"
-
+<br/>
 PORT=3333
 JWT_SECRET="[string_aleatória]"
-
+<br/>
 MAILTRAP_API_KEY="xxxxx"
 MAILTRAP_USE_SANDBOX='true'
 MAILTRAP_INBOX_ID=xxxxx
