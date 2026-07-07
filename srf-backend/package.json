@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx nodemon",
     "start:prod": "node dist/server.js",
-    "build": "prisma generate && tsc -b"
+    "build": "npx --no-install prisma generate && tsc -b"
   },
   "keywords": [],
   "author": "",
