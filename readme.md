@@ -47,10 +47,10 @@ DATABASE_PASSWORD="[senha]"
 DATABASE_NAME="[banco_de_dados]"
 DATABASE_HOST="localhost"
 DATABASE_PORT=3306
-
+<br/>
 PORT=3333
 JWT_SECRET="[string_aleatória]"
-
+<br/>
 MAILTRAP_API_KEY="xxxxx"
 MAILTRAP_USE_SANDBOX='true'
 MAILTRAP_INBOX_ID=xxxxx
