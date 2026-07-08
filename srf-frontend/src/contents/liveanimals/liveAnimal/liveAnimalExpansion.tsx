@@ -72,8 +72,8 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
                 </div>
                 <div className="flex gap-2 w-full text-sm">
                     <div className="flex flex-col w-4/12">
-                        <label className="ml-1 font-bold">Nome</label>
-                        <input type="text" disabled value={item.name || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                        <label className="ml-1 font-bold">Código</label>
+                        <input type="text" disabled value={item.code} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     <div className="flex flex-col w-4/12">
                         <label className="ml-1 font-bold">Espécie</label>
@@ -88,7 +88,7 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
             <hr className="border-gray-200" />
 
             {/* Corpo */}
-            <div className="gap-2 w-full text-sm grid grid-cols-3 mb-2">
+            <div className="gap-2 w-full text-sm grid grid-cols-4 mb-2">
                 <div className="flex flex-col w-full">
                     <label className="ml-1 font-bold">Data de Nascimento</label>
                     <input type="text" disabled value={item.birthDateFormatted} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
@@ -98,10 +98,14 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
                     <input type="text" disabled value={item.genderName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Tutor</label>
-                    <input type="text" disabled value={item.tutorName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    <label className="ml-1 font-bold">Nome</label>
+                    <input type="text" disabled value={item.name || 'Nenhum nome informado'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
-                <div className="flex flex-col w-full col-span-3">
+                <div className="flex flex-col w-full">
+                    <label className="ml-1 font-bold">Tutor</label>
+                    <input type="text" disabled value={item.tutorName || 'Nenhum tutor informado'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
+                <div className="flex flex-col w-full col-span-4">
                     <label className="ml-1 font-bold">Foto</label>
                     <div className="mb-2 border border-border rounded px-2 py-1 text-text-input">
                         {item.animalPicture ? (
@@ -113,7 +117,7 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
                         )}
                     </div>
                 </div>
-                <div className="flex flex-col w-full col-span-3">
+                <div className="flex flex-col w-full col-span-4">
                     <label className="ml-1 font-bold">Carteirinha</label>
                     <div className="mb-2 border border-border rounded px-2 py-1 text-text-input">
                         {item.cardLink ? (
@@ -128,49 +132,53 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
             </div>
 
             {/* Registros Associados */}
-            <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
-                <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
-            </div>
-            <div className="gap-2 w-full text-sm flex flex-wrap mb-1">
-                <button
-                    onClick={() => setShowTutorDrawer(true)}
-                    className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                >
-                    Tutor
-                </button>
-                {item.hasCastration && (
-                    <button
-                        onClick={() => setShowCastrationDrawer(true)}
-                        className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                    >
-                        Castração
-                    </button>
-                )}
-                {item.hasGpsTracking && (
-                    <button
-                        onClick={() => setShowGpsTrackingDrawer(true)}
-                        className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                    >
-                        Rastreio de GPS
-                    </button>
-                )}
-                {item.hasVaccineApplication && (
-                    <button
-                        onClick={() => setShowVaccineApplicationDrawer(true)}
-                        className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                    >
-                        Vacinas
-                    </button>
-                )}
-                {item.hasVeterinarianVisit && (
-                    <button
-                        onClick={() => setShowVeterinarianVisitDrawer(true)}
-                        className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                    >
-                        Visitas Veterinárias
-                    </button>
-                )}
-            </div>
+            {(item.tutorId || item.hasCastration || item.hasGpsTracking || item.hasVaccineApplication || item.hasVeterinarianVisit) && (
+                <>
+                    <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
+                        <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
+                    </div>
+                    <div className="gap-2 w-full text-sm flex flex-wrap mb-1">
+                        <button
+                            onClick={() => setShowTutorDrawer(true)}
+                            className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                        >
+                            Tutor
+                        </button>
+                        {item.hasCastration && (
+                            <button
+                                onClick={() => setShowCastrationDrawer(true)}
+                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                            >
+                                Castração
+                            </button>
+                        )}
+                        {item.hasGpsTracking && (
+                            <button
+                                onClick={() => setShowGpsTrackingDrawer(true)}
+                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                            >
+                                Rastreio de GPS
+                            </button>
+                        )}
+                        {item.hasVaccineApplication && (
+                            <button
+                                onClick={() => setShowVaccineApplicationDrawer(true)}
+                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                            >
+                                Vacinas
+                            </button>
+                        )}
+                        {item.hasVeterinarianVisit && (
+                            <button
+                                onClick={() => setShowVeterinarianVisitDrawer(true)}
+                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                            >
+                                Visitas Veterinárias
+                            </button>
+                        )}
+                    </div>
+                </>
+            )}
         </>
     )
 }

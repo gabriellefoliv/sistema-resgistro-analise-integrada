@@ -61,8 +61,8 @@ export function CastrationExpansion({ item, close, refresh }: { item: GetAllCast
                 <div className="flex gap-2 w-full text-sm">
                     {/* Animal */}
                     <div className="flex flex-col w-5/12">
-                        <label className="ml-1 font-bold">Animal</label>
-                        <input type="text" disabled value={item.liveAnimalName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                        <label className="ml-1 font-bold">Código do Animal</label>
+                        <input type="text" disabled value={item.liveAnimalCode} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     {/* Data */}
                     <div className="flex flex-col w-3/12">

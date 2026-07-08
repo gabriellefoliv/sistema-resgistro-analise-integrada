@@ -34,7 +34,7 @@ export function DeleteVisitModal({ visit, close, refresh }: DeleteVisitModalProp
                     <h2 className="absolute top-2 text-2xl text-standard-red font-bold">Atenção!</h2>
 
                     <p className="text-center font-bold text-lg">
-                        Tem certeza que deseja EXCLUIR a visita do animal <span className="text-standard-blue">{visit.liveAnimalName}</span> realizada pelo veterinário <span className="text-standard-blue">{visit.veterinarianName}</span>?
+                        Tem certeza que deseja EXCLUIR a visita do animal <span className="text-standard-blue">{visit.liveAnimalCode}</span> realizada pelo veterinário <span className="text-standard-blue">{visit.veterinarianName}</span>?
                     </p>
 
                     {error && <p className="text-red-500 text-sm text-center">{error}</p>}

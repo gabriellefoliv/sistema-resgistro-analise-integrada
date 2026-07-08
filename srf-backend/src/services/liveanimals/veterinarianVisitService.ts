@@ -11,7 +11,7 @@ export class VeterinarianVisitService {
         const visits = await prisma.veterinarianVisit.findMany({
             select: {
                 id: true,
-                liveAnimal: { select: { id: true, name: true } },
+                liveAnimal: { select: { id: true, name: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true } },
                 veterinarian: { select: { id: true, name: true } },
                 date: true,
                 animalPicture: true,
@@ -159,7 +159,7 @@ export class VeterinarianVisitService {
                 hasStoolAnalysis: visitIdsWithStoolAnalysis.has(v.id),
                 hasCastration: visitIdsWithCastration.has(v.id),
                 liveAnimalId: v.liveAnimal.id,
-                liveAnimalName: v.liveAnimal.name,
+                liveAnimalCode: `${v.liveAnimal.codeSail.sail}_${v.liveAnimal.codeNumber}`,
                 veterinarianId: v.veterinarian.id,
                 veterinarianName: v.veterinarian.name,
                 date: v.date,
@@ -179,9 +179,9 @@ export class VeterinarianVisitService {
     async getFormOptions() {
         const [liveAnimals, veterinarians, bodyMeasurementTypes] = await Promise.all([
             prisma.liveAnimal.findMany({
-                select: { id: true, name: true },
+                select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true },
                 where: { active: true },
-                orderBy: { name: 'asc' }
+                orderBy: [{ codeSail: { sail: 'asc' } }, { codeNumber: 'asc' }]
             }),
             prisma.veterinarian.findMany({
                 select: { id: true, name: true },
@@ -192,7 +192,14 @@ export class VeterinarianVisitService {
                 orderBy: { description: 'asc' }
             }),
         ]);
-        return { liveAnimals, veterinarians, bodyMeasurementTypes };
+        return {
+            liveAnimals: liveAnimals.map(a => ({
+                id: a.id,
+                code: `${a.codeSail.sail}_${a.codeNumber}`
+            })),
+            veterinarians,
+            bodyMeasurementTypes
+        };
     }
 
     async create(data: z.infer<typeof veterinarianVisitCreateInput>, userId: string) {

@@ -47,14 +47,14 @@ export function VaccineSideDrawer({ filters, onClose }: VaccineSideDrawerProps) 
     const pageFilters: any[] = [];
     if (filters.liveAnimalId) {
         const firstVaccine = vaccines[0];
-        if (firstVaccine) pageFilters.push({ field: 'liveAnimalName', value: { type: 'text' as const, term: firstVaccine.liveAnimalName } });
+        if (firstVaccine) pageFilters.push({ field: 'liveAnimalCode', value: { type: 'text' as const, term: firstVaccine.liveAnimalCode } });
     }
     if (filters.veterinarianVisitId) {
         const firstVaccine = vaccines[0];
         if (firstVaccine?.veterinarianVisitDate) {
             const date = firstVaccine.veterinarianVisitDate.split('T')[0];
             pageFilters.push({ field: 'applicationDate', value: { type: 'date' as const, from: date, to: date } });
-            pageFilters.push({ field: 'liveAnimalName', value: { type: 'text' as const, term: firstVaccine.liveAnimalName } });
+            pageFilters.push({ field: 'liveAnimalCode', value: { type: 'text' as const, term: firstVaccine.liveAnimalCode } });
         }
     }
     const pageUrl = `/animaisvivos/veterinario/vacinas-av?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
@@ -117,7 +117,7 @@ export function VaccineSideDrawer({ filters, onClose }: VaccineSideDrawerProps) 
                                             Detalhes da Vacina
                                         </h4>
                                         <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
-                                            <Field label="Animal" value={vaccine.liveAnimalName} />
+                                            <Field label="Código do Animal" value={vaccine.liveAnimalCode} />
                                             <Field label="Vacina" value={vaccine.vaccineName} />
                                             <Field label="Tipo de Aplicação" value={vaccine.vaccineTypeName} />
                                             <Field label="Data da Aplicação" value={vaccine.applicationDateFormatted || ''} />

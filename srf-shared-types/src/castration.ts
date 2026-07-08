@@ -31,7 +31,7 @@ export const updateCastrationInputSchema = castrationSchema.omit({
 export const getAllCastrationOutputSchema = castrationSchema.extend({
     canEdit: z.boolean(),
     createdByMe: z.boolean(),
-    liveAnimalName: z.string(),
+    liveAnimalCode: z.string(),
     veterinarianVisitId: z.number().int().optional(),
     veterinarianVisitDate: z.string().optional(),
     veterinarianVisitDateFormatted: z.string().optional(),
@@ -43,14 +43,14 @@ export const getAllCastrationOutputSchema = castrationSchema.extend({
 export const getFormOptionsCastrationOutputSchema = z.object({
     liveAnimals: z.array(z.object({
         id: z.number().int(),
-        name: z.string().nonempty()
+        code: z.string().nonempty()
     })),
     veterinarianVisits: z.array(z.object({
         id: z.number().int(),
         date: z.string().nonempty(),
         liveAnimal: z.object({
             id: z.number().int(),
-            name: z.string().nonempty()
+            code: z.string().nonempty()
         }),
         veterinarian: z.object({
             id: z.number().int(),

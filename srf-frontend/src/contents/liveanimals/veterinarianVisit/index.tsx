@@ -11,13 +11,13 @@ export const VeterinarianVisitContentDefinition = {
     label: 'Visitas Veterinárias',
     columns: [
         { key: 'dateFormatted', label: 'Data da Realização', width: 'w-2/12' },
-        { key: 'liveAnimalName', label: 'Animal', width: 'w-4/12' },
+        { key: 'liveAnimalCode', label: 'Código do Animal', width: 'w-4/12' },
         { key: 'veterinarianName', label: 'Veterinário', width: 'w-5/12' },
         // deixar w-1/12 sobrando para ações
     ],
     filterFields: [
         { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
-        { key: 'liveAnimalName', label: 'Animal', type: 'text' },
+        { key: 'liveAnimalCode', label: 'Código do Animal', type: 'text' },
         { key: 'veterinarianName', label: 'Veterinário', type: 'text' },
         { key: 'date', label: 'Data da Realização', type: 'date' },
         { key: 'hasSample', label: 'Possui Amostra', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },

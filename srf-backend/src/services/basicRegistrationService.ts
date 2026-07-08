@@ -60,6 +60,7 @@ const deadAnimalOnlyTypes: TypeConfig[] = [
     { label: 'Condição Reprodutiva', prismaModel: 'enumReproductiveCondition', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Faixa Etária', prismaModel: 'enumAge', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Espécie de Helminto', prismaModel: 'helminthSpecie', valueField: 'name', valueFieldLabel: 'Nome' },
+    { label: 'Localização do Helminto', prismaModel: 'helminthLocation', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Status da Amostra de Necrópsia', prismaModel: 'enumNecropsySampleAllocationStatus', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Tipo da Amostra de Necrópsia', prismaModel: 'necropsySampleType', valueField: 'description', valueFieldLabel: 'Descrição' },
     { label: 'Medida Corporal (Necrópsia)', prismaModel: 'bodyMeasurementTypeNecropsy', valueField: 'description', valueFieldLabel: 'Descrição', secondaryField: 'unit', secondaryFieldLabel: 'Unidade' },

@@ -48,7 +48,7 @@ export const getAllEctoparasiteAnalysisOutputSchema = ectoparasiteAnalysisSchema
     veterinarianVisitDate: z.string().nonempty(),
     veterinarianVisitDateFormatted: z.string().optional(),
     liveAnimalId: z.number().int(),
-    liveAnimalName: z.string().nonempty(),
+    liveAnimalCode: z.string().nonempty(),
     veterinarianId: z.number().int(),
     veterinarianName: z.string().nonempty(),
     genusName: z.string().nonempty(),
@@ -62,7 +62,7 @@ export const getFormOptionsEctoparasiteAnalysisOutputSchema = z.object({
         date: z.string().nonempty(),
         liveAnimal: z.object({
             id: z.number().int(),
-            name: z.string().nonempty(),
+            code: z.string().nonempty(),
         }),
         veterinarian: z.object({
             id: z.number().int(),

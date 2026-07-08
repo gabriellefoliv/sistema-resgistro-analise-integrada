@@ -43,7 +43,7 @@ export function VeterinarianVisitSideDrawer({ filters, onClose }: VeterinarianVi
     const pageFilters: any[] = [];
     const first = visits[0];
     if (first) {
-        pageFilters.push({ field: 'liveAnimalName', value: { type: 'text' as const, term: first.liveAnimalName } });
+        pageFilters.push({ field: 'liveAnimalCode', value: { type: 'text' as const, term: first.liveAnimalCode } });
     }
     const pageUrl = `/animaisvivos/veterinario/visitaveterinaria?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
 
@@ -90,7 +90,7 @@ export function VeterinarianVisitSideDrawer({ filters, onClose }: VeterinarianVi
                                     <div className="flex flex-col items-start gap-0.5">
                                         <span className="text-sm font-bold text-text-main">{visit.veterinarianName}</span>
                                         <span className="text-xs text-text-light-gray">
-                                            {visit.dateFormatted} · {visit.liveAnimalName}
+                                            {visit.dateFormatted} · {visit.liveAnimalCode}
                                         </span>
                                     </div>
                                     <span className="text-standard-blue text-xs font-bold uppercase">
@@ -106,7 +106,7 @@ export function VeterinarianVisitSideDrawer({ filters, onClose }: VeterinarianVi
                                         </h4>
                                         <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
                                             <Field label="Data da Realização" value={visit.dateFormatted || ''} />
-                                            <Field label="Animal" value={visit.liveAnimalName} />
+                                            <Field label="Código do Animal" value={visit.liveAnimalCode} />
                                             <Field label="Veterinário" value={visit.veterinarianName} />
                                             <Field label="Observações" value={visit.note || 'Nenhuma observação informada'} fullWidth />
                                         </div>

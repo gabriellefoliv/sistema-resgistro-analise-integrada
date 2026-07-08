@@ -105,8 +105,8 @@ export function SorologyResultFormModal({ sorologyResult, close, refresh }: Soro
         if (selectedDate) visits = visits.filter(v => v.date === selectedDate);
         if (selectedVeterinarianId) visits = visits.filter(v => v.veterinarian.id === selectedVeterinarianId);
         const map = new Map<number, string>();
-        visits.forEach(v => { if (!map.has(v.liveAnimal.id)) map.set(v.liveAnimal.id, v.liveAnimal.name); });
-        return Array.from(map.entries()).map(([id, name]) => ({ id, name }));
+        visits.forEach(v => { if (!map.has(v.liveAnimal.id)) map.set(v.liveAnimal.id, v.liveAnimal.code); });
+        return Array.from(map.entries()).map(([id, code]) => ({ id, code }));
     }, [options, selectedDate, selectedVeterinarianId]);
 
     const filteredVeterinarians = useMemo(() => {
@@ -238,10 +238,10 @@ export function SorologyResultFormModal({ sorologyResult, close, refresh }: Soro
                                     </select>
                                 </div>
                                 <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Animal</label>
+                                    <label className="text-sm font-bold mb-1 text-left">Código do Animal</label>
                                     <select value={selectedAnimalId} onChange={(e) => handleAnimalChange(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white" required>
                                         <option value="">Selecione...</option>
-                                        {filteredAnimals.map(a => (<option key={a.id} value={a.id}>{a.name}</option>))}
+                                        {filteredAnimals.map(a => (<option key={a.id} value={a.id}>{a.code}</option>))}
                                     </select>
                                 </div>
                                 <div className="flex flex-col">

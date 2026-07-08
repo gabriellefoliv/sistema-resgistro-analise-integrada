@@ -13,7 +13,7 @@ export interface VeterinarianVisitData {
     hasStoolAnalysis: boolean;
     hasCastration: boolean;
     liveAnimalId: number;
-    liveAnimalName: string;
+    liveAnimalCode: string;
     veterinarianId: number;
     veterinarianName: string;
     date: string;
@@ -32,7 +32,7 @@ export interface BodyMeasurementData {
 }
 
 export interface VeterinarianVisitFormOptions {
-    liveAnimals: { id: number; name: string }[];
+    liveAnimals: { id: number; code: string }[];
     veterinarians: { id: number; name: string }[];
     bodyMeasurementTypes: { id: number; description: string; unit: string }[];
 }

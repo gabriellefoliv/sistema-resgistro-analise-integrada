@@ -32,7 +32,7 @@ export class InterviewService {
                     select: {
                         id: true,
                         liveAnimalId: true,
-                        liveAnimal: { select: { name: true } },
+                        liveAnimal: { select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true } },
                         animalAnswer: {
                             select: {
                                 animalQuestionId: true,
@@ -94,7 +94,7 @@ export class InterviewService {
                 const animalInterviews = i.animalInterview.map(ai => ({
                     id: ai.id,
                     liveAnimalId: ai.liveAnimalId,
-                    liveAnimalName: ai.liveAnimal.name,
+                    liveAnimalCode: `${ai.liveAnimal.codeSail.sail}_${ai.liveAnimal.codeNumber}`,
                     answers: ai.animalAnswer.map(aa => ({
                         questionId: aa.animalQuestionId,
                         questionText: aa.animalQuestion.text,
@@ -102,7 +102,7 @@ export class InterviewService {
                     })),
                 }));
 
-                const liveAnimalNames = animalInterviews.map(ai => ai.liveAnimalName).join(', ');
+                const liveAnimalCodes = animalInterviews.map(ai => ai.liveAnimalCode).join(', ');
 
                 return {
                     id: i.id,
@@ -113,7 +113,7 @@ export class InterviewService {
                     date: i.date.toISOString(),
                     tutorAnswers: tutorAnswers,
                     animalInterviews: animalInterviews,
-                    liveAnimalNames: liveAnimalNames
+                    liveAnimalCodes: liveAnimalCodes
                 };
             })
         );
@@ -128,9 +128,15 @@ export class InterviewService {
         });
 
         const liveAnimals = await prisma.liveAnimal.findMany({
-            select: { id: true, name: true, tutorId: true },
+            select: { id: true, codeSail: { select: { sail: true } }, codeNumber: true, tutorId: true },
             orderBy: { name: 'asc' }
         });
+
+        const liveAnimalsWithTutors = liveAnimals.filter(la => la.tutorId !== null).map(la => ({
+            id: la.id,
+            code: `${la.codeSail.sail}_${la.codeNumber}`,
+            tutorId: la.tutorId!,
+        }));
 
         const tutorQuestions = await prisma.tutorQuestion.findMany({
             select: {
@@ -161,11 +167,7 @@ export class InterviewService {
                 text: q.text,
                 options: q.tutorAnswerOption.map(o => ({ id: o.id, text: o.text })),
             })),
-            liveAnimals: liveAnimals.map(a => ({
-                id: a.id,
-                name: a.name,
-                tutorId: a.tutorId,
-            })),
+            liveAnimals: liveAnimalsWithTutors,
             animalQuestions: animalQuestions.map(a => ({
                 id: a.id,
                 text: a.text,

@@ -132,8 +132,8 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
     }
 
 
-    function getAnimalName(animalId: number): string {
-        return options?.liveAnimals.find(a => a.id === animalId)?.name ?? `Animal #${animalId}`;
+    function getAnimalCode(animalId: number): string {
+        return options?.liveAnimals.find(a => a.id === animalId)?.code ?? `Animal #${animalId}`;
     }
 
     // Animais disponíveis para adicionar (modo edição: todos; modo criação: só do tutor)
@@ -363,7 +363,7 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
                                 {animalInterviews.map((ai, animalIndex) => (
                                     <fieldset key={ai.liveAnimalId} className="border border-border rounded p-4 relative">
                                         <legend className="text-sm font-bold text-standard-blue px-2 flex items-center gap-2">
-                                            Respostas sobre {getAnimalName(ai.liveAnimalId)}
+                                            Respostas sobre o animal {getAnimalCode(ai.liveAnimalId)}
                                         </legend>
                                         <div className="absolute top-[-24px] right-2 bg-white px-2 rounded">
                                             <button
@@ -431,7 +431,7 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
                                         >
                                             <option value="">Selecione um animal para adicionar...</option>
                                             {availableAnimals.map(a => (
-                                                <option key={a.id} value={a.id}>{a.name}</option>
+                                                <option key={a.id} value={a.id}>{a.code}</option>
                                             ))}
                                         </select>
                                     </div>

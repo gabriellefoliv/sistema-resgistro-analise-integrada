@@ -21,7 +21,7 @@ export class EggCystAnalysisService {
                         veterinarianVisit: {
                             select: {
                                 id: true, date: true,
-                                liveAnimal: { select: { id: true, name: true } },
+                                liveAnimal: { select: { id: true, codeSail: { select: { sail: true } }, codeNumber: true } },
                                 veterinarian: { select: { id: true, name: true } }
                             }
                         }
@@ -71,7 +71,7 @@ export class EggCystAnalysisService {
                     veterinarianVisitId: r.stoolAnalysis.veterinarianVisit.id,
                     veterinarianVisitDate: r.stoolAnalysis.veterinarianVisit.date.toISOString(),
                     liveAnimalId: r.stoolAnalysis.veterinarianVisit.liveAnimal.id,
-                    liveAnimalName: r.stoolAnalysis.veterinarianVisit.liveAnimal.name,
+                    liveAnimalCode: `${r.stoolAnalysis.veterinarianVisit.liveAnimal.codeSail.sail}_${r.stoolAnalysis.veterinarianVisit.liveAnimal.codeNumber}`,
                     veterinarianId: r.stoolAnalysis.veterinarianVisit.veterinarian.id,
                     veterinarianName: r.stoolAnalysis.veterinarianVisit.veterinarian.name,
                     eggCystSpecieId: r.eggCystSpecieId,
@@ -94,7 +94,7 @@ export class EggCystAnalysisService {
                         select: {
                             id: true,
                             date: true,
-                            liveAnimal: { select: { id: true, name: true } },
+                            liveAnimal: { select: { id: true, codeSail: { select: { sail: true } }, codeNumber: true } },
                             veterinarian: { select: { id: true, name: true } }
                         }
                     }
@@ -117,7 +117,7 @@ export class EggCystAnalysisService {
                 veterinarianVisit: {
                     id: s.veterinarianVisit.id,
                     date: s.veterinarianVisit.date.toISOString(),
-                    liveAnimal: s.veterinarianVisit.liveAnimal,
+                    liveAnimal: { id: s.veterinarianVisit.liveAnimal.id, code: `${s.veterinarianVisit.liveAnimal.codeSail.sail}_${s.veterinarianVisit.liveAnimal.codeNumber}` },
                     veterinarian: s.veterinarianVisit.veterinarian
                 }
             })),

@@ -48,7 +48,7 @@ export function PhysicalExamSideDrawer({ filters, onClose }: PhysicalExamSideDra
             const date = first.veterinarianVisitDate.split('T')[0];
             pageFilters.push({ field: 'veterinarianVisitDate', value: { type: 'date' as const, from: date, to: date } });
         }
-        pageFilters.push({ field: 'liveAnimalName', value: { type: 'text' as const, term: first.liveAnimalName } });
+        pageFilters.push({ field: 'liveAnimalCode', value: { type: 'text' as const, term: first.liveAnimalCode } });
         pageFilters.push({ field: 'veterinarianName', value: { type: 'text' as const, term: first.veterinarianName } });
     }
     const pageUrl = `/animaisvivos/veterinario/examefisico?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
@@ -92,7 +92,7 @@ export function PhysicalExamSideDrawer({ filters, onClose }: PhysicalExamSideDra
                                 </h4>
                                 <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
                                     <Field label="Data da Visita" value={exam.veterinarianVisitDateFormatted || ''} />
-                                    <Field label="Animal" value={exam.liveAnimalName} />
+                                    <Field label="Código do Animal" value={exam.liveAnimalCode} />
                                     <Field label="Veterinário" value={exam.veterinarianName} />
                                     <Field label="Condição Geral" value={exam.generalConditionName} />
                                     <Field

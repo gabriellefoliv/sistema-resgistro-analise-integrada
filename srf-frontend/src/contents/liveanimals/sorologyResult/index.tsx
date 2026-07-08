@@ -27,7 +27,7 @@ export const SorologyResultContentDefinition = {
     label: 'Sorologias',
     columns: [
         { key: 'veterinarianVisitDateFormatted', label: 'Data da Visita', width: 'w-2/12' },
-        { key: 'liveAnimalName', label: 'Animal', width: 'w-3/12' },
+        { key: 'liveAnimalCode', label: 'Código do Animal', width: 'w-3/12' },
         { key: 'veterinarianName', label: 'Veterinário', width: 'w-3/12' },
         { key: 'testName', label: 'Teste', width: 'w-2/12' },
         { key: 'interpretationName', label: 'Interpretação', width: 'w-1/12' }
@@ -37,7 +37,7 @@ export const SorologyResultContentDefinition = {
         return [
             { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'veterinarianVisitDate', label: 'Data da Visita', type: 'date' },
-            { key: 'liveAnimalName', label: 'Animal', type: 'text' },
+            { key: 'liveAnimalCode', label: 'Código do Animal', type: 'text' },
             { key: 'veterinarianName', label: 'Veterinário', type: 'text' },
             { key: 'testName', label: 'Teste', type: 'enum', options: testNameOptions },
             { key: 'interpretationName', label: 'Interpretação', type: 'enum', options: interpretationOptions },

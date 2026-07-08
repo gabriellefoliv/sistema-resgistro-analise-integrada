@@ -48,7 +48,7 @@ export function StoolAnalysisSideDrawer({ filters, onClose }: StoolAnalysisSideD
             const date = first.veterinarianVisitDate.split('T')[0];
             pageFilters.push({ field: 'veterinarianVisitDate', value: { type: 'date' as const, from: date, to: date } });
         }
-        pageFilters.push({ field: 'liveAnimalName', value: { type: 'text' as const, term: first.liveAnimalName } });
+        pageFilters.push({ field: 'liveAnimalCode', value: { type: 'text' as const, term: first.liveAnimalCode } });
         pageFilters.push({ field: 'veterinarianName', value: { type: 'text' as const, term: first.veterinarianName } });
     }
     const pageUrl = `/animaisvivos/exameseanalises/analisefezes?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
@@ -95,7 +95,7 @@ export function StoolAnalysisSideDrawer({ filters, onClose }: StoolAnalysisSideD
                                         className="w-full flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-hover-bg transition-colors"
                                     >
                                         <div className="flex flex-col items-start gap-0.5">
-                                            <span className="text-sm font-bold text-text-main">{result.liveAnimalName}</span>
+                                            <span className="text-sm font-bold text-text-main">{result.liveAnimalCode}</span>
                                             <span className="text-xs text-text-light-gray">
                                                 {result.veterinarianVisitDateFormatted || 'Data Indisponível'} · {result.veterinarianName}
                                             </span>
@@ -114,7 +114,7 @@ export function StoolAnalysisSideDrawer({ filters, onClose }: StoolAnalysisSideD
                                             </h4>
                                             <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
                                                 <Field label="Data da Visita" value={result.veterinarianVisitDateFormatted || ''} />
-                                                <Field label="Animal" value={result.liveAnimalName} />
+                                                <Field label="Código do Animal" value={result.liveAnimalCode} />
                                                 <Field label="Veterinário" value={result.veterinarianName} />
                                                 <Field label="Peso (Kg)" value={String(result.weight)} />
                                                 <Field label="Tecnologia de Processamento" value={result.processingTechnologyName} />

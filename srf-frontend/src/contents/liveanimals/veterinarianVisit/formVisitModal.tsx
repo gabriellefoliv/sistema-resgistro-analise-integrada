@@ -135,7 +135,7 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
                         {/* Detalhes da Visita */}
                         <div className="grid grid-cols-2 gap-4">
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Animal</label>
+                                <label className="text-sm font-bold mb-1 text-left">Código do Animal</label>
                                 <select
                                     value={liveAnimalId}
                                     onChange={(e) => setLiveAnimalId(Number(e.target.value))}
@@ -144,7 +144,7 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
                                 >
                                     <option value="">Selecione...</option>
                                     {options.liveAnimals.map(a => (
-                                        <option key={a.id} value={a.id}>{a.name}</option>
+                                        <option key={a.id} value={a.id}>{a.code}</option>
                                     ))}
                                 </select>
                             </div>

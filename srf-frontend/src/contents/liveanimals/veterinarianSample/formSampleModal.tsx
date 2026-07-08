@@ -97,10 +97,10 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
         const animalMap = new Map<number, string>();
         visits.forEach(v => {
             if (!animalMap.has(v.liveAnimal.id)) {
-                animalMap.set(v.liveAnimal.id, v.liveAnimal.name);
+                animalMap.set(v.liveAnimal.id, v.liveAnimal.code);
             }
         });
-        return Array.from(animalMap.entries()).map(([id, name]) => ({ id: id, name: name }));
+        return Array.from(animalMap.entries()).map(([id, code]) => ({ id: id, code: code }));
     }, [options, selectedDate, selectedVeterinarianId]);
 
     // Veterinários disponíveis - filtrados pela data e animal se selecionados
@@ -264,7 +264,7 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
 
                                 {/* Animal */}
                                 <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Animal</label>
+                                    <label className="text-sm font-bold mb-1 text-left">Código do Animal</label>
                                     <select
                                         value={selectedAnimalId}
                                         onChange={(e) => handleAnimalChange(e.target.value ? Number(e.target.value) : '')}
@@ -273,7 +273,7 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                                     >
                                         <option value="">Selecione...</option>
                                         {filteredAnimals.map(a => (
-                                            <option key={a.id} value={a.id}>{a.name}</option>
+                                            <option key={a.id} value={a.id}>{a.code}</option>
                                         ))}
                                     </select>
                                 </div>

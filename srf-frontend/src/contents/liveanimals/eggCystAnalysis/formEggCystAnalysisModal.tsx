@@ -71,8 +71,8 @@ export function EggCystAnalysisFormModal({ eggCystAnalysis, close, refresh }: Eg
         if (selectedDate) stools = stools.filter(s => s.veterinarianVisit.date === selectedDate);
         if (selectedVeterinarianId) stools = stools.filter(s => s.veterinarianVisit.veterinarian.id === selectedVeterinarianId);
         const map = new Map<number, string>();
-        stools.forEach(s => { if (!map.has(s.veterinarianVisit.liveAnimal.id)) map.set(s.veterinarianVisit.liveAnimal.id, s.veterinarianVisit.liveAnimal.name); });
-        return Array.from(map.entries()).map(([id, name]) => ({ id, name }));
+        stools.forEach(s => { if (!map.has(s.veterinarianVisit.liveAnimal.id)) map.set(s.veterinarianVisit.liveAnimal.id, s.veterinarianVisit.liveAnimal.code); });
+        return Array.from(map.entries()).map(([id, code]) => ({ id, code }));
     }, [options, selectedDate, selectedVeterinarianId]);
 
     const filteredVeterinarians = useMemo(() => {
@@ -181,10 +181,10 @@ export function EggCystAnalysisFormModal({ eggCystAnalysis, close, refresh }: Eg
                                     </select>
                                 </div>
                                 <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Animal</label>
+                                    <label className="text-sm font-bold mb-1 text-left">Código do Animal</label>
                                     <select value={selectedAnimalId} onChange={(e) => handleAnimalChange(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white" required>
                                         <option value="">Selecione...</option>
-                                        {filteredAnimals.map(a => (<option key={a.id} value={a.id}>{a.name}</option>))}
+                                        {filteredAnimals.map(a => (<option key={a.id} value={a.id}>{a.code}</option>))}
                                     </select>
                                 </div>
                                 <div className="flex flex-col">
@@ -213,8 +213,13 @@ export function EggCystAnalysisFormModal({ eggCystAnalysis, close, refresh }: Eg
                             </div>
                             <div className="flex flex-col col-span-3">
                                 <label className="text-sm font-bold mb-1 text-left">Observações (Opcional)</label>
-                                <input type="text" value={note} onChange={(e) => setNote(e.target.value)}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Digite observações..." />
+                                <textarea
+                                    value={note}
+                                    onChange={(e) => setNote(e.target.value)}
+                                    className="border border-border rounded p-2 bg-white resize-none"
+                                    rows={3}
+                                    placeholder="Digite as observações..."
+                                />
                             </div>
                         </div>
 

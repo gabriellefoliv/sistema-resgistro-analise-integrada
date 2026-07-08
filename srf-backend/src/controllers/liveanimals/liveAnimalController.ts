@@ -57,7 +57,7 @@ export class LiveAnimalController {
             if (error instanceof ZodError) {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
-            if (error.message === 'Este tutor já possui um animal com este nome.') return res.status(409).json({ error: error.message });
+            if (error.message === 'Já existe um animal cadastrado com esta sigla e número.') return res.status(409).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }
@@ -81,8 +81,7 @@ export class LiveAnimalController {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
             if (error.message === 'Animal não encontrado.') return res.status(404).json({ error: error.message });
-            if (error.message === 'Este tutor já possui um animal com este nome.') return res.status(409).json({ error: error.message });
-            if (error.message.includes('Foreign key constraint violated')) return res.status(400).json({ error: 'Não é possível excluir pois existem outros registros vinculados. Remova os registros antes de excluir.' });
+            if (error.message === 'Já existe um animal cadastrado com esta sigla e número.') return res.status(409).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }
@@ -105,6 +104,7 @@ export class LiveAnimalController {
             }
             if (error.message === 'Animal não encontrado.') return res.status(404).json({ error: error.message });
             if (error.message === 'Este animal possui registros associados e não pode ser deletado. Remova os registros associados antes de deletar o animal.') return res.status(409).json({ error: error.message });
+            if (error.message.includes('Foreign key constraint violated')) return res.status(400).json({ error: 'Não é possível excluir pois existem outros registros vinculados. Remova os registros antes de excluir.' });
             return res.status(500).json({ error: error.message });
         }
     }

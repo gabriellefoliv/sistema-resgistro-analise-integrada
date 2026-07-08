@@ -35,7 +35,7 @@ export const updateVaccineInputSchema = vaccineSchema.omit({
 export const getAllVaccineOutputSchema = vaccineSchema.extend({
     canEdit: z.boolean(),
     createdByMe: z.boolean(),
-    liveAnimalName: z.string(),
+    liveAnimalCode: z.string(),
     vaccineName: z.string(),
     vaccineTypeName: z.string(),
     veterinarianVisitId: z.number().int().optional(),
@@ -48,14 +48,14 @@ export const getAllVaccineOutputSchema = vaccineSchema.extend({
 export const getFormOptionsVaccineOutputSchema = z.object({
     liveAnimals: z.array(z.object({
         id: z.number().int(),
-        name: z.string().nonempty()
+        code: z.string().nonempty()
     })),
     veterinarianVisits: z.array(z.object({
         id: z.number().int(),
         date: z.string().nonempty(),
         liveAnimal: z.object({
             id: z.number().int(),
-            name: z.string().nonempty()
+            code: z.string().nonempty()
         }),
         veterinarian: z.object({
             id: z.number().int(),

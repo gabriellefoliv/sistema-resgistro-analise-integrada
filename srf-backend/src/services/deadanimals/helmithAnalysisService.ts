@@ -24,7 +24,7 @@ export class HelminthAnalysisService {
                     }
                 },
                 helminthSpecie: { select: { id: true, name: true } },
-                location: true,
+                location: { select: { id: true, name: true } },
                 maleQuantity: true,
                 femaleQuantity: true,
                 totalQuantity: true,
@@ -65,7 +65,8 @@ export class HelminthAnalysisService {
                 deadAnimalCode: a.necropsy.deadAnimal.code,
                 helminthSpecieId: a.helminthSpecie.id,
                 helminthSpecieName: a.helminthSpecie.name,
-                location: a.location,
+                locationId: a.location.id,
+                locationName: a.location.name,
                 maleQuantity: a.maleQuantity,
                 femaleQuantity: a.femaleQuantity,
                 totalQuantity: a.totalQuantity,
@@ -77,7 +78,7 @@ export class HelminthAnalysisService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsHelminthAnalysisOutput> {
-        const [necropsies, helminthSpecies] = await Promise.all([
+        const [necropsies, helminthSpecies, locations] = await Promise.all([
             prisma.necropsy.findMany({
                 select: {
                     id: true,
@@ -87,6 +88,13 @@ export class HelminthAnalysisService {
                 orderBy: { performedDate: 'desc' }
             }),
             prisma.helminthSpecie.findMany({
+                select: {
+                    id: true,
+                    name: true
+                },
+                orderBy: { name: 'asc' }
+            }),
+            prisma.helminthLocation.findMany({
                 select: {
                     id: true,
                     name: true
@@ -104,7 +112,8 @@ export class HelminthAnalysisService {
                     code: n.deadAnimal.code
                 }
             })),
-            helminthSpecies
+            helminthSpecies,
+            locations
         }
     }
 
@@ -126,12 +135,20 @@ export class HelminthAnalysisService {
             });
             if (!existingHelminthSpecies) throw new Error('Espécie de helminto não encontrada.');
 
+            // Verifica se a localização existe
+            const existingLocation = await tx.helminthLocation.findUnique({
+                where: {
+                    id: data.locationId
+                }
+            });
+            if (!existingLocation) throw new Error('Localização de helminto não encontrada.');
+
             // Verifica se já existe um registro de análise de helminto para esta necropsia e espécie de helminto
             const existingAnalysis = await tx.helminthAnalysis.findFirst({
                 where: {
                     necropsyId: data.necropsyId,
                     helminthSpecieId: data.helminthSpecieId,
-                    location: data.location
+                    locationId: data.locationId
                 }
             });
             if (existingAnalysis) throw new Error('Já existe um registro de análise de helminto para esta necropsia e espécie de helminto.');
@@ -144,7 +161,7 @@ export class HelminthAnalysisService {
                 data: {
                     necropsyId: data.necropsyId,
                     helminthSpecieId: data.helminthSpecieId,
-                    location: data.location,
+                    locationId: data.locationId,
                     maleQuantity: data.maleQuantity,
                     femaleQuantity: data.femaleQuantity,
                     totalQuantity: data.totalQuantity,
@@ -193,12 +210,20 @@ export class HelminthAnalysisService {
             });
             if (!existingHelminthSpecies) throw new Error('Espécie de helminto não encontrada.');
 
+            // Verifica se a localização existe
+            const existingLocation = await tx.helminthLocation.findUnique({
+                where: {
+                    id: data.locationId
+                }
+            });
+            if (!existingLocation) throw new Error('Localização de helminto não encontrada.');
+
             // Verifica se já existe um registro de análise de helminto para esta necropsia e espécie de helminto
             const existingAnalysisForNecropsyAndSpecie = await tx.helminthAnalysis.findFirst({
                 where: {
                     necropsyId: data.necropsyId,
                     helminthSpecieId: data.helminthSpecieId,
-                    location: data.location,
+                    locationId: data.locationId,
                     id: { not: recordId }
                 }
             });
@@ -215,7 +240,7 @@ export class HelminthAnalysisService {
                 data: {
                     necropsyId: data.necropsyId,
                     helminthSpecieId: data.helminthSpecieId,
-                    location: data.location,
+                    locationId: data.locationId,
                     maleQuantity: data.maleQuantity,
                     femaleQuantity: data.femaleQuantity,
                     totalQuantity: data.totalQuantity,

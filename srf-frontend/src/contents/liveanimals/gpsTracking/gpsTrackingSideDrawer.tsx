@@ -45,7 +45,7 @@ export function GpsTrackingSideDrawer({ filters, onClose }: GpsTrackingSideDrawe
     const pageFilters: any[] = [];
     const first = trackings[0];
     if (first) {
-        pageFilters.push({ field: 'liveAnimalName', value: { type: 'text' as const, term: first.liveAnimalName } });
+        pageFilters.push({ field: 'liveAnimalCode', value: { type: 'text' as const, term: first.liveAnimalCode } });
     }
     const pageUrl = `/animaisvivos/rastreiodegps/rastreiogps?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
 
@@ -92,7 +92,7 @@ export function GpsTrackingSideDrawer({ filters, onClose }: GpsTrackingSideDrawe
                                     <div className="flex flex-col items-start gap-0.5">
                                         <span className="text-sm font-bold text-text-main">{tracking.trackingDeviceBrandSerialNumber}</span>
                                         <span className="text-xs text-text-light-gray">
-                                            {tracking.startDateFormatted} · {tracking.liveAnimalName}
+                                            {tracking.startDateFormatted} · {tracking.liveAnimalCode}
                                         </span>
                                     </div>
                                     <span className="text-standard-blue text-xs font-bold uppercase">
@@ -107,7 +107,7 @@ export function GpsTrackingSideDrawer({ filters, onClose }: GpsTrackingSideDrawe
                                             Detalhes do Rastreio
                                         </h4>
                                         <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
-                                            <Field label="Animal" value={tracking.liveAnimalName} />
+                                            <Field label="Animal" value={tracking.liveAnimalCode} />
                                             <Field label="Dispositivo" value={tracking.trackingDeviceBrandSerialNumber} />
                                             <Field label="Data de Instalação" value={tracking.startDateFormatted || ''} />
                                             <Field label="Data de Retirada" value={tracking.endDateFormatted || '-'} />

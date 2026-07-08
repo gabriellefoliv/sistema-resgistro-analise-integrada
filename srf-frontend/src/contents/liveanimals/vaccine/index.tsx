@@ -28,7 +28,7 @@ export const VaccineContentDefinition = {
     label: 'Vacinas',
     columns: [
         { key: 'vaccineName', label: 'Vacina', width: 'w-3/12' },
-        { key: 'liveAnimalName', label: 'Animal', width: 'w-3/12' },
+        { key: 'liveAnimalCode', label: 'Código do Animal', width: 'w-3/12' },
         { key: 'vaccineTypeName', label: 'Tipo de Aplicação', width: 'w-3/12' },
         { key: 'applicationDateFormatted', label: 'Data da Aplicação', width: 'w-2/12' },
         // deixar w-1/12 sobrando para ações
@@ -37,7 +37,7 @@ export const VaccineContentDefinition = {
         return [
             { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'applicationDate', label: 'Data da Aplicação', type: 'date' },
-            { key: 'liveAnimalName', label: 'Animal', type: 'text' },
+            { key: 'liveAnimalCode', label: 'Código do Animal', type: 'text' },
             { key: 'vaccineId', label: 'Vacina', type: 'enum', options: vaccineNameOptions },
             { key: 'vaccineTypeId', label: 'Tipo de Aplicação', type: 'enum', options: vaccineTypeOptions },
         ];

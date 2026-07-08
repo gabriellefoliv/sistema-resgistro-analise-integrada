@@ -15,7 +15,7 @@ export const InterviewContentDefinition = {
     filterFields: [
         { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
         { key: 'tutorName', label: 'Tutor', type: 'text' },
-        { key: 'liveAnimalNames', label: 'Animal', type: 'text' },
+        { key: 'liveAnimalCodes', label: 'Código do Animal', type: 'text' },
         { key: 'date', label: 'Data da Realização', type: 'date' },
     ],
     rowIdField: 'id',

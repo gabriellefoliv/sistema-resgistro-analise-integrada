@@ -220,7 +220,7 @@ export function VaccineFormModal({ vaccine, close, refresh }: VaccineFormModalPr
                             >
                                 <option value="">Selecione...</option>
                                 {options.liveAnimals.map(a => (
-                                    <option key={a.id} value={a.id}>{a.name}</option>
+                                    <option key={a.id} value={a.id}>{a.code}</option>
                                 ))}
                             </select>
                         </div>

@@ -34,7 +34,7 @@ export function DeleteEctoparasiteAnalysisModal({ ectoparasiteAnalysis, close, r
                     <h2 className="absolute top-2 text-2xl text-standard-red font-bold">Atenção!</h2>
 
                     <p className="text-center font-bold text-lg">
-                        Tem certeza que deseja EXCLUIR a análise de ectoparasitos do animal <span className="text-standard-blue">{ectoparasiteAnalysis.liveAnimalName}</span>?
+                        Tem certeza que deseja EXCLUIR a análise de ectoparasitos do animal <span className="text-standard-blue">{ectoparasiteAnalysis.liveAnimalCode}</span>?
                     </p>
 
                     {error && <p className="text-red-500 text-sm text-center">{error}</p>}

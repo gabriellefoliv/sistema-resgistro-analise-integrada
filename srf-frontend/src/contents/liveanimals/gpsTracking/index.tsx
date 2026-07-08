@@ -22,14 +22,14 @@ export const GpsTrackingContentDefinition = {
     id: 'rastreiogps',
     label: 'Rastreio de GPS',
     columns: [
-        { key: 'liveAnimalName', label: 'Animal', width: 'w-5/12' },
+        { key: 'liveAnimalCode', label: 'Código do Animal', width: 'w-5/12' },
         { key: 'trackingDeviceBrandSerialNumber', label: 'Dispositivo de Rastreamento', width: 'w-6/12' },
         // deixar w-1/12 sobrando para ações
     ],
     get filterFields() {
         return [
             { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
-            { key: 'liveAnimalName', label: 'Animal', type: 'text' },
+            { key: 'liveAnimalCode', label: 'Código do Animal', type: 'text' },
             { key: 'trackingDeviceId', label: 'Dispositivo de Rastreamento', type: 'enum', options: trackingDeviceOptions },
             { key: 'startDate', label: 'Data de Instalação', type: 'date' },
             { key: 'withdrawn', label: 'Retirada', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },

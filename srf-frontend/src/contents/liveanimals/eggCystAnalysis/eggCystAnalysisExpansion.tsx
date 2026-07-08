@@ -38,8 +38,8 @@ export function EggCystAnalysisExpansion({ item, close, refresh }: { item: GetAl
                         <input type="text" disabled value={item.veterinarianVisitDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     <div className="flex flex-col w-3/12">
-                        <label className="ml-1 font-bold">Animal</label>
-                        <input type="text" disabled value={item.liveAnimalName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                        <label className="ml-1 font-bold">Código do Animal</label>
+                        <input type="text" disabled value={item.liveAnimalCode} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     <div className="flex flex-col w-3/12">
                         <label className="ml-1 font-bold">Veterinário</label>

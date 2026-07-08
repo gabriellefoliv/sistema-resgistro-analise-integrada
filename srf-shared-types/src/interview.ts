@@ -10,7 +10,7 @@ export const answerOutputSchema = z.object({
 export const animalInterviewOutputSchema = z.object({
     id: z.number().int(),
     liveAnimalId: z.number().int(),
-    liveAnimalName: z.string(),
+    liveAnimalCode: z.string(),
     answers: z.array(answerOutputSchema)
 });
 
@@ -25,7 +25,7 @@ export const getAllInterviewOutputSchema = z.object({
     tutorAnswers: z.array(answerOutputSchema),
     animalInterviews: z.array(animalInterviewOutputSchema),
     // Campo auxiliar para filtragem por nome do animal
-    liveAnimalNames: z.string().optional()
+    liveAnimaCodes: z.string().optional()
 });
 
 // Form Options
@@ -48,7 +48,7 @@ export const getFormOptionsInterviewOutputSchema = z.object({
     tutorQuestions: z.array(questionFormSchema),
     liveAnimals: z.array(z.object({
         id: z.number().int(),
-        name: z.string(),
+        code: z.string(),
         tutorId: z.number().int(),
     })),
     animalQuestions: z.array(questionFormSchema)

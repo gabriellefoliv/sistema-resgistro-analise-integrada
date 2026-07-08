@@ -57,8 +57,8 @@ export function PhysicalExamExpansion({ item, close, refresh }: { item: GetAllPh
                     </div>
                     {/* Animal */}
                     <div className="flex flex-col w-2/12">
-                        <label className="ml-1 font-bold">Animal</label>
-                        <input type="text" disabled value={item.liveAnimalName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                        <label className="ml-1 font-bold">Código do Animal</label>
+                        <input type="text" disabled value={item.liveAnimalCode} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     {/* Veterinário */}
                     <div className="flex flex-col w-2/12">

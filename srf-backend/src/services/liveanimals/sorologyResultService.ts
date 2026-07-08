@@ -18,7 +18,7 @@ export class SorologyResultService {
                 veterinarianVisit: {
                     select: {
                         id: true, date: true,
-                        liveAnimal: { select: { id: true, name: true } },
+                        liveAnimal: { select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true } },
                         veterinarian: { select: { id: true, name: true } }
                     }
                 },
@@ -70,7 +70,7 @@ export class SorologyResultService {
                     veterinarianVisitId: r.veterinarianVisit.id,
                     veterinarianVisitDate: r.veterinarianVisit.date.toISOString(),
                     liveAnimalId: r.veterinarianVisit.liveAnimal.id,
-                    liveAnimalName: r.veterinarianVisit.liveAnimal.name,
+                    liveAnimalCode: `${r.veterinarianVisit.liveAnimal.codeSail.sail}_${r.veterinarianVisit.liveAnimal.codeNumber}`,
                     veterinarianId: r.veterinarianVisit.veterinarian.id,
                     veterinarianName: r.veterinarianVisit.veterinarian.name,
                     sorologyTestId: r.sorologyTestId,
@@ -97,7 +97,7 @@ export class SorologyResultService {
                 select: {
                     id: true,
                     date: true,
-                    liveAnimal: { select: { id: true, name: true } },
+                    liveAnimal: { select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true } },
                     veterinarian: { select: { id: true, name: true } }
                 },
                 orderBy: {
@@ -126,7 +126,7 @@ export class SorologyResultService {
             veterinarianVisits: veterinarianVisits.map(v => ({
                 id: v.id,
                 date: v.date.toISOString(),
-                liveAnimal: v.liveAnimal,
+                liveAnimal: { id: v.liveAnimal.id, code: `${v.liveAnimal.codeSail.sail}_${v.liveAnimal.codeNumber}` },
                 veterinarian: v.veterinarian
             })),
             sorologyTests,

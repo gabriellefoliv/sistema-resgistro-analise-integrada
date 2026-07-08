@@ -8,13 +8,13 @@ export const CastrationContentDefinition = {
     id: 'castracao',
     label: 'Castrações',
     columns: [
-        { key: 'liveAnimalName', label: 'Animal', width: 'w-5/12' },
+        { key: 'liveAnimalCode', label: 'Código do Animal', width: 'w-5/12' },
         { key: 'dateFormatted', label: 'Data', width: 'w-5/12' },
         // deixar w-2/12 sobrando para ações
     ],
     filterFields: [
         { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
-        { key: 'liveAnimalName', label: 'Animal', type: 'text' },
+        { key: 'liveAnimalCode', label: 'Código do Animal', type: 'text' },
         { key: 'date', label: 'Data', type: 'date' },
         { key: 'hasVeterinarianVisit', label: 'Realizada em Visita Veterinária?', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
     ],

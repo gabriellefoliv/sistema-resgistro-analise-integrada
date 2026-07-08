@@ -48,7 +48,7 @@ export function ExamResultSideDrawer({ filters, onClose }: ExamResultSideDrawerP
             const date = first.veterinarianVisitDate.split('T')[0];
             pageFilters.push({ field: 'veterinarianVisitDate', value: { type: 'date' as const, from: date, to: date } });
         }
-        pageFilters.push({ field: 'liveAnimalName', value: { type: 'text' as const, term: first.liveAnimalName } });
+        pageFilters.push({ field: 'liveAnimalCode', value: { type: 'text' as const, term: first.liveAnimalCode } });
         pageFilters.push({ field: 'veterinarianName', value: { type: 'text' as const, term: first.veterinarianName } });
     }
     const pageUrl = `/animaisvivos/exameseanalises/resultadoexame-av?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
@@ -92,7 +92,7 @@ export function ExamResultSideDrawer({ filters, onClose }: ExamResultSideDrawerP
                                 </h4>
                                 <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
                                     <Field label="Data da Visita" value={result.veterinarianVisitDateFormatted || ''} />
-                                    <Field label="Animal" value={result.liveAnimalName} />
+                                    <Field label="Código do Animal" value={result.liveAnimalCode} />
                                     <Field label="Veterinário" value={result.veterinarianName} />
                                     <Field label="Interpretação" value={result.interpretationName} />
                                     <Field label="Observações" fullWidth value={result.note || 'Nenhuma observação informada'} />

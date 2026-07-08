@@ -117,10 +117,10 @@ export function GpsTrackingFormModal({ gpsTracking, close, refresh }: GpsTrackin
                             <legend className="text-sm font-bold text-standard-blue px-2">Detalhes do Registro</legend>
                             <div className="grid grid-cols-2 gap-4 mb-4">
                                 <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Animal</label>
+                                    <label className="text-sm font-bold mb-1 text-left">Código do Animal</label>
                                     <select value={liveAnimalId} onChange={(e) => setLiveAnimalId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
                                         <option value="">Selecione...</option>
-                                        {options.liveAnimals.map(a => (<option key={a.id} value={a.id}>{a.name}</option>))}
+                                        {options.liveAnimals.map(a => (<option key={a.id} value={a.id}>{a.code}</option>))}
                                     </select>
                                 </div>
                                 <div className="flex flex-col">
@@ -139,11 +139,15 @@ export function GpsTrackingFormModal({ gpsTracking, close, refresh }: GpsTrackin
                                     <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="border border-border rounded p-2 bg-white h-10" />
                                 </div>
                             </div>
-                            <div className="grid grid-cols-1 gap-4">
-                                <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Observações (Opcional)</label>
-                                    <textarea value={note} onChange={(e) => setNote(e.target.value)} className="border border-border rounded p-2 bg-white" rows={3} placeholder="Digite as observações..." />
-                                </div>
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Observações (Opcional)</label>
+                                <textarea
+                                    value={note}
+                                    onChange={(e) => setNote(e.target.value)}
+                                    className="border border-border rounded p-2 bg-white resize-none"
+                                    rows={3}
+                                    placeholder="Digite as observações..."
+                                />
                             </div>
                         </fieldset>
 

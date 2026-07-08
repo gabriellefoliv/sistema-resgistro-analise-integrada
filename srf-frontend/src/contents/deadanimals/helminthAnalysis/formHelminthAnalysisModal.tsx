@@ -26,7 +26,7 @@ export function FormHelminthAnalysisModal({ helminthAnalysis, close, refresh }: 
     // Campos da análise
     const [necropsyId, setNecropsyId] = useState<number | ''>(helminthAnalysis?.necropsyId ?? '');
     const [specieId, setSpecieId] = useState<number | ''>(helminthAnalysis?.helminthSpecieId ?? '');
-    const [location, setLocation] = useState<string>(helminthAnalysis?.location ?? '');
+    const [locationId, setLocationId] = useState<number | ''>(helminthAnalysis?.locationId ?? '');
     const [maleQuantity, setMaleQuantity] = useState<number | ''>(helminthAnalysis?.maleQuantity ?? '');
     const [femaleQuantity, setFemaleQuantity] = useState<number | ''>(helminthAnalysis?.femaleQuantity ?? '');
     const [totalQuantity, setTotalQuantity] = useState<number | ''>(helminthAnalysis?.totalQuantity ?? '');
@@ -56,7 +56,7 @@ export function FormHelminthAnalysisModal({ helminthAnalysis, close, refresh }: 
             const data = {
                 necropsyId: Number(necropsyId),
                 helminthSpecieId: Number(specieId),
-                location: location,
+                locationId: Number(locationId),
                 maleQuantity: Number(maleQuantity),
                 femaleQuantity: Number(femaleQuantity),
                 totalQuantity: Number(totalQuantity),
@@ -122,8 +122,10 @@ export function FormHelminthAnalysisModal({ helminthAnalysis, close, refresh }: 
                         <div className="grid grid-cols-4 gap-4">
                             <div className="flex flex-col col-span-4">
                                 <label className="text-sm font-bold mb-1 text-left">Localização</label>
-                                <input type="text" value={location} onChange={(e) => setLocation(e.target.value)}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Digite a localização..." required />
+                                <select value={locationId} onChange={(e) => setLocationId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
+                                    <option value="">Selecione...</option>
+                                    {options.locations.map(l => (<option key={l.id} value={l.id}>{l.name}</option>))}
+                                </select>
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Espécie do Helminto</label>
@@ -149,8 +151,13 @@ export function FormHelminthAnalysisModal({ helminthAnalysis, close, refresh }: 
                             </div>
                             <div className="flex flex-col col-span-4">
                                 <label className="text-sm font-bold mb-1 text-left">Observações (Opcional)</label>
-                                <input type="text" value={note} onChange={(e) => setNote(e.target.value)}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Digite observações..." />
+                                <input
+                                    type="text"
+                                    value={note}
+                                    onChange={(e) => setNote(e.target.value)}
+                                    className="border border-border rounded p-2"
+                                    placeholder="Digite as observações..."
+                                />
                             </div>
                         </div>
 

@@ -214,7 +214,7 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
                         {/* Animal */}
                         <div className="grid grid-cols-2 gap-4">
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Animal</label>
+                                <label className="text-sm font-bold mb-1 text-left">Código do Animal</label>
                                 <select
                                     value={selectedAnimalId}
                                     onChange={(e) => handleAnimalChange(e.target.value ? Number(e.target.value) : '')}
@@ -223,27 +223,29 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
                                 >
                                     <option value="">Selecione...</option>
                                     {options.liveAnimals.map(a => (
-                                        <option key={a.id} value={a.id}>{a.name}</option>
+                                        <option key={a.id} value={a.id}>{a.code}</option>
                                     ))}
                                 </select>
                             </div>
                         </div>
 
                         {/* Seleção da Visita Associada (opcional) */}
-                        <fieldset className={`col-span-2 border border-border rounded p-4 ${!selectedAnimalId ? 'bg-gray-100' : 'bg-white'}`}>
+                        <fieldset className={`relative col-span-2 border border-border rounded p-4 ${!selectedAnimalId ? 'bg-gray-100' : 'bg-white'}`}>
                             <legend className="text-sm font-bold text-standard-blue px-2 flex items-center gap-2">
                                 Visita Associada (Opcional)
-                                {hasVisitSelected && (
+                            </legend>
+                            {hasVisitSelected && (
+                                <div className="absolute top-[-24px] right-2 bg-white px-2 rounded">
                                     <button
                                         type="button"
-                                        onClick={handleClearVisit}
-                                        className="text-standard-red hover:text-red-700 font-bold text-sm cursor-pointer leading-none"
+                                        onClick={() => handleClearVisit()}
+                                        className="text-standard-blue font-bold text-xs cursor-pointer"
                                         title="Limpar seleção de visita"
                                     >
-                                        ✕
+                                        ⭯ Limpar
                                     </button>
-                                )}
-                            </legend>
+                                </div>
+                            )}
                             <div className="grid grid-cols-2 gap-4">
                                 {/* Data da Visita */}
                                 <div className="flex flex-col">
@@ -298,13 +300,13 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
                         </div>
                         {/* Observações */}
                         <div className="flex flex-col">
-                            <label className="text-sm font-bold mb-1 text-left">Observações</label>
+                            <label className="text-sm font-bold mb-1 text-left">Observações (Opcional)</label>
                             <textarea
                                 value={note}
                                 onChange={(e) => setNote(e.target.value)}
                                 className="border border-border rounded p-2 bg-white resize-none"
                                 rows={3}
-                                placeholder="Observações sobre a castração (opcional)"
+                                placeholder="Digite as observações..."
                             />
                         </div>
 

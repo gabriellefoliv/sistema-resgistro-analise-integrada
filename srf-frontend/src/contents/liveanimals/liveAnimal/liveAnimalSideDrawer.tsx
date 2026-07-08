@@ -6,7 +6,6 @@ import { SideDrawer } from "../../../components/sideDrawer";
 
 interface LiveAnimalSideDrawerFilters {
     liveAnimalId?: number;
-    tutorId?: number;
 }
 
 interface LiveAnimalSideDrawerProps {
@@ -33,20 +32,19 @@ export function LiveAnimalSideDrawer({ filters, onClose }: LiveAnimalSideDrawerP
                     }))
                     .filter(a => {
                         if (filters.liveAnimalId && a.id !== filters.liveAnimalId) return false;
-                        if (filters.tutorId && a.tutorId !== filters.tutorId) return false;
                         return true;
                     });
                 setAnimals(filtered);
             })
             .finally(() => setLoading(false));
-    }, [filters.liveAnimalId, filters.tutorId]);
+    }, [filters.liveAnimalId]);
 
     const pageFilters: any[] = [];
     if (filters.liveAnimalId) {
         const firstAnimal = animals[0];
         if (firstAnimal) {
-            pageFilters.push({ field: 'liveAnimalName', value: { type: 'text' as const, term: firstAnimal.name } });
-            pageFilters.push({ field: 'tutorName', value: { type: 'text' as const, term: firstAnimal.tutorName } });
+            pageFilters.push({ field: 'codeSail', value: { type: 'text' as const, term: firstAnimal.sailCode } });
+            pageFilters.push({ field: 'codeNumber', value: { type: 'text' as const, term: firstAnimal.codeNumber } });
         }
     }
     const pageUrl = `/animaisvivos/animais/animal-av?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
@@ -92,7 +90,7 @@ export function LiveAnimalSideDrawer({ filters, onClose }: LiveAnimalSideDrawerP
                                     className="w-full flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-hover-bg transition-colors"
                                 >
                                     <div className="flex flex-col items-start gap-0.5">
-                                        <span className="text-sm font-bold text-text-main">{animal.name}</span>
+                                        <span className="text-sm font-bold text-text-main">{animal.code}</span>
                                         <span className="text-xs text-text-light-gray">
                                             {animal.specieName} · {animal.active ? 'Ativo' : 'Inativo'}
                                         </span>
@@ -109,12 +107,15 @@ export function LiveAnimalSideDrawer({ filters, onClose }: LiveAnimalSideDrawerP
                                             Detalhes do Animal
                                         </h4>
                                         <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
-                                            <Field label="Nome" value={animal.name} />
-                                            <Field label="Tutor" value={animal.tutorName} />
+                                            <Field label="Código" value={animal.code || `${animal.sailCode}_${animal.codeNumber}`} />
+                                            <Field label="Nome" value={animal.name || 'Não informado'} />
+                                            <Field label="Tutor" value={animal.tutorName || 'Não informado'} />
                                             <Field label="Espécie" value={animal.specieName} />
                                             <Field label="Gênero" value={animal.genderName} />
                                             <Field label="Data de Nascimento" value={animal.birthDateFormatted || ''} />
                                             <Field label="Ativo?" value={animal.active ? 'Sim' : 'Não'} />
+                                            <Field label="Foto do Animal" value={animal.animalPicture || 'Não informado'} fullWidth />
+                                            <Field label="Foto do Cartão" value={animal.cardLink || 'Não informado'} fullWidth />
                                         </div>
                                     </div>
                                 )}

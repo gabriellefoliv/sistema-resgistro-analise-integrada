@@ -18,7 +18,7 @@ export class PhysicalExamService {
                 veterinarianVisit: {
                     select: {
                         id: true, date: true,
-                        liveAnimal: { select: { id: true, name: true } },
+                        liveAnimal: { select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true } },
                         veterinarian: { select: { id: true, name: true } }
                     }
                 },
@@ -71,7 +71,7 @@ export class PhysicalExamService {
                     veterinarianVisitId: e.veterinarianVisit.id,
                     veterinarianVisitDate: e.veterinarianVisit.date.toISOString(),
                     liveAnimalId: e.veterinarianVisit.liveAnimal.id,
-                    liveAnimalName: e.veterinarianVisit.liveAnimal.name,
+                    liveAnimalCode: `${e.veterinarianVisit.liveAnimal.codeSail.sail}_${e.veterinarianVisit.liveAnimal.codeNumber}`,
                     veterinarianId: e.veterinarianVisit.veterinarian.id,
                     veterinarianName: e.veterinarianVisit.veterinarian.name,
                     generalConditionId: e.generalCondition.id,
@@ -102,7 +102,7 @@ export class PhysicalExamService {
                 select: {
                     id: true,
                     date: true,
-                    liveAnimal: { select: { id: true, name: true } },
+                    liveAnimal: { select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true } },
                     veterinarian: { select: { id: true, name: true } }
                 },
                 orderBy: {
@@ -141,7 +141,7 @@ export class PhysicalExamService {
             veterinarianVisits: veterinarianVisits.map(v => ({
                 id: v.id,
                 date: v.date.toISOString(),
-                liveAnimal: v.liveAnimal,
+                liveAnimal: { id: v.liveAnimal.id, code: `${v.liveAnimal.codeSail.sail}_${v.liveAnimal.codeNumber}` },
                 veterinarian: v.veterinarian
             })),
             generalConditions,

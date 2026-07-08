@@ -34,7 +34,7 @@ export function DeletePhysicalExamModal({ exam, close, refresh }: DeletePhysical
                     <h2 className="absolute top-2 text-2xl text-standard-red font-bold">Atenção!</h2>
 
                     <p className="text-center font-bold text-lg">
-                        Tem certeza que deseja EXCLUIR o exame físico do animal <span className="text-standard-blue">{exam.liveAnimalName}</span>?
+                        Tem certeza que deseja EXCLUIR o exame físico do animal <span className="text-standard-blue">{exam.liveAnimalCode}</span>?
                     </p>
 
                     {error && <p className="text-red-500 text-sm text-center">{error}</p>}

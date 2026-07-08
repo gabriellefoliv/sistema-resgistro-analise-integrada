@@ -108,7 +108,7 @@ export function HelminthAnalysisSideDrawer({ filters, onClose }: HelminthAnalysi
                                             <Field label="Data da Necropsia" value={result.necropsyDateFormatted || ''} />
                                             <Field label="Código do Animal" value={result.deadAnimalCode} />
                                             <Field label="Espécie do Helminto" value={result.helminthSpecieName} />
-                                            <Field label="Localização" value={result.location} />
+                                            <Field label="Localização" value={result.locationName} />
                                             <Field label="Quantidade de Machos" value={String(result.maleQuantity)} />
                                             <Field label="Quantidade de Fêmeas" value={String(result.femaleQuantity)} />
                                             <Field label="Quantidade Total" value={String(result.totalQuantity)} />

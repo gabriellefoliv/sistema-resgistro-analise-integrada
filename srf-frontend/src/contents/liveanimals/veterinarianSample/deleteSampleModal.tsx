@@ -34,7 +34,7 @@ export function DeleteSampleModal({ sample, close, refresh }: DeleteSampleModalP
                     <h2 className="absolute top-2 text-2xl text-standard-red font-bold">Atenção!</h2>
 
                     <p className="text-center font-bold text-lg">
-                        Tem certeza que deseja EXCLUIR a amostra <span className="text-standard-blue">{sample.sampleTypeDescription}</span> do animal <span className="text-standard-blue">{sample.liveAnimalName}</span>?
+                        Tem certeza que deseja EXCLUIR a amostra <span className="text-standard-blue">{sample.sampleTypeDescription}</span> do animal <span className="text-standard-blue">{sample.liveAnimalCode}</span>?
                     </p>
 
                     {error && <p className="text-red-500 text-sm text-center">{error}</p>}

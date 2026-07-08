@@ -26,9 +26,13 @@ export const getAllLiveAnimalOutputSchema = z.object({
     id: z.number().int(),
     createdByMe: z.boolean(),
     canEdit: z.boolean(),
+    sailId: z.number().int(),
+    sailCode: z.string().nonempty(),
+    codeNumber: z.number().int(),
+    code: z.string().optional(),
+    name: z.string().optional(),
     specieId: z.number().int(),
     specieName: z.string().nonempty(),
-    name: z.string().nonempty(),
     genderId: z.number().int(),
     genderName: z.string().nonempty(),
     birthDate: z.string().nonempty(),
@@ -37,8 +41,8 @@ export const getAllLiveAnimalOutputSchema = z.object({
     activeFormatted: z.string().optional(),
     animalPicture: z.string().optional(),
     cardLink: z.string().optional(),
-    tutorId: z.number().int(),
-    tutorName: z.string().nonempty(),
+    tutorId: z.number().int().optional(),
+    tutorName: z.string().optional(),
     hasGpsTracking: z.boolean(),
     hasCastration: z.boolean(),
     hasVeterinarianVisit: z.boolean(),
@@ -47,6 +51,10 @@ export const getAllLiveAnimalOutputSchema = z.object({
 });
 
 export const getFormOptionsAnimalOutputSchema = z.object({
+    codeSails: z.array(z.object({
+        id: z.number().int(),
+        sail: z.string().nonempty()
+    })),
     species: z.array(z.object({
         id: z.number().int(),
         name: z.string().nonempty()
@@ -63,14 +71,16 @@ export const getFormOptionsAnimalOutputSchema = z.object({
 
 // Inputs
 export const createLiveAnimalInputSchema = z.object({
+    sailId: z.number().int({ error: 'ID da vela inválido' }),
+    codeNumber: z.number().int({ error: 'Número do código inválido' }),
+    name: z.string().optional(),
     specieId: z.number().int({ error: 'ID da espécie inválido' }),
-    name: z.string().nonempty({ error: 'Nome do animal inválido' }),
     genderId: z.number().int({ error: 'ID do gênero inválido' }),
     birthDate: z.string().nonempty({ error: 'Data de nascimento inválida' }),
     active: z.boolean(),
     animalPicture: z.string().optional(),
     cardLink: z.string().optional(),
-    tutorId: z.number().int({ error: 'ID do tutor inválido' })
+    tutorId: z.number().int({ error: 'ID do tutor inválido' }).optional()
 });
 
 export const updateLiveAnimalInputSchema = createLiveAnimalInputSchema;

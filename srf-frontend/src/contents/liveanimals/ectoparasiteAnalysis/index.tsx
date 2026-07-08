@@ -27,7 +27,7 @@ export const EctoparasiteAnalysisContentDefinition = {
     label: 'Ectoparasitos',
     columns: [
         { key: 'veterinarianVisitDateFormatted', label: 'Data da Visita', width: 'w-2/12' },
-        { key: 'liveAnimalName', label: 'Animal', width: 'w-2/12' },
+        { key: 'liveAnimalCode', label: 'Código do Animal', width: 'w-2/12' },
         { key: 'veterinarianName', label: 'Veterinário', width: 'w-2/12' },
         { key: 'genusName', label: 'Gênero', width: 'w-1/12' },
         { key: 'specieName', label: 'Espécie', width: 'w-2/12' },
@@ -38,7 +38,7 @@ export const EctoparasiteAnalysisContentDefinition = {
         return [
             { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'veterinarianVisitDate', label: 'Data da Visita', type: 'date' },
-            { key: 'liveAnimalName', label: 'Animal', type: 'text' },
+            { key: 'liveAnimalCode', label: 'Código do Animal', type: 'text' },
             { key: 'veterinarianName', label: 'Veterinário', type: 'text' },
             { key: 'genusName', label: 'Gênero', type: 'enum', options: genusOptions },
             { key: 'specieName', label: 'Espécie', type: 'enum', options: specieOptions },

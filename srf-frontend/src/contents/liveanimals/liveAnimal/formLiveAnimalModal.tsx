@@ -23,6 +23,8 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
     const [error, setError] = useState<string>('');
     const [options, setOptions] = useState<GetFormOptionsAnimalOutput | null>(null);
 
+    const [codeSailId, setCodeSailId] = useState<number | ''>(liveAnimal?.sailId ?? '');
+    const [codeNumber, setCodeNumber] = useState<number | ''>(liveAnimal?.codeNumber ?? '');
     const [name, setName] = useState<string>(liveAnimal?.name ?? '');
     const [tutorId, setTutorId] = useState<number | ''>(liveAnimal?.tutorId ?? '');
     const [specieId, setSpecieId] = useState<number | ''>(liveAnimal?.specieId ?? '');
@@ -50,8 +52,10 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
         setError('');
         try {
             const data = {
-                name: name,
-                tutorId: Number(tutorId),
+                sailId: Number(codeSailId),
+                codeNumber: Number(codeNumber),
+                name: name || undefined,
+                tutorId: Number(tutorId) || undefined,
                 specieId: Number(specieId),
                 genderId: Number(genderId),
                 birthDate: birthDate,
@@ -96,15 +100,21 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
                         {/* Campos do Animal */}
                         <div className="grid grid-cols-3 gap-4">
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Nome</label>
-                                <input type="text" value={name} onChange={(e) => setName(e.target.value)}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Digite o nome do animal..." required />
+                                <label className="text-sm font-bold mb-1 text-left">Código</label>
+                                <div className="flex w-full gap-2">
+                                    <select value={codeSailId} onChange={(e) => setCodeSailId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10 w-2/5" required>
+                                        <option value="">Selecione...</option>
+                                        {options.codeSails.map(s => (<option key={s.id} value={s.id}>{s.sail}</option>))}
+                                    </select>
+                                    <input type="number" value={codeNumber} onChange={(e) => setCodeNumber(e.target.value ? Number(e.target.value) : '')}
+                                        className="border border-border rounded p-2 bg-white h-10 w-3/5" placeholder="Digite o número..." min={0} required />
+                                </div>
                             </div>
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Tutor</label>
-                                <select value={tutorId} onChange={(e) => setTutorId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
+                                <label className="text-sm font-bold mb-1 text-left">Espécie</label>
+                                <select value={specieId} onChange={(e) => setSpecieId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
                                     <option value="">Selecione...</option>
-                                    {options.tutors.map(t => (<option key={t.id} value={t.id}>{t.name}</option>))}
+                                    {options.species.map(s => (<option key={s.id} value={s.id}>{s.name}</option>))}
                                 </select>
                             </div>
                             <div className="flex flex-col">
@@ -115,18 +125,11 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
                                 </select>
                             </div>
                         </div>
-                        <div className="grid grid-cols-3 gap-4">
+                        <div className="grid grid-cols-2 gap-4">
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Data de Nascimento</label>
                                 <input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)}
                                     className="border border-border rounded p-2 bg-white h-10" required />
-                            </div>
-                            <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Espécie</label>
-                                <select value={specieId} onChange={(e) => setSpecieId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
-                                    <option value="">Selecione...</option>
-                                    {options.species.map(s => (<option key={s.id} value={s.id}>{s.name}</option>))}
-                                </select>
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Gênero</label>
@@ -135,13 +138,26 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
                                     {options.genders.map(g => (<option key={g.id} value={g.id}>{g.name}</option>))}
                                 </select>
                             </div>
-                            <div className="flex flex-col col-span-3">
-                                <label className="text-sm font-bold mb-1 text-left">Foto</label>
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Nome (Opcional)</label>
+                                <input type="text" value={name} onChange={(e) => setName(e.target.value)}
+                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Digite o nome do animal..." />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Tutor (Opcional)</label>
+                                <select value={tutorId} onChange={(e) => setTutorId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10">
+                                    <option value="">Selecione...</option>
+                                    {options.tutors.map(t => (<option key={t.id} value={t.id}>{t.name}</option>))}
+                                </select>
+                            </div>
+
+                            <div className="flex flex-col col-span-2">
+                                <label className="text-sm font-bold mb-1 text-left">Foto (Opcional)</label>
                                 <input type="text" value={animalPicture} onChange={(e) => setAnimalPicture(e.target.value)}
                                     className="border border-border rounded p-2 bg-white h-10" placeholder="Digite o link da foto do animal..." />
                             </div>
-                            <div className="flex flex-col col-span-3">
-                                <label className="text-sm font-bold mb-1 text-left">Carteirinha</label>
+                            <div className="flex flex-col col-span-2">
+                                <label className="text-sm font-bold mb-1 text-left">Carteirinha (Opcional)</label>
                                 <input type="text" value={cardLink} onChange={(e) => setCardLink(e.target.value)}
                                     className="border border-border rounded p-2 bg-white h-10" placeholder="Digite o link da carteirinha..." />
                             </div>

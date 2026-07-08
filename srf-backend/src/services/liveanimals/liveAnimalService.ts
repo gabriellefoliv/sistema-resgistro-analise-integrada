@@ -17,6 +17,8 @@ export class LiveAnimalService {
             select: {
                 // Dados principais
                 id: true,
+                codeSail: { select: { id: true, sail: true } },
+                codeNumber: true,
                 specieId: true,
                 specie: { select: { id: true, name: true } },
                 name: true,
@@ -34,9 +36,7 @@ export class LiveAnimalService {
                 vaccineApplication: { select: { id: true } },
                 animalInterview: { select: { id: true } }
             },
-            orderBy: {
-                name: 'asc'
-            }
+            orderBy: [{ codeSail: { sail: 'asc' } }, { codeNumber: 'asc' }]
         });
 
         // Permissões
@@ -65,9 +65,13 @@ export class LiveAnimalService {
 
                 return {
                     id: a.id,
+                    sailId: a.codeSail.id,
+                    sailCode: a.codeSail.sail,
+                    codeNumber: a.codeNumber,
+                    code: `${a.codeSail.sail}_${a.codeNumber}`,
                     specieId: a.specieId,
                     specieName: a.specie.name,
-                    name: a.name,
+                    name: a.name || undefined,
                     genderId: a.genderId,
                     genderName: a.gender.name,
                     birthDate: a.birthDate.toISOString(),
@@ -76,8 +80,8 @@ export class LiveAnimalService {
                     cardLink: a.cardLink || undefined,
                     canEdit: permission.canEdit,
                     createdByMe: creatorMap.get(String(a.id)) === requesterId,
-                    tutorId: a.tutor.id,
-                    tutorName: a.tutor.name,
+                    tutorId: a.tutor?.id || undefined,
+                    tutorName: a.tutor?.name || undefined,
                     hasGpsTracking: !!a.gpsTracking,
                     hasCastration: !!a.castration,
                     hasVeterinarianVisit: a.veterinarianVisit.length > 0,
@@ -91,7 +95,11 @@ export class LiveAnimalService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsAnimalOutput> {
-        const [species, genders, tutors] = await Promise.all([
+        const [codeSails, species, genders, tutors] = await Promise.all([
+            prisma.liveAnimalCodeSail.findMany({
+                select: { id: true, sail: true },
+                orderBy: { sail: 'asc' }
+            }),
             prisma.specie.findMany({
                 select: { id: true, name: true },
                 orderBy: { name: 'asc' }
@@ -106,32 +114,34 @@ export class LiveAnimalService {
             })
         ]);
 
-        return { species, genders, tutors };
+        return { codeSails, species, genders, tutors };
     }
 
     async create(data: CreateLiveAnimalInput, requesterId: string) {
-        // Verifica se o tutor já possui um animal com esse nome
-        const existingAnimal = await prisma.liveAnimal.findFirst({
+        // Verifica se já existe um animal com aquela sigla e número
+        const existingCode = await prisma.liveAnimal.findFirst({
             where: {
-                tutorId: data.tutorId,
-                name: data.name
+                codeSailId: data.sailId,
+                codeNumber: data.codeNumber
             }
         });
-        if (existingAnimal) throw new Error('Este tutor já possui um animal com este nome.');
+        if (existingCode) throw new Error('Já existe um animal cadastrado com esta sigla e número.');
 
 
         return prisma.$transaction(async (tx) => {
             // Cria o animal
             const animal = await tx.liveAnimal.create({
                 data: {
+                    codeSailId: data.sailId,
+                    codeNumber: data.codeNumber,
                     specieId: data.specieId,
-                    name: data.name,
+                    name: data.name || null,
                     genderId: data.genderId,
                     birthDate: new Date(data.birthDate + 'T12:00:00Z'),
                     active: data.active,
                     animalPicture: data.animalPicture || null,
                     cardLink: data.cardLink || null,
-                    tutorId: data.tutorId
+                    tutorId: data.tutorId || null
                 }
             });
 
@@ -151,15 +161,14 @@ export class LiveAnimalService {
     }
 
     async update(recordId: number, data: UpdateLiveAnimalInput, requesterId: string) {
-        // Verifica se o tutor já possui um animal com esse nome
-        const existingAnimal = await prisma.liveAnimal.findFirst({
+        // Verifica se já existe um animal com aquela sigla e número
+        const existingCode = await prisma.liveAnimal.findFirst({
             where: {
-                tutorId: data.tutorId,
-                name: data.name,
-                id: { not: recordId }
+                codeSailId: data.sailId,
+                codeNumber: data.codeNumber
             }
         });
-        if (existingAnimal) throw new Error('Este tutor já possui um animal com este nome.');
+        if (existingCode) throw new Error('Já existe um animal cadastrado com esta sigla e número.');
 
         return prisma.$transaction(async (tx) => {
             // Verifica se existe
@@ -172,13 +181,16 @@ export class LiveAnimalService {
             const updatedAnimal = await tx.liveAnimal.update({
                 where: { id: recordId },
                 data: {
+                    codeSailId: data.sailId,
+                    codeNumber: data.codeNumber,
                     specieId: data.specieId,
-                    name: data.name,
+                    name: data.name || null,
                     genderId: data.genderId,
                     birthDate: new Date(data.birthDate + 'T12:00:00Z'),
                     active: data.active,
                     animalPicture: data.animalPicture || null,
-                    cardLink: data.cardLink || null
+                    cardLink: data.cardLink || null,
+                    tutorId: data.tutorId || null
                 }
             });
 

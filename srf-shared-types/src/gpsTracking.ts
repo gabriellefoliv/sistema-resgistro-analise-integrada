@@ -50,7 +50,7 @@ export const updateGpsTrackingInputSchema = gpsTrackingSchema.omit({
 export const getAllGpsTrackingOutputSchema = gpsTrackingSchema.extend({
     canEdit: z.boolean(),
     createdByMe: z.boolean(),
-    liveAnimalName: z.string().nonempty(),
+    liveAnimalCode: z.string().nonempty(),
     trackingDeviceBrandSerialNumber: z.string().nonempty(),
     lastUpdateDate: z.string().nullable().optional(),
     lastUpdateDateFormatted: z.string().optional(),
@@ -65,7 +65,7 @@ export const getAllGpsTrackingOutputSchema = gpsTrackingSchema.extend({
 export const getFormOptionsGpsTrackingOutputSchema = z.object({
     liveAnimals: z.array(z.object({
         id: z.number().int(),
-        name: z.string().nonempty(),
+        code: z.string().nonempty(),
     })),
     trackingDevices: z.array(z.object({
         id: z.number().int(),

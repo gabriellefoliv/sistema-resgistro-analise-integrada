@@ -86,7 +86,7 @@ export function InterviewExpansion({ item, close, refresh }: { item: GetAllInter
                     {item.animalInterviews.map(ai => (
                         <div key={ai.id} className="flex flex-col w-full">
                             <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
-                                <h3 className="font-bold text-text-main uppercase">Respostas sobre {ai.liveAnimalName}</h3>
+                                <h3 className="font-bold text-text-main uppercase">Respostas sobre o Animal {ai.liveAnimalCode}</h3>
                             </div>
                             <div className="gap-2 w-full text-sm grid grid-cols-2 mb-2">
                                 {ai.answers.map(a => (

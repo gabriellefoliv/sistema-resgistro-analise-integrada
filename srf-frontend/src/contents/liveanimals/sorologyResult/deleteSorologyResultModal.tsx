@@ -34,7 +34,7 @@ export function DeleteSorologyResultModal({ sorologyResult, close, refresh }: De
                     <h2 className="absolute top-2 text-2xl text-standard-red font-bold">Atenção!</h2>
 
                     <p className="text-center font-bold text-lg">
-                        Tem certeza que deseja EXCLUIR a sorologia do animal <span className="text-standard-blue">{sorologyResult.liveAnimalName}</span>?
+                        Tem certeza que deseja EXCLUIR a sorologia do animal <span className="text-standard-blue">{sorologyResult.liveAnimalCode}</span>?
                     </p>
 
                     {error && <p className="text-red-500 text-sm text-center">{error}</p>}

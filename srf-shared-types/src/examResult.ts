@@ -79,7 +79,7 @@ export const getAllExamResultOutputSchema = examResultSchema.extend({
     interpretationId: z.number().int(),
     interpretationName: z.string().nonempty(),
     liveAnimalId: z.number().int(),
-    liveAnimalName: z.string().nonempty(),
+    liveAnimalCode: z.string().nonempty(),
     veterinarianId: z.number().int(),
     veterinarianName: z.string().nonempty()
 });
@@ -90,7 +90,7 @@ export const getFormOptionsExamResultOutputSchema = z.object({
         date: z.string().nonempty(),
         liveAnimal: z.object({
             id: z.number().int(),
-            name: z.string().nonempty()
+            code: z.string().nonempty()
         }),
         veterinarian: z.object({
             id: z.number().int(),

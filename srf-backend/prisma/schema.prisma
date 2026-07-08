@@ -168,27 +168,40 @@ model passwordResetToken {
 
 model liveAnimal {
   id                 Int                  @id @default(autoincrement())
+  codeSailId         Int                  @map("id_codigo_sigla")
+  codeNumber         Int                  @map("codigo_numero")
   specieId           Int                  @map("id_especie")
-  name               String               @map("nome")
+  name               String?               @map("nome")
   genderId           Int                  @map("id_genero")
   birthDate          DateTime             @map("data_nascimento") @db.DateTime(0)
   active             Boolean              @map("ativo")
   animalPicture      String?              @map("foto_animal")
   cardLink           String?              @map("link_carteirinha")
-  tutorId            Int                  @map("id_tutor")
+  tutorId            Int?                  @map("id_tutor")
+  codeSail           liveAnimalCodeSail  @relation(fields: [codeSailId], references: [id])
   specie             specie               @relation(fields: [specieId], references: [id])
   gender             enumAnimalGender     @relation(fields: [genderId], references: [id])
-  tutor              tutor                @relation(fields: [tutorId], references: [id])
+  tutor              tutor?                @relation(fields: [tutorId], references: [id])
   vaccineApplication vaccineApplication[]
   castration         castration?
   animalInterview    animalInterview[]
   gpsTracking        gpsTracking?
   veterinarianVisit  veterinarianVisit[]
 
+  @@unique([codeSailId, codeNumber])
+  @@index([codeSailId], map: "animal_vivo_id_codigo_sail_fkey")
   @@index([specieId], map: "animal_vivo_id_especie_fkey")
   @@index([genderId], map: "animal_vivo_id_genero_fkey")
   @@index([tutorId], map: "animal_vivo_id_tutor_fkey")
   @@map("animal_vivo")
+}
+
+model liveAnimalCodeSail {
+  id         Int          @id @default(autoincrement())
+  sail       String       @unique @map("sigla")
+  liveAnimal liveAnimal[]
+
+  @@map("codigo_sigla_animal_vivo")
 }
 
 model specie {
@@ -1014,20 +1027,30 @@ model bodyMeasurementNecropsy {
 }
 
 model helminthAnalysis {
-  id               Int            @id @default(autoincrement())
-  necropsyId       Int            @map("id_necropsia")
-  helminthSpecieId Int            @map("id_especie_helminto")
-  location         String         @map("localizacao")
-  maleQuantity     Int            @map("quantidade_machos")
-  femaleQuantity   Int            @map("quantidade_femeas")
-  totalQuantity    Int            @map("quantidade_total")
-  note             String?        @map("observacao")
-  helminthSpecie   helminthSpecie @relation(fields: [helminthSpecieId], references: [id])
-  necropsy         necropsy       @relation(fields: [necropsyId], references: [id])
+  id               Int              @id @default(autoincrement())
+  necropsyId       Int              @map("id_necropsia")
+  helminthSpecieId Int              @map("id_especie_helminto")
+  locationId       Int              @map("id_localizacao")
+  maleQuantity     Int              @map("quantidade_machos")
+  femaleQuantity   Int              @map("quantidade_femeas")
+  totalQuantity    Int              @map("quantidade_total")
+  note             String?          @map("observacao")
+  location         helminthLocation @relation(fields: [locationId], references: [id])
+  helminthSpecie   helminthSpecie   @relation(fields: [helminthSpecieId], references: [id])
+  necropsy         necropsy         @relation(fields: [necropsyId], references: [id])
 
-  @@unique([necropsyId, helminthSpecieId, location])
+  @@unique([necropsyId, helminthSpecieId, locationId])
+  @@index([locationId], map: "analise_helminto_id_localizacao_fkey")
   @@index([helminthSpecieId], map: "analise_helminto_id_especie_helminto_fkey")
   @@map("analise_helminto")
+}
+
+model helminthLocation {
+  id            Int            @id @default(autoincrement())
+  name          String         @unique @map("nome")
+  helminthAnalysis helminthAnalysis[]
+
+  @@map("localizacao_helminto")
 }
 
 model helminthSpecie {

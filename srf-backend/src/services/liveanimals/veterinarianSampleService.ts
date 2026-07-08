@@ -19,7 +19,7 @@ export class VeterinarianSampleService {
                 veterinarianVisit: {
                     select: {
                         id: true, date: true,
-                        liveAnimal: { select: { id: true, name: true } },
+                        liveAnimal: { select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true } },
                         veterinarian: { select: { id: true, name: true } }
                     }
                 },
@@ -75,7 +75,7 @@ export class VeterinarianSampleService {
                     veterinarianVisitId: s.veterinarianVisit.id,
                     veterinarianVisitDate: s.veterinarianVisit.date.toISOString(),
                     liveAnimalId: s.veterinarianVisit.liveAnimal.id,
-                    liveAnimalName: s.veterinarianVisit.liveAnimal.name,
+                    liveAnimalCode: `${s.veterinarianVisit.liveAnimal.codeSail.sail}_${s.veterinarianVisit.liveAnimal.codeNumber}`,
                     veterinarianId: s.veterinarianVisit.veterinarian.id,
                     veterinarianName: s.veterinarianVisit.veterinarian.name,
                     sampleTypeId: s.sampleType.id,
@@ -112,7 +112,7 @@ export class VeterinarianSampleService {
                 select: {
                     id: true,
                     date: true,
-                    liveAnimal: { select: { id: true, name: true } },
+                    liveAnimal: { select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true } },
                     veterinarian: { select: { id: true, name: true } }
                 },
                 orderBy: { date: 'desc' }
@@ -135,7 +135,7 @@ export class VeterinarianSampleService {
             veterinarianVisits: veterinarianVisits.map(v => ({
                 id: v.id,
                 date: v.date.toISOString(),
-                liveAnimal: v.liveAnimal,
+                liveAnimal: { id: v.liveAnimal.id, code: `${v.liveAnimal.codeSail.sail}_${v.liveAnimal.codeNumber}` },
                 veterinarian: v.veterinarian
             })),
             sampleTypes, status, storages
