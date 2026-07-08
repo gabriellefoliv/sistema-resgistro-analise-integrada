@@ -43,8 +43,7 @@ export function LiveAnimalSideDrawer({ filters, onClose }: LiveAnimalSideDrawerP
     if (filters.liveAnimalId) {
         const firstAnimal = animals[0];
         if (firstAnimal) {
-            pageFilters.push({ field: 'codeSail', value: { type: 'text' as const, term: firstAnimal.sailCode } });
-            pageFilters.push({ field: 'codeNumber', value: { type: 'text' as const, term: firstAnimal.codeNumber } });
+            pageFilters.push({ field: 'code', value: { type: 'text' as const, term: firstAnimal.code } });
         }
     }
     const pageUrl = `/animaisvivos/animais/animal-av?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;

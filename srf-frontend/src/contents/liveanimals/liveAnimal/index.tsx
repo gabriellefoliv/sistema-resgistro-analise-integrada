@@ -35,7 +35,7 @@ export const LiveAnimalContentDefinition = {
         return [
             { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'code', label: 'Código', type: 'text' },
-            { key: 'codeSail', label: 'Sigla (Código)', type: 'enum', options: codeSailsOptions },
+            { key: 'sailCode', label: 'Sigla (Código)', type: 'enum', options: codeSailsOptions },
             { key: 'codeNumber', label: 'Número (Código)', type: 'text' },
             { key: 'liveAnimalName', label: 'Nome', type: 'text' },
             { key: 'tutorName', label: 'Tutor', type: 'text' },

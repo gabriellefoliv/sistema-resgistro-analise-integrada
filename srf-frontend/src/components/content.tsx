@@ -96,7 +96,11 @@ export function Content({
         if (tabChanged) {
             setExpandedId(null);
             setSortConfig({ key: null, direction: 'asc' });
-            currentFiltersRef.current = [];
+            if (initialFilters) {
+                currentFiltersRef.current = initialFilters;
+            } else {
+                currentFiltersRef.current = [];
+            }
         }
 
         if (!activeContent?.data) return;
