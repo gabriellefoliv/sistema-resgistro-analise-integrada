@@ -1,7 +1,7 @@
 import { compare, hash } from "bcryptjs";
 import { prisma } from "..";
 import { sign } from "jsonwebtoken";
-import { sendEmail } from "../libs/mailtrap";
+import { sendEmail } from "../libs/nodemailer";
 import {
     UserCreateInput,
     UserUpdateDetailsInput,

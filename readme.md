@@ -51,9 +51,11 @@ DATABASE_PORT=3306
 PORT=3333
 JWT_SECRET="[string_aleatória]"
 <br/>
-MAILTRAP_API_KEY="xxxxx"
-MAILTRAP_USE_SANDBOX='true'
-MAILTRAP_INBOX_ID=xxxxx
+EMAIL_HOST="[email do provedor SMTP]"
+EMAIL_PORT=[porta do provedor]
+SENDER_NAME='no-reply'
+SENDER_EMAIL='[email de envio]'
+SENDER_PASSWORD='[senha do email de envio]'
 </pre>
 
 <h3>Instalação</h3>
